@@ -715,7 +715,7 @@
           <div class="card pad stat">
             <label>当前补货批次</label>
             <strong id="batchNo">RB-2026W18-001</strong>
-            <div class="sub" id="batchMeta">已锁定需求 2026-W18 · 库存快照 IS-0429-0900</div>
+            <div class="sub" id="batchMeta">已锁定需求 2026-05~2026-07 · 库存快照 IS-0429-0900</div>
           </div>
           <div class="card pad stat">
             <label>建议补货总量</label>
@@ -791,7 +791,7 @@
                 </select>
               </div>
               <div class="field">
-                <label>计划周</label>
+                <label>周度执行周期</label>
                 <select id="filterWeek">
                   <option>2026-W18</option>
                   <option>2026-W19</option>
@@ -902,7 +902,7 @@
   <script>
     const state = {
       batchNo: 'RB-2026W18-001',
-      demandVersion: '2026-W18 已锁定需求',
+      demandVersion: '2026-05~2026-07 已锁定需求',
       snapshot: 'IS-0429-0900',
       status: '待确认',
       activeTab: '',
@@ -944,7 +944,7 @@
         }
       ],
       timeline: [
-        ['09:00', '读取 2026-W18 已锁定需求，包含 5 个 SKU 行。'],
+        ['09:00', '读取 2026-05~2026-07 已锁定需求，按周生成采购/调拨/发货执行建议。'],
         ['09:01', '读取库存快照 IS-0429-0900，库存同步成功。'],
         ['09:03', '补货工作台完成建议计算，发现 1 行阻断、2 行警告。'],
         ['09:06', '等待 PMC 确认补货建议。']
@@ -953,8 +953,8 @@
         {
           id: 101, no: 'DP-20260429-001', channel: 'B2B海外商超', customer: '奥莱B2B',
           sku: 'C00B5B01+F22B5601', product: 'FALCAM F22&F38 快装免笼（FOR ZR）套装',
-          week: '2026-W18', qty: 2600, tier: 'Tier A', type: '订单锁定',
-          submittedQty: 2600, pmcQty: null, source: '其他', initiatorRole: '运营',
+          week: '2026-05', startMonth: '2026-05', endMonth: '2026-07', qty: 7800, tier: 'Tier A', type: '订单锁定',
+          submittedQty: 7800, pmcQty: null, source: '其他', initiatorRole: '运营',
           orderRef: 2200, activityRef: 0, forecastRef: 2350, manualRef: 250,
           eventId: '', expectedDate: '2026-05-18', owner: '销售张三', status: '审核中',
           createdBy: '销售张三', createdAt: '2026-04-29 09:10', confirmedBy: '', confirmedAt: '',
@@ -963,8 +963,8 @@
         {
           id: 102, no: 'DP-20260429-002', channel: 'B2C线上国外', customer: '奥莱B2C',
           sku: 'C00B5B02+2550', product: 'FALCAM F22&F38 快装免笼（FOR C50）套装',
-          week: '2026-W18', qty: 4200, tier: 'Tier B', type: '活动需求',
-          submittedQty: 4200, pmcQty: null, source: '促销活动', initiatorRole: '运营',
+          week: '2026-05', startMonth: '2026-05', endMonth: '2026-06', qty: 8400, tier: 'Tier B', type: '活动需求',
+          submittedQty: 8400, pmcQty: null, source: '促销活动', initiatorRole: '运营',
           orderRef: 0, activityRef: 1500, forecastRef: 3100, manualRef: -400,
           eventId: 'ACT-20260429', expectedDate: '2026-05-10', owner: '运营李四', status: '审核中',
           createdBy: '运营李四', createdAt: '2026-04-29 09:25', confirmedBy: '', confirmedAt: '',
@@ -973,7 +973,7 @@
         {
           id: 103, no: 'DP-20260429-003', channel: 'B2C线上国内', customer: '天猫旗舰店',
           sku: 'MJC26050800014', product: '两侧按键+按键定位扣',
-          week: '2026-W18', qty: 900, tier: 'Tier D', type: '临时加单',
+          week: '2026-05', startMonth: '2026-05', endMonth: '2026-05', qty: 900, tier: 'Tier D', type: '临时加单',
           submittedQty: 900, pmcQty: null, source: '临时加单', initiatorRole: '运营',
           orderRef: 500, activityRef: 0, forecastRef: 680, manualRef: 220,
           eventId: '', expectedDate: '2026-05-06', owner: '销售王五', status: '待提交',
@@ -983,8 +983,8 @@
         {
           id: 104, no: 'DP-20260429-004', channel: 'B2C线上国外', customer: '京东自营',
           sku: 'MJC26050800013', product: '上壳+下壳',
-          week: '2026-W18', qty: 3200, tier: 'Tier B', type: '活动需求',
-          submittedQty: 3200, pmcQty: 3200, source: '促销活动', initiatorRole: 'PMC',
+          week: '2026-06', startMonth: '2026-06', endMonth: '2026-07', qty: 6400, tier: 'Tier B', type: '活动需求',
+          submittedQty: 6400, pmcQty: 6400, source: '促销活动', initiatorRole: 'PMC',
           orderRef: 0, activityRef: 1200, forecastRef: 2100, manualRef: -100,
           eventId: 'ACT-UK-0501', expectedDate: '2026-05-12', owner: '运营赵六', status: '已审核',
           createdBy: '运营赵六', createdAt: '2026-04-29 08:40', confirmedBy: 'PMC主管', confirmedAt: '2026-04-29 11:30',
@@ -993,8 +993,8 @@
         {
           id: 105, no: 'DP-20260429-005', channel: 'B2B线下国外', customer: '速卖通LCM',
           sku: 'C00B3809+2549', product: 'FALCAM F22&F38&F50 快装折叠半笼套件套装',
-          week: '2026-W19', qty: 1800, tier: 'Tier C', type: '历史销量参考',
-          submittedQty: 1800, pmcQty: null, source: '销售预测', initiatorRole: '运营',
+          week: '2026-07', startMonth: '2026-07', endMonth: '2026-08', qty: 3600, tier: 'Tier C', type: '历史销量参考',
+          submittedQty: 3600, pmcQty: null, source: '销售预测', initiatorRole: '运营',
           orderRef: 900, activityRef: 0, forecastRef: 1600, manualRef: -100,
           eventId: '', expectedDate: '2026-05-20', owner: '销售陈七', status: '审核不通过',
           createdBy: '销售陈七', createdAt: '2026-04-29 09:55', confirmedBy: '', confirmedAt: '',
@@ -1095,6 +1095,29 @@
       if (v === '已审核') return chip(v, 'green');
       if (v === '审核不通过') return chip(v, 'red');
       return chip(v, 'gray');
+    }
+
+    function demandStartMonth(row) {
+      return row.startMonth || row.week;
+    }
+
+    function demandEndMonth(row) {
+      return row.endMonth || row.week;
+    }
+
+    function demandMonthRange(row) {
+      const start = demandStartMonth(row);
+      const end = demandEndMonth(row);
+      return start === end ? start : start + ' ~ ' + end;
+    }
+
+    function demandMonthIncludes(row, month) {
+      if (!month) return true;
+      return demandStartMonth(row) <= month && demandEndMonth(row) >= month;
+    }
+
+    function demandMonthOverlap(a, b) {
+      return demandStartMonth(a) <= demandEndMonth(b) && demandEndMonth(a) >= demandStartMonth(b);
     }
 
     function visibleRows() {
@@ -1259,9 +1282,9 @@
         '创建补货批次',
         '创建后批次状态为草稿，需选择已锁定需求和库存快照后才能生成建议。',
         formGrid([
-          { label: '计划周期', html: '<select id="mWeek"><option>2026-W18</option><option>2026-W19</option></select>' },
+          { label: '周度执行周期', html: '<select id="mWeek"><option>2026-W18</option><option>2026-W19</option><option>2026-W20</option></select>' },
           { label: '补货范围', html: '<select id="mScope"><option>全渠道</option><option>B2C线上国外</option><option>B2B海外商超</option></select>' },
-          { label: '默认需求范围', html: '<select id="mVersion"><option>2026-W18 已锁定需求</option><option>2026-W19 已锁定需求</option></select>' },
+          { label: '默认需求范围', html: '<select id="mVersion"><option>2026-05~2026-07 已锁定需求</option><option>2026-06~2026-08 已锁定需求</option></select>' },
           { label: '默认库存快照', html: '<select id="mSnapshot"><option>IS-0429-0900</option><option>IS-0429-1200</option></select>' },
           { label: '引擎模式', html: '<select id="mEngine"><option>heuristic_v1</option></select>' },
           { label: '备注', html: '<input id="mRemark" placeholder="例如：4月第5周平台仓补货" />' }
@@ -1276,10 +1299,10 @@
         '只能选择已锁定需求；切换需求范围会提示是否重新计算。',
         `
           <table>
-            <thead><tr><th>选择</th><th>需求范围</th><th>计划周期</th><th>需求量</th><th>状态</th><th>确认人</th></tr></thead>
+            <thead><tr><th>选择</th><th>需求范围</th><th>周度执行周期</th><th>需求量</th><th>状态</th><th>确认人</th></tr></thead>
             <tbody>
-              <tr><td><input name="version" type="radio" value="2026-W18 已锁定需求" checked /></td><td>2026-W18 已锁定需求</td><td>2026-W18</td><td>25,600</td><td>${chip('已锁定', 'green')}</td><td>PMC主管</td></tr>
-              <tr><td><input name="version" type="radio" value="2026-W19 已锁定需求" /></td><td>2026-W19 已锁定需求</td><td>2026-W19</td><td>27,300</td><td>${chip('已锁定', 'green')}</td><td>计划员A</td></tr>
+              <tr><td><input name="version" type="radio" value="2026-05~2026-07 已锁定需求" checked /></td><td>2026-05~2026-07 已锁定需求</td><td>2026-W18~W21</td><td>25,600</td><td>${chip('已锁定', 'green')}</td><td>PMC主管</td></tr>
+              <tr><td><input name="version" type="radio" value="2026-06~2026-08 已锁定需求" /></td><td>2026-06~2026-08 已锁定需求</td><td>2026-W22~W26</td><td>27,300</td><td>${chip('已锁定', 'green')}</td><td>计划员A</td></tr>
             </tbody>
           </table>
         `,
@@ -1885,7 +1908,7 @@
           state.demandRows.unshift({
             id: Date.now(), no: 'DP-20260429-' + String(Math.floor(Math.random() * 900) + 100),
             channel: data.channel, customer: data.customer, sku: data.sku, product: data.product,
-            week: data.week, qty: data.qty, tier: data.tier,
+            week: data.week, startMonth: data.startMonth, endMonth: data.endMonth, qty: data.qty, tier: data.tier,
             type: data.type, orderRef: data.orderRef, activityRef: data.activityRef, forecastRef: data.forecastRef, manualRef: data.manualRef,
             submittedQty: data.submittedQty, pmcQty: data.initiatorRole === 'PMC' ? data.submittedQty : null,
             source: data.source, initiatorRole: data.initiatorRole, eventId: data.eventId, expectedDate: data.expectedDate,
@@ -1909,9 +1932,9 @@
         state.demandRows.unshift({
           id: Date.now(), no: 'DP-IMPORT-' + String(Math.floor(Math.random() * 900) + 100),
           channel: 'B2C线上国外', customer: '奥莱B2C', sku: 'MJC26050800012', product: '引磁片',
-          week: '2026-W19', qty: 1500, tier: 'Final',
+          week: '2026-06', startMonth: '2026-06', endMonth: '2026-08', qty: 4500, tier: 'Final',
           type: '综合判断', orderRef: 0, activityRef: 600, forecastRef: 900, manualRef: 0,
-          submittedQty: 1500, pmcQty: null, source: '促销活动', initiatorRole: '运营',
+          submittedQty: 4500, pmcQty: null, source: '促销活动', initiatorRole: '运营',
           eventId: 'ACT-US-0505', expectedDate: '2026-05-22',
           owner: '导入用户', status: $('mDemandImportStatus').value === '审核中' ? '审核中' : '待提交',
           createdBy: '导入用户', createdAt: nowText(), confirmedBy: '', confirmedAt: '',
@@ -2241,7 +2264,7 @@
               <div class="field"><label>渠道</label><select id="demandChannel"><option value="">全部</option><option>B2C线上国外</option><option>B2C线上国内</option><option>B2B海外商超</option><option>B2B线下国外</option></select></div>
               <div class="field"><label>需求来源</label><select id="demandTier"><option value="">全部</option><option>销售预测</option><option>临时加单</option><option>促销活动</option><option>其他</option></select></div>
               <div class="field"><label>状态</label><select id="demandStatusFilter"><option value="">全部</option><option>待提交</option><option>审核中</option><option>已审核</option><option>审核不通过</option></select></div>
-              <div class="field"><label>计划周</label><select id="demandWeek"><option value="">全部</option><option>2026-W18</option><option>2026-W19</option></select></div>
+              <div class="field"><label>提报月份范围</label><select id="demandWeek"><option value="">全部</option><option>2026-05</option><option>2026-06</option><option>2026-07</option><option>2026-08</option></select></div>
               <button class="btn" id="demandMoreFilters">更多筛选</button>
             </div>
           </div>
@@ -2267,7 +2290,7 @@
                   <th>需求单号</th>
                   <th>渠道/客户</th>
                   <th>SKU</th>
-                  <th>时间桶</th>
+                  <th>提报月份范围</th>
                   <th class="num">运营提报数量</th>
                   <th class="num">PMC确认数量</th>
                   <th>需求来源</th>
@@ -2298,7 +2321,7 @@
           (!channel || row.channel === channel) &&
           (!source || row.source === source) &&
           (!status || row.status === status) &&
-          (!week || row.week === week);
+          demandMonthIncludes(row, week);
       });
     }
 
@@ -2315,7 +2338,7 @@
           <td><strong>${row.no}</strong><div class="muted">${row.createdBy || row.owner} · ${row.createdAt || '-'}</div></td>
           <td>${row.channel}<div class="muted">${row.customer}</div></td>
           <td><strong>${row.sku}</strong><div class="muted">${row.product}</div></td>
-          <td>${row.week}<div class="muted">${row.expectedDate}</div></td>
+          <td>${demandMonthRange(row)}<div class="muted">按月展示，执行按周滚动</div></td>
           <td class="num"><strong>${format(row.submittedQty || row.qty)}</strong>${demandQtyEditButton(row, 'submitted')}</td>
           <td class="num"><strong>${row.pmcQty != null ? format(row.pmcQty) : '-'}</strong>${demandQtyEditButton(row, 'pmc')}</td>
           <td>${chip(row.source || '其他', 'blue')}<div class="muted">${row.initiatorRole || '运营'}发起</div></td>
@@ -2507,7 +2530,7 @@
                 <tr><td>快照来源</td><td>国内仓 WMS、平台仓 API、海外 3PL API</td><td>快照维度</td><td>SKU + 实体仓 + 虚拟仓 + 快照时间</td></tr>
                 <tr><td>虚拟仓可用</td><td>ERP 虚拟仓可用，分货后增加</td><td>虚拟仓冻结</td><td>ERP 虚拟仓冻结，订单占用后从可用转冻结</td></tr>
                 <tr><td>实体仓可分配</td><td colspan="3">实体仓可用 - 绑定虚拟仓可用合计 - 绑定虚拟仓冻结合计 - 计划占用 - 安全库存</td></tr>
-                <tr><td>覆盖天数</td><td>有效供给 / 日均需求</td><td>日均需求</td><td>优先取已锁定需求，缺失时取近4/8周销量</td></tr>
+                <tr><td>覆盖天数</td><td>有效供给 / 日均需求</td><td>日均需求</td><td>优先取已锁定需求，缺失时取近4/8月销量</td></tr>
                 <tr><td>保护库存</td><td>已锁定需求 + 已承诺订单 + 已批准调拨出库 + 计划占用 + 安全库存</td><td>可调拨数量</td><td>max(有效供给 - 保护库存, 0)</td></tr>
                 <tr><td>防重复占用</td><td colspan="3">同一实体仓被多个虚拟仓共用时，补货试算先写入计划占用账本，后续虚拟仓只能使用扣减后的实体仓可分配。</td></tr>
               </tbody>
@@ -2804,7 +2827,7 @@
               <div class="field"><label>渠道</label><select><option>全部</option><option>B2C国外</option><option>B2B海外商超</option></select></div>
               <div class="field"><label>仓库</label><select><option>全部</option><option>国内仓</option><option>平台仓</option><option>海外3PL</option></select></div>
               <div class="field"><label>状态</label><select><option>全部</option><option>待处理</option><option>处理中</option><option>已完成</option></select></div>
-              <div class="field"><label>计划周</label><select><option>2026-W18</option><option>2026-W19</option></select></div>
+              <div class="field"><label>周度执行周期</label><select><option>2026-W18</option><option>2026-W19</option></select></div>
               <div class="field"><label>负责人</label><select><option>全部</option><option>PMC</option><option>采购</option><option>物流</option></select></div>
               <button class="btn" data-page-action="更多筛选">更多筛选</button>
             </div>
@@ -2867,7 +2890,7 @@
       $('demandChange').onclick = openDemandChange;
       $('demandBatchApprove').onclick = () => approveDemandRows(selectedDemandRows(), true);
       $('demandBatchReturn').onclick = openDemandReturn;
-      $('demandExport').onclick = () => toast('需求池导出任务已创建：demand_pool_2026W18.xlsx');
+      $('demandExport').onclick = () => toast('需求池导出任务已创建：demand_pool_2026-05.xlsx');
       $('demandFieldHelp').onclick = openDemandFieldHelp;
       $('demandSearch').onclick = () => { renderDemandRows(); toast('需求池查询完成'); };
       $('demandReset').onclick = () => {
@@ -2919,13 +2942,16 @@
 
     function demandForm(row) {
       const data = row || {};
+      const startMonth = demandStartMonth(data) || '2026-05';
+      const endMonth = demandEndMonth(data) || '2026-07';
       return formGrid([
         { label: '发起角色', html: '<select id="mDemandInitiator"><option ' + (data.initiatorRole === '运营' ? 'selected' : '') + '>运营</option><option ' + (data.initiatorRole === 'PMC' ? 'selected' : '') + '>PMC</option></select>' },
         { label: '渠道', html: '<select id="mDemandChannel"><option ' + (data.channel === 'B2C线上国外' ? 'selected' : '') + '>B2C线上国外</option><option ' + (data.channel === 'B2C线上国内' ? 'selected' : '') + '>B2C线上国内</option><option ' + (data.channel === 'B2B海外商超' ? 'selected' : '') + '>B2B海外商超</option><option ' + (data.channel === 'B2B线下国外' ? 'selected' : '') + '>B2B线下国外</option></select>' },
         { label: '客户/店铺', html: '<input id="mDemandCustomer" value="' + (data.customer || '') + '" placeholder="例如 奥莱B2C / 奥莱B2B" />' },
         { label: 'SKU', html: '<input id="mDemandSku" value="' + (data.sku || '') + '" placeholder="例如 C00B5B02+2550" />' },
         { label: '商品名称', html: '<input id="mDemandProduct" value="' + (data.product || '') + '" placeholder="系统可按 SKU 带出" />' },
-        { label: '时间桶', html: '<select id="mDemandWeek"><option ' + (data.week === '2026-W18' ? 'selected' : '') + '>2026-W18</option><option ' + (data.week === '2026-W19' ? 'selected' : '') + '>2026-W19</option></select>' },
+        { label: '开始月份', html: '<select id="mDemandStartMonth"><option ' + (startMonth === '2026-05' ? 'selected' : '') + '>2026-05</option><option ' + (startMonth === '2026-06' ? 'selected' : '') + '>2026-06</option><option ' + (startMonth === '2026-07' ? 'selected' : '') + '>2026-07</option></select>' },
+        { label: '结束月份', html: '<select id="mDemandEndMonth"><option ' + (endMonth === '2026-05' ? 'selected' : '') + '>2026-05</option><option ' + (endMonth === '2026-06' ? 'selected' : '') + '>2026-06</option><option ' + (endMonth === '2026-07' ? 'selected' : '') + '>2026-07</option><option ' + (endMonth === '2026-08' ? 'selected' : '') + '>2026-08</option></select>' },
         { label: '运营提报数量', html: '<input id="mDemandQty" type="number" min="1" step="1" value="' + (data.submittedQty || data.qty || '') + '" placeholder="发起人提报数量，必须 > 0" />' },
         { label: '需求来源', html: '<select id="mDemandSource"><option ' + (data.source === '销售预测' ? 'selected' : '') + '>销售预测</option><option ' + (data.source === '临时加单' ? 'selected' : '') + '>临时加单</option><option ' + (data.source === '促销活动' ? 'selected' : '') + '>促销活动</option><option ' + (data.source === '其他' ? 'selected' : '') + '>其他</option></select>' },
         { label: '需求明细类型', html: '<select id="mDemandType"><option ' + (data.type === '订单锁定' ? 'selected' : '') + '>订单锁定</option><option ' + (data.type === '活动需求' ? 'selected' : '') + '>活动需求</option><option ' + (data.type === '历史销量参考' ? 'selected' : '') + '>历史销量参考</option><option ' + (data.type === '临时加单' ? 'selected' : '') + '>临时加单</option><option>综合判断</option></select>' },
@@ -2945,7 +2971,9 @@
         customer: $('mDemandCustomer').value.trim(),
         sku: $('mDemandSku').value.trim(),
         product: $('mDemandProduct').value.trim(),
-        week: $('mDemandWeek').value,
+        startMonth: $('mDemandStartMonth').value,
+        endMonth: $('mDemandEndMonth').value,
+        week: $('mDemandStartMonth').value,
         qty: Number($('mDemandQty').value),
         submittedQty: Number($('mDemandQty').value),
         tier: 'Final',
@@ -2965,6 +2993,7 @@
       if (!data.customer) return '客户/店铺不能为空';
       if (!data.sku) return 'SKU不能为空';
       if (!data.product) return '商品名称不能为空';
+      if (data.endMonth < data.startMonth) return '结束月份不能早于开始月份';
       if (!data.qty || data.qty <= 0) return '运营提报数量必须大于 0';
       return '';
     }
@@ -2974,17 +3003,18 @@
         row.id !== editingId &&
         row.sku === data.sku &&
         row.channel === data.channel &&
-        row.week === data.week &&
+        row.customer === data.customer &&
+        demandMonthOverlap(data, row) &&
         !['审核不通过', '已作废'].includes(row.status)
       );
       if (!hit) return '';
-      return '存在相同产品、相同渠道且时间范围重叠的需求：' + hit.no + '，重叠区间为 ' + hit.week + '。请修改时间桶或合并原需求后再提报。';
+      return '存在相同产品、相同渠道、相同客户/店铺且提报月份范围重叠的需求：' + hit.no + '，重叠月份为 ' + demandMonthRange(hit) + '。请修改提报月份范围或合并原需求后再提报。';
     }
 
     function openDemandAdd() {
       openModal(
         '录入需求提报',
-        '运营或 PMC 均可发起需求提报；运营提报后由 PMC 确认数量，PMC 确认数量将进入补货计算。',
+        '运营或 PMC 可一次提报未来 2-3 个月需求；系统按月份范围沉淀需求，补货工作台按周滚动拆分采购、调拨和发货。',
         demandForm(),
           '<button class="btn" data-close>取消</button><button class="btn" data-demand-save-draft>保存待提交</button><button class="btn primary" data-demand-add-submit>保存并提交</button>',
         true
@@ -2996,7 +3026,7 @@
         '导入需求提报',
         '支持 Excel 模板导入运营提报数量；导入后仍需 PMC 确认数量。',
         `
-          <div class="inline-note">模板字段：渠道、客户/店铺、SKU、时间桶、运营提报数量、需求来源、订单参考量、活动增量参考量、历史销量参考量、临时调整量、期望交付日、提报说明。</div>
+          <div class="inline-note">模板字段：渠道、客户/店铺、SKU、开始月份、结束月份、运营提报数量、需求来源、订单参考量、活动增量参考量、历史销量参考量、临时调整量、期望交付日、提报说明。</div>
           <div style="height:14px;"></div>
           ${formGrid([
             { label: '选择文件', html: '<input id="mDemandImportFile" type="file" accept=".xlsx,.xls,.csv" />' },
@@ -3042,12 +3072,12 @@
       const blockers = rows.filter(r => r.status !== '已审核' || r.pmcQty == null);
       openModal(
         '锁定已审核需求',
-        '锁定后该需求可进入补货计算；相同渠道、SKU、时间范围只保留一条有效需求，不再生成版本号。',
+        '锁定后该需求可进入补货计算；相同渠道、客户/店铺、SKU 的提报月份范围不可重叠，不再生成版本号。',
         `
           <div class="inline-note">${rows.length ? '本次拟锁定 ' + rows.length + ' 行；阻断 ' + blockers.length + ' 行。' : '当前没有可锁定需求。'}</div>
           <div style="height:14px;"></div>
           ${formGrid([
-            { label: '锁定范围', html: '<select><option>当前筛选/勾选行</option><option>当前计划周全部已审核行</option></select>' },
+            { label: '锁定范围', html: '<select><option>当前筛选/勾选行</option><option>当前提报月份范围全部已审核行</option></select>' },
             { label: '锁定说明', html: '<input value="已审核需求锁定后可进入补货计算，后续关键字段变更必须走审批" readonly />' }
           ])}
         `,
@@ -3112,7 +3142,7 @@
             </tbody>
           </table>
           <div style="height:14px;"></div>
-          <div class="inline-note">重叠校验：新增或编辑时，若相同产品、相同渠道存在重叠时间范围，页面提示重叠区间并限制保存。</div>
+          <div class="inline-note">月份范围重叠校验：新增或编辑时，若相同产品、相同渠道、相同客户/店铺的提报月份范围有交集，页面提示重叠月份并限制保存。</div>
         `,
         '<button class="btn primary" data-close>知道了</button>',
         true
@@ -3144,7 +3174,7 @@
               <tbody>
                 <tr><td>渠道</td><td>${row.channel}</td><td>客户/店铺</td><td>${row.customer}</td></tr>
                 <tr><td>SKU</td><td>${row.sku}</td><td>商品</td><td>${row.product}</td></tr>
-                <tr><td>时间桶</td><td>${row.week}</td><td>期望交付日</td><td>${row.expectedDate}</td></tr>
+                <tr><td>提报月份范围</td><td>${demandMonthRange(row)}</td><td>期望交付日</td><td>${row.expectedDate}</td></tr>
                 <tr><td>运营提报数量</td><td>${format(row.submittedQty || row.qty)}</td><td>PMC确认数量</td><td>${row.pmcQty != null ? format(row.pmcQty) : '-'}</td></tr>
                 <tr><td>需求来源</td><td>${row.source || '其他'}</td><td>责任人</td><td>${row.owner}</td></tr>
                 <tr><td>创建人</td><td>${row.createdBy || row.owner || '-'}</td><td>创建时间</td><td>${row.createdAt || '-'}</td></tr>
@@ -3181,12 +3211,12 @@
             <table>
               <thead><tr><th>周期</th><th class="num">销量</th><th>库存状态</th><th>备注</th></tr></thead>
               <tbody>
-                <tr><td>${row.week} - 1</td><td class="num">${format(Math.round(row.qty * 0.72))}</td><td>正常</td><td>近周实销参考</td></tr>
+                <tr><td>${row.week} - 1</td><td class="num">${format(Math.round(row.qty * 0.72))}</td><td>正常</td><td>近月实销参考</td></tr>
                 <tr><td>${row.week} - 2</td><td class="num">${format(Math.round(row.qty * 0.81))}</td><td>正常</td><td>可用作历史销量参考</td></tr>
                 <tr><td>${row.week} - 3</td><td class="num">${format(Math.round(row.qty * 0.76))}</td><td>正常</td><td>常规销量</td></tr>
                 <tr><td>${row.week} - 4</td><td class="num">${format(Math.round(row.qty * 0.98))}</td><td>正常</td><td>常规销量</td></tr>
-                <tr><td>近4周均值</td><td class="num">${format(last4Avg)}</td><td>-</td><td>用于判断 PMC 确认数量是否异常偏离</td></tr>
-                <tr><td>近8周均值</td><td class="num">${format(last8Avg)}</td><td>-</td><td>用于历史销量参考</td></tr>
+                <tr><td>近4月均值</td><td class="num">${format(last4Avg)}</td><td>-</td><td>用于判断 PMC 确认数量是否异常偏离</td></tr>
+                <tr><td>近8月均值</td><td class="num">${format(last8Avg)}</td><td>-</td><td>用于历史销量参考</td></tr>
               </tbody>
             </table>
           </div></div>
