@@ -908,35 +908,35 @@
       activeTab: '',
       rows: [
         {
-          id: 1, sku: 'SKU-A1024', name: '户外便携储能 600W', warehouse: 'FBA-US-LAX9', type: '平台仓',
+          id: 1, sku: 'C00B5B02+2550', name: 'FALCAM F22&F38 快装免笼（FOR C50）套装', warehouse: '奥莱B2C仓', type: '平台仓',
           tier: 'Tier B', demand: 4200, available: 930, inbound: 1100, safety: 700, gap: 2870,
           suggested: 3000, adjust: 0, final: 3000, constraint: '警告', approval: '待确认', release: '未下发',
           risk: '平台仓单次入仓上限剩余 3,200，建议量接近上限。',
           explain: ['需求 4,200', '安全库存 700', '可用 930', '有效在途 1,100', 'MOQ 500', '箱规 100', '建议量 3,000']
         },
         {
-          id: 2, sku: 'SKU-B2088', name: '智能车载冰箱 45L', warehouse: '国内仓-深圳', type: '国内仓',
+          id: 2, sku: 'C00B5B01+F22B5601', name: 'FALCAM F22&F38 快装免笼（FOR ZR）套装', warehouse: '东莞塘厦仓', type: '国内仓',
           tier: 'Tier A', demand: 2600, available: 450, inbound: 300, safety: 500, gap: 2350,
           suggested: 2400, adjust: 0, final: 2400, constraint: '通过', approval: '待确认', release: '未下发',
           risk: 'B2B 锁单客户：德国经销商 PO-88021，需优先满足。',
           explain: ['Tier A 锁单 2,600', '安全库存 500', '可用 450', '在途 300', '箱规 100', '建议量 2,400']
         },
         {
-          id: 3, sku: 'SKU-C3099', name: '宠物智能喂食器 Pro', warehouse: '3PL-DE-HH', type: '海外3PL',
+          id: 3, sku: 'C00B3809+2549', name: 'FALCAM F22&F38&F50 快装折叠半笼套件套装', warehouse: '奥莱B2B仓', type: '海外3PL',
           tier: 'Tier C', demand: 1800, available: 1200, inbound: 0, safety: 400, gap: 1000,
           suggested: 1000, adjust: 0, final: 1000, constraint: '阻断', approval: '待确认', release: '未下发',
           risk: '海外 3PL 库存上限 2,000，当前可用 1,200，建议 1,000 后超上限 200。',
           explain: ['需求 1,800', '安全库存 400', '可用 1,200', '库存上限 2,000', '硬约束截断失败', '需调减至 800']
         },
         {
-          id: 4, sku: 'SKU-D4106', name: '折叠太阳能板 200W', warehouse: 'FBA-UK-BHX4', type: '平台仓',
+          id: 4, sku: 'MJC26050800013', name: '上壳+下壳', warehouse: '京东自营待发仓LHH', type: '平台仓',
           tier: 'Tier B', demand: 3200, available: 600, inbound: 1300, safety: 600, gap: 1900,
           suggested: 2000, adjust: 0, final: 2000, constraint: '通过', approval: '待确认', release: '未下发',
           risk: '平台大促活动 ACT-20260429，建议最晚发运日 2026-05-03。',
           explain: ['活动需求 3,200', '安全库存 600', '可用 600', '在途 1,300', 'MOQ 500', '建议量 2,000']
         },
         {
-          id: 5, sku: 'SKU-E5188', name: '厨房真空封口机', warehouse: '国内仓-义乌', type: '国内仓',
+          id: 5, sku: 'MJC26050800014', name: '两侧按键+按键定位扣', warehouse: '东莞次品仓', type: '国内仓',
           tier: 'Tier D', demand: 900, available: 200, inbound: 0, safety: 200, gap: 900,
           suggested: 1000, adjust: 0, final: 1000, constraint: '警告', approval: '待确认', release: '未下发',
           risk: '已审核需求发生变更，需补充变更审批说明。',
@@ -951,8 +951,8 @@
       ],
       demandRows: [
         {
-          id: 101, no: 'DP-20260429-001', channel: 'B2B海外商超', customer: 'Costco',
-          sku: 'SKU-B2088', product: '智能车载冰箱 45L',
+          id: 101, no: 'DP-20260429-001', channel: 'B2B海外商超', customer: '奥莱B2B',
+          sku: 'C00B5B01+F22B5601', product: 'FALCAM F22&F38 快装免笼（FOR ZR）套装',
           week: '2026-W18', qty: 2600, tier: 'Tier A', type: '订单锁定',
           submittedQty: 2600, pmcQty: null, source: '其他', initiatorRole: '运营',
           orderRef: 2200, activityRef: 0, forecastRef: 2350, manualRef: 250,
@@ -961,8 +961,8 @@
           remark: '德国经销商 PO-88021，同步商超档期'
         },
         {
-          id: 102, no: 'DP-20260429-002', channel: 'B2C线上国外', customer: 'Amazon-US',
-          sku: 'SKU-A1024', product: '户外便携储能 600W',
+          id: 102, no: 'DP-20260429-002', channel: 'B2C线上国外', customer: '奥莱B2C',
+          sku: 'C00B5B02+2550', product: 'FALCAM F22&F38 快装免笼（FOR C50）套装',
           week: '2026-W18', qty: 4200, tier: 'Tier B', type: '活动需求',
           submittedQty: 4200, pmcQty: null, source: '促销活动', initiatorRole: '运营',
           orderRef: 0, activityRef: 1500, forecastRef: 3100, manualRef: -400,
@@ -972,7 +972,7 @@
         },
         {
           id: 103, no: 'DP-20260429-003', channel: 'B2C线上国内', customer: '天猫旗舰店',
-          sku: 'SKU-E5188', product: '厨房真空封口机',
+          sku: 'MJC26050800014', product: '两侧按键+按键定位扣',
           week: '2026-W18', qty: 900, tier: 'Tier D', type: '临时加单',
           submittedQty: 900, pmcQty: null, source: '临时加单', initiatorRole: '运营',
           orderRef: 500, activityRef: 0, forecastRef: 680, manualRef: 220,
@@ -981,8 +981,8 @@
           remark: '客户临时补单'
         },
         {
-          id: 104, no: 'DP-20260429-004', channel: 'B2C线上国外', customer: 'Amazon-UK',
-          sku: 'SKU-D4106', product: '折叠太阳能板 200W',
+          id: 104, no: 'DP-20260429-004', channel: 'B2C线上国外', customer: '京东自营',
+          sku: 'MJC26050800013', product: '上壳+下壳',
           week: '2026-W18', qty: 3200, tier: 'Tier B', type: '活动需求',
           submittedQty: 3200, pmcQty: 3200, source: '促销活动', initiatorRole: 'PMC',
           orderRef: 0, activityRef: 1200, forecastRef: 2100, manualRef: -100,
@@ -991,8 +991,8 @@
           remark: '英国站大促'
         },
         {
-          id: 105, no: 'DP-20260429-005', channel: 'B2B线下国外', customer: 'DE Distributor',
-          sku: 'SKU-C3099', product: '宠物智能喂食器 Pro',
+          id: 105, no: 'DP-20260429-005', channel: 'B2B线下国外', customer: '速卖通LCM',
+          sku: 'C00B3809+2549', product: 'FALCAM F22&F38&F50 快装折叠半笼套件套装',
           week: '2026-W19', qty: 1800, tier: 'Tier C', type: '历史销量参考',
           submittedQty: 1800, pmcQty: null, source: '销售预测', initiatorRole: '运营',
           orderRef: 900, activityRef: 0, forecastRef: 1600, manualRef: -100,
@@ -1004,23 +1004,23 @@
       inventorySnapshot: 'IS-0429-1200',
       inventoryRows: [
         {
-          id: 201, sku: 'SKU-A1024', product: '户外便携储能 600W', warehouse: 'FBA-US-LAX9',
-          warehouseType: '平台仓', warehouseNature: '虚拟仓', physicalWarehouse: '实体仓-US-LAX', virtualAvailable: 930, virtualFrozen: 500, boundVirtualQty: 0, planReserved: 180, physicalAllocatable: 0,
+          id: 201, sku: 'C00B5B02+2550', product: 'FALCAM F22&F38 快装免笼（FOR C50）套装', warehouse: '奥莱B2C仓',
+          warehouseType: '平台仓', warehouseNature: '虚拟仓', physicalWarehouse: '东莞配件仓', virtualAvailable: 930, virtualFrozen: 500, boundVirtualQty: 0, planReserved: 180, physicalAllocatable: 0,
           physical: 2030, reserved: 500, unavailable: 600, inbound: 1100,
           receiving: 120, dailyDemand: 135, lockedDemand: 1200, committedOrder: 300, approvedTransferOut: 0, safetyDays: 14, targetDays: 30, overstockDays: 75,
           ageDays: 42, diffQty: 0, syncStatus: 'success', inboundDelayDays: 0, receivingAgeHours: 8,
           capacityLimit: 5200, snapshotTime: '2026-04-29 12:00', source: 'Amazon SP-API'
         },
         {
-          id: 202, sku: 'SKU-C3099', product: '宠物智能喂食器 Pro', warehouse: '3PL-DE-HH',
-          warehouseType: '海外3PL', warehouseNature: '虚拟仓', physicalWarehouse: '实体仓-DE-HH', virtualAvailable: 1120, virtualFrozen: 0, boundVirtualQty: 0, planReserved: 0, physicalAllocatable: 0,
+          id: 202, sku: 'C00B3809+2549', product: 'FALCAM F22&F38&F50 快装折叠半笼套件套装', warehouse: '奥莱B2B仓',
+          warehouseType: '海外3PL', warehouseNature: '虚拟仓', physicalWarehouse: '东莞翻新仓', virtualAvailable: 1120, virtualFrozen: 0, boundVirtualQty: 0, planReserved: 0, physicalAllocatable: 0,
           physical: 1200, reserved: 0, unavailable: 80, inbound: 900,
           receiving: 0, dailyDemand: 18, lockedDemand: 260, committedOrder: 0, approvedTransferOut: 0, safetyDays: 21, targetDays: 45, overstockDays: 90,
           ageDays: 118, diffQty: 0, syncStatus: 'success', inboundDelayDays: 0, receivingAgeHours: 0,
           capacityLimit: 1800, snapshotTime: '2026-04-29 12:00', source: '3PL API'
         },
         {
-          id: 203, sku: 'SKU-E5188', product: '厨房真空封口机', warehouse: '国内仓-义乌',
+          id: 203, sku: 'MJC26050800014', product: '两侧按键+按键定位扣', warehouse: '东莞次品仓',
           warehouseType: '国内仓', warehouseNature: '实体仓', physicalWarehouse: '', virtualAvailable: 0, virtualFrozen: 0, boundVirtualQty: 260, planReserved: 90, physicalAllocatable: 150,
           physical: 680, reserved: 180, unavailable: 300, inbound: 0,
           receiving: 0, dailyDemand: 55, lockedDemand: 420, committedOrder: 120, approvedTransferOut: 80, safetyDays: 10, targetDays: 25, overstockDays: 80,
@@ -1028,7 +1028,7 @@
           capacityLimit: 5000, snapshotTime: '2026-04-29 12:00', source: 'WMS'
         },
         {
-          id: 204, sku: 'SKU-B2088', product: '智能车载冰箱 45L', warehouse: '国内仓-深圳',
+          id: 204, sku: 'C00B5B01+F22B5601', product: 'FALCAM F22&F38 快装免笼（FOR ZR）套装', warehouse: '东莞塘厦仓',
           warehouseType: '国内仓', warehouseNature: '实体仓', physicalWarehouse: '', virtualAvailable: 0, virtualFrozen: 0, boundVirtualQty: 0, planReserved: 320, physicalAllocatable: 0,
           physical: 0, reserved: 0, unavailable: 0, inbound: 1600,
           receiving: 0, dailyDemand: 86, lockedDemand: 680, committedOrder: 300, approvedTransferOut: 0, safetyDays: 12, targetDays: 28, overstockDays: 80,
@@ -1036,8 +1036,8 @@
           capacityLimit: 8000, snapshotTime: '2026-04-29 12:00', source: 'WMS'
         },
         {
-          id: 205, sku: 'SKU-D4106', product: '折叠太阳能板 200W', warehouse: 'FBA-UK-BHX4',
-          warehouseType: '平台仓', warehouseNature: '虚拟仓', physicalWarehouse: '实体仓-UK-BHX', virtualAvailable: 2500, virtualFrozen: 120, boundVirtualQty: 0, planReserved: 240, physicalAllocatable: 0,
+          id: 205, sku: 'MJC26050800013', product: '上壳+下壳', warehouse: '京东自营待发仓LHH',
+          warehouseType: '平台仓', warehouseNature: '虚拟仓', physicalWarehouse: '东莞维修仓', virtualAvailable: 2500, virtualFrozen: 120, boundVirtualQty: 0, planReserved: 240, physicalAllocatable: 0,
           physical: 3600, reserved: 120, unavailable: 980, inbound: 0,
           receiving: 720, dailyDemand: 42, lockedDemand: 360, committedOrder: 80, approvedTransferOut: 0, safetyDays: 14, targetDays: 35, overstockDays: 75,
           ageDays: 76, diffQty: 0, syncStatus: 'success', inboundDelayDays: 0, receivingAgeHours: 56,
@@ -1338,8 +1338,8 @@
           <div class="inline-note">配置逻辑：先选目的仓，再维护可调出仓清单。优先级 1 先计算；如果可调拨数量不足，再继续计算优先级 2、3。</div>
           <div style="height:14px;"></div>
           ${formGrid([
-            { label: '目的仓', html: '<select><option>FBA-US-LAX9</option><option>FBA-UK-BHX4</option><option>3PL-DE-HH</option><option>国内仓-深圳</option></select>' },
-            { label: '策略名称', html: '<input value="FBA-US-LAX9 可调出仓配置" />' },
+            { label: '目的仓', html: '<select><option>奥莱B2C仓</option><option>京东自营待发仓LHH</option><option>奥莱B2B仓</option><option>东莞塘厦仓</option></select>' },
+            { label: '策略名称', html: '<input value="奥莱B2C仓 可调出仓配置" />' },
             { label: '最小调拨量', html: '<input type="number" value="100" min="0" />' },
             { label: '箱规校验', html: '<select><option>必须满足箱规</option><option>允许向下取整</option></select>' },
             { label: '生效方式', html: '<select><option>保存后仅新批次生效</option><option>保存并触发当前批次重算</option></select>' }
@@ -1348,9 +1348,9 @@
           <table>
             <thead><tr><th>优先级</th><th>可调出仓</th><th>当前可调拨数量</th><th>启用</th><th>说明</th></tr></thead>
             <tbody>
-              <tr><td>1</td><td><select><option>3PL-DE-HH</option><option>国内仓-深圳</option><option>国内仓-义乌</option></select></td><td>${transferableFor('3PL-DE-HH')}</td><td><select><option>启用</option><option>停用</option></select></td><td>先消耗德国海外仓可调拨数量</td></tr>
-              <tr><td>2</td><td><select><option>国内仓-深圳</option><option>3PL-DE-HH</option><option>国内仓-义乌</option></select></td><td>${transferableFor('国内仓-深圳')}</td><td><select><option>启用</option><option>停用</option></select></td><td>海外仓不足时再从深圳仓调出</td></tr>
-              <tr><td>3</td><td><select><option>国内仓-义乌</option><option>国内仓-深圳</option><option>3PL-DE-HH</option></select></td><td>${transferableFor('国内仓-义乌')}</td><td><select><option>启用</option><option>停用</option></select></td><td>可调拨数量为 0 时跳过</td></tr>
+              <tr><td>1</td><td><select><option>奥莱B2B仓</option><option>东莞塘厦仓</option><option>东莞次品仓</option></select></td><td>${transferableFor('奥莱B2B仓')}</td><td><select><option>启用</option><option>停用</option></select></td><td>优先消耗奥莱B2B仓可调拨数量</td></tr>
+              <tr><td>2</td><td><select><option>东莞塘厦仓</option><option>奥莱B2B仓</option><option>东莞次品仓</option></select></td><td>${transferableFor('东莞塘厦仓')}</td><td><select><option>启用</option><option>停用</option></select></td><td>奥莱B2B仓不足时再从东莞塘厦仓调出</td></tr>
+              <tr><td>3</td><td><select><option>东莞次品仓</option><option>东莞塘厦仓</option><option>奥莱B2B仓</option></select></td><td>${transferableFor('东莞次品仓')}</td><td><select><option>启用</option><option>停用</option></select></td><td>可调拨数量为 0 时跳过</td></tr>
             </tbody>
           </table>
           <div style="height:10px;"></div>
@@ -1396,7 +1396,7 @@
         '更多筛选',
         '补充筛选项用于定位风险 SKU、活动需求和重点客户。',
         formGrid([
-          { label: '客户/店铺', html: '<input placeholder="例如 Walmart / Amazon-US" />' },
+          { label: '客户/店铺', html: '<input placeholder="例如 得物ZK / 奥莱B2C" />' },
           { label: '活动 ID', html: '<input placeholder="例如 ACT-20260429" />' },
           { label: '最晚发运日', html: '<input type="date" value="2026-05-03" />' },
           { label: '覆盖天数', html: '<select><option>全部</option><option>&lt; 7天</option><option>7-14天</option><option>&gt; 30天</option></select>' },
@@ -1452,9 +1452,9 @@
       const exec = executionAdvice(row);
       let remainingNeed = row.gap;
       const transferCandidates = [
-        { from: '3PL-DE-HH', relation: '目的仓配置优先级 1', effectiveSupply: 2100, futureDemand: 1100, safety: 700, eta: '2026-05-04' },
-        { from: '国内仓-深圳', relation: '目的仓配置优先级 2', effectiveSupply: 3600, futureDemand: 1600, safety: 900, eta: '2026-05-08' },
-        { from: '国内仓-义乌', relation: '目的仓配置优先级 3', effectiveSupply: 980, futureDemand: 850, safety: 300, eta: '2026-05-10' }
+        { from: '奥莱B2B仓', relation: '目的仓配置优先级 1', effectiveSupply: 2100, futureDemand: 1100, safety: 700, eta: '2026-05-04' },
+        { from: '东莞塘厦仓', relation: '目的仓配置优先级 2', effectiveSupply: 3600, futureDemand: 1600, safety: 900, eta: '2026-05-08' },
+        { from: '东莞次品仓', relation: '目的仓配置优先级 3', effectiveSupply: 980, futureDemand: 850, safety: 300, eta: '2026-05-10' }
       ].map(item => {
         const protect = item.futureDemand + item.safety;
         const transferable = Math.max(item.effectiveSupply - protect, 0);
@@ -1639,8 +1639,8 @@
             <thead><tr><th>类型</th><th>内容</th><th>时间</th><th>状态</th></tr></thead>
             <tbody>
               <tr><td>审批</td><td>RB-2026W18-001 待提交审批</td><td>09:06</td><td>${chip('待处理', 'orange')}</td></tr>
-              <tr><td>异常</td><td>SKU-C3099 海外仓上限阻断</td><td>09:03</td><td>${chip('未关闭', 'red')}</td></tr>
-              <tr><td>库存</td><td>FBA-US-LAX9 库容剩余不足</td><td>08:58</td><td>${chip('预警', 'orange')}</td></tr>
+              <tr><td>异常</td><td>C00B3809+2549 海外仓上限阻断</td><td>09:03</td><td>${chip('未关闭', 'red')}</td></tr>
+              <tr><td>库存</td><td>奥莱B2C仓 库容剩余不足</td><td>08:58</td><td>${chip('预警', 'orange')}</td></tr>
             </tbody>
           </table>
         `,
@@ -1908,7 +1908,7 @@
       if (demandImportConfirm) demandImportConfirm.onclick = () => {
         state.demandRows.unshift({
           id: Date.now(), no: 'DP-IMPORT-' + String(Math.floor(Math.random() * 900) + 100),
-          channel: 'B2C线上国外', customer: 'Amazon-US', sku: 'SKU-F6201', product: '无线泳池清洁机器人',
+          channel: 'B2C线上国外', customer: '奥莱B2C', sku: 'MJC26050800012', product: '引磁片',
           week: '2026-W19', qty: 1500, tier: 'Final',
           type: '综合判断', orderRef: 0, activityRef: 600, forecastRef: 900, manualRef: 0,
           submittedQty: 1500, pmcQty: null, source: '促销活动', initiatorRole: '运营',
@@ -2709,11 +2709,11 @@
           desc: '承接运营/PMC人工提报数量，经 PMC 确认后形成可评审、可锁定、可追溯的有效需求。',
           stats: [['待提交', '18'], ['审核中', '126'], ['已审核', '117'], ['审核不通过', '5']],
           buttons: ['录入需求提报', '导入需求提报', '提交评审', '批量退回', '锁定需求', '发起变更'],
-          headers: ['需求单号', '渠道/客户', 'SKU数', '运营提报', 'PMC确认', '状态', '操作'],
+          headers: ['需求单号', '渠道/客户', 'SKU', '运营提报', 'PMC确认', '状态', '操作'],
           rows: [
-            ['DP-20260429-001', 'B2B海外商超 / Costco', '32', 'Tier A', '国内仓-深圳', '审核中'],
-            ['DP-20260429-002', 'B2C国外 / Amazon-US', '86', 'Tier B', 'FBA-US-LAX9', '审核不通过'],
-            ['DP-20260429-003', 'B2C国内 / 天猫', '44', 'Tier C', '国内仓-义乌', '待提交']
+            ['DP-20260429-001', 'B2B海外商超 / 奥莱B2B', 'C00B5B01+F22B5601', '2,600', '-', '审核中'],
+            ['DP-20260429-002', 'B2C国外 / 奥莱B2C', 'C00B5B02+2550', '4,200', '-', '审核不通过'],
+            ['DP-20260429-003', 'B2C国内 / 天猫', 'MJC26050800014', '900', '-', '待提交']
           ]
         },
         '库存分层可视化': {
@@ -2723,9 +2723,9 @@
           buttons: ['刷新快照', '导入库存差异', '查看预留', '查看在途', '创建核对任务', '导出库存'],
           headers: ['SKU', '仓库', '性质', '绑定实体仓', '虚拟仓可用/冻结', '实体仓可分配', '状态'],
           rows: [
-            ['SKU-A1024', 'FBA-US-LAX9', '虚拟仓', '实体仓-US-LAX', '可用 930 / 冻结 500', '-', '覆盖不足'],
-            ['SKU-C3099', '3PL-DE-HH', '虚拟仓', '实体仓-DE-HH', '可用 1,120 / 冻结 0', '-', '库存上限风险'],
-            ['SKU-E5188', '国内仓-义乌', '实体仓', '-', '-', '150', '库存差异']
+            ['C00B5B02+2550', '奥莱B2C仓', '虚拟仓', '东莞配件仓', '可用 930 / 冻结 500', '-', '覆盖不足'],
+            ['C00B3809+2549', '奥莱B2B仓', '虚拟仓', '东莞翻新仓', '可用 1,120 / 冻结 0', '-', '库存上限风险'],
+            ['MJC26050800014', '东莞次品仓', '实体仓', '-', '-', '150', '库存差异']
           ]
         },
         '执行协同': {
@@ -2747,9 +2747,9 @@
           buttons: ['新建异常', '批量分派', '升级', '更新进展', '关闭复盘', '导出工单'],
           headers: ['异常编号', '类型', '等级', '影响对象', '责任人', '状态', '操作'],
           rows: [
-            ['EX-20260429-021', '平台限仓', 'S1', 'SKU-C3099 / 3PL-DE-HH', '物流专员B', '处理中'],
+            ['EX-20260429-021', '平台限仓', 'S1', 'C00B3809+2549 / 奥莱B2B仓', '物流专员B', '处理中'],
             ['EX-20260429-022', '采购延期', 'S2', 'PR-20260429-018', '采购C', '已分派'],
-            ['EX-20260429-023', '库存差异', 'S2', '国内仓-义乌', '仓储A', '待验证']
+            ['EX-20260429-023', '库存差异', 'S2', '东莞次品仓', '仓储A', '待验证']
           ]
         },
         '数据看板': {
@@ -2922,8 +2922,8 @@
       return formGrid([
         { label: '发起角色', html: '<select id="mDemandInitiator"><option ' + (data.initiatorRole === '运营' ? 'selected' : '') + '>运营</option><option ' + (data.initiatorRole === 'PMC' ? 'selected' : '') + '>PMC</option></select>' },
         { label: '渠道', html: '<select id="mDemandChannel"><option ' + (data.channel === 'B2C线上国外' ? 'selected' : '') + '>B2C线上国外</option><option ' + (data.channel === 'B2C线上国内' ? 'selected' : '') + '>B2C线上国内</option><option ' + (data.channel === 'B2B海外商超' ? 'selected' : '') + '>B2B海外商超</option><option ' + (data.channel === 'B2B线下国外' ? 'selected' : '') + '>B2B线下国外</option></select>' },
-        { label: '客户/店铺', html: '<input id="mDemandCustomer" value="' + (data.customer || '') + '" placeholder="例如 Amazon-US / Costco" />' },
-        { label: 'SKU', html: '<input id="mDemandSku" value="' + (data.sku || '') + '" placeholder="例如 SKU-A1024" />' },
+        { label: '客户/店铺', html: '<input id="mDemandCustomer" value="' + (data.customer || '') + '" placeholder="例如 奥莱B2C / 奥莱B2B" />' },
+        { label: 'SKU', html: '<input id="mDemandSku" value="' + (data.sku || '') + '" placeholder="例如 C00B5B02+2550" />' },
         { label: '商品名称', html: '<input id="mDemandProduct" value="' + (data.product || '') + '" placeholder="系统可按 SKU 带出" />' },
         { label: '时间桶', html: '<select id="mDemandWeek"><option ' + (data.week === '2026-W18' ? 'selected' : '') + '>2026-W18</option><option ' + (data.week === '2026-W19' ? 'selected' : '') + '>2026-W19</option></select>' },
         { label: '运营提报数量', html: '<input id="mDemandQty" type="number" min="1" step="1" value="' + (data.submittedQty || data.qty || '') + '" placeholder="发起人提报数量，必须 > 0" />' },
