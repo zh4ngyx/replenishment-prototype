@@ -1,0 +1,3308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>智能补货系统 · 补货工作台</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --panel-soft: #f8fafc;
+      --line: #e5e7eb;
+      --line-dark: #cbd5e1;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-soft: #eff6ff;
+      --green: #16a34a;
+      --green-soft: #ecfdf5;
+      --orange: #f97316;
+      --orange-soft: #fff7ed;
+      --red: #dc2626;
+      --red-soft: #fef2f2;
+      --purple: #7c3aed;
+      --purple-soft: #f5f3ff;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 1360px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .app {
+      display: grid;
+      grid-template-columns: 248px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 18px 12px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 0 8px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--primary);
+      font-weight: 800;
+    }
+
+    .brand strong { color: #fff; display: block; }
+    .brand span { display: block; color: #93c5fd; font-size: 12px; margin-top: 2px; }
+
+    .nav-title {
+      color: #94a3b8;
+      font-size: 11px;
+      padding: 0 10px;
+      letter-spacing: .04em;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav button {
+      border: 0;
+      background: transparent;
+      color: #cbd5e1;
+      text-align: left;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav button:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .nav button.active { background: var(--primary-dark); color: #fff; }
+    .nav small { color: #93c5fd; font-weight: 700; }
+
+    .side-card {
+      margin-top: auto;
+      padding: 12px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 12px;
+      line-height: 1.55;
+      font-size: 12px;
+    }
+
+    .main { min-width: 0; }
+
+    .topbar {
+      height: 62px;
+      background: rgba(255,255,255,0.94);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 22px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+    }
+
+    .search {
+      flex: 1;
+      max-width: 560px;
+      position: relative;
+    }
+
+    .search input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0 14px 0 36px;
+      outline: none;
+      background: var(--panel-soft);
+    }
+
+    .search span {
+      position: absolute;
+      left: 12px;
+      top: 9px;
+      color: var(--muted);
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      color: var(--primary);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+    }
+
+    .content { padding: 22px; }
+
+    .crumbs {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .page-title h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .page-title p {
+      margin: 7px 0 0;
+      color: var(--muted);
+    }
+
+    .btn-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid var(--line-dark);
+      background: #fff;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 550;
+      transition: .15s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37,99,235,0.12);
+    }
+
+    .btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn.primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn.primary:hover:not(:disabled) {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+      color: #fff;
+    }
+
+    .btn.danger {
+      background: var(--red);
+      border-color: var(--red);
+      color: #fff;
+    }
+
+    .btn.warn {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+    }
+
+    .btn.ghost {
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .btn.small {
+      padding: 5px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .card.pad { padding: 16px; }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 92px;
+    }
+
+    .stat label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stat strong {
+      font-size: 24px;
+    }
+
+    .stat .sub {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .panel-head {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .panel-body { padding: 16px; }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 1.4fr repeat(5, 1fr) auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .field label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 10px;
+      height: 36px;
+      padding: 0 10px;
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 88px;
+      padding: 10px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tab {
+      border: 0;
+      background: transparent;
+      padding: 12px 10px;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+      font-weight: 650;
+    }
+
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 11px 10px;
+      text-align: left;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    th {
+      color: var(--muted);
+      background: var(--panel-soft);
+      font-weight: 650;
+    }
+
+    tr:hover td { background: #fbfdff; }
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .muted { color: var(--muted); }
+
+    .erp-actions {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .erp-link {
+      border: 0;
+      background: transparent;
+      color: var(--primary);
+      padding: 0;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .erp-link:hover { color: var(--primary-dark); }
+
+    .erp-sep { color: var(--line-dark); }
+
+    .erp-more {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .erp-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 22px;
+      min-width: 92px;
+      padding: 6px 0;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      z-index: 20;
+    }
+
+    .erp-more:hover .erp-menu { display: block; }
+
+    .erp-menu button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      padding: 7px 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .erp-menu button:hover {
+      background: var(--panel-soft);
+      color: var(--primary);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .chip.blue { color: var(--primary); background: var(--primary-soft); }
+    .chip.green { color: var(--green); background: var(--green-soft); }
+    .chip.orange { color: var(--orange); background: var(--orange-soft); }
+    .chip.red { color: var(--red); background: var(--red-soft); }
+    .chip.purple { color: var(--purple); background: var(--purple-soft); }
+    .chip.gray { color: #475569; background: #f1f5f9; }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tl {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      margin: 4px auto 0;
+    }
+
+    .tl p {
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .tl small { color: var(--muted); }
+
+    .progress-wrap {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress {
+      width: 0%;
+      height: 100%;
+      background: var(--primary);
+      transition: width .35s ease;
+    }
+
+    .toast {
+      position: fixed;
+      top: 76px;
+      right: 22px;
+      background: #0f172a;
+      color: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      z-index: 200;
+      display: none;
+      min-width: 240px;
+    }
+
+    .toast.show { display: block; animation: toastIn .18s ease; }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .modal-mask,
+    .drawer-mask {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.35);
+      z-index: 100;
+    }
+
+    .modal-mask.show,
+    .drawer-mask.show { display: block; }
+
+    .modal {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(760px, calc(100vw - 56px));
+      max-height: calc(100vh - 80px);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal.large { width: min(980px, calc(100vw - 56px)); }
+
+    .modal-head,
+    .drawer-head {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .modal-head h3,
+    .drawer-head h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .modal-head p,
+    .drawer-head p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .modal-body {
+      padding: 16px 18px;
+      overflow: auto;
+    }
+
+    .modal-foot,
+    .drawer-foot {
+      padding: 12px 18px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      background: var(--panel-soft);
+    }
+
+    .drawer-panel {
+      margin-left: auto;
+      width: 720px;
+      height: 100vh;
+      background: #fff;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .drawer-body {
+      padding: 16px 18px;
+      overflow: auto;
+      flex: 1;
+    }
+
+    .empty {
+      border: 1px dashed var(--line-dark);
+      border-radius: 12px;
+      padding: 16px;
+      color: var(--muted);
+      background: var(--panel-soft);
+      text-align: center;
+    }
+
+    .inline-note {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--primary-soft);
+      color: #1e40af;
+      line-height: 1.5;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">IR</div>
+        <div>
+          <strong>智能补货系统</strong>
+          <span>一期 · 补货工作台原型</span>
+        </div>
+      </div>
+      <div class="nav-title">页面顺序</div>
+      <nav class="nav">
+        <button type="button" data-menu="销售计划与需求池"><span>销售计划与需求池</span><small>M1</small></button>
+        <button type="button" data-menu="库存分层可视化"><span>库存分层可视化</span><small>M2</small></button>
+        <button type="button" data-menu="补货工作台" class="active"><span>补货工作台</span><small>M3</small></button>
+        <button type="button" data-menu="执行协同"><span>执行协同</span><small>M4</small></button>
+        <button type="button" data-menu="异常中心"><span>异常中心</span><small>M5</small></button>
+        <button type="button" data-menu="数据看板"><span>数据看板</span><small>M6</small></button>
+      </nav>
+      <div class="side-card">
+        当前页面覆盖按钮：创建批次、选择已锁定需求、选择快照、生成建议、重新计算、提交审批、审批/驳回、下发、导出、筛选、行级调整、查看明细、创建异常。
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="search">
+          <span>⌕</span>
+          <input id="globalSearch" placeholder="搜索 SKU / 补货批次 / 目标仓 / 风险原因" />
+        </div>
+        <button class="btn" id="btnMessage">消息中心 <span class="chip red">6</span></button>
+        <button class="btn" id="btnHelp">交互说明</button>
+        <button class="btn" id="btnBenchmark">竞品参考</button>
+        <div class="user"><div class="avatar">P</div>PMC 计划员</div>
+      </header>
+
+      <section class="content">
+        <div class="crumbs">首页 / 智能补货 / 补货工作台</div>
+        <div class="page-head">
+          <div class="page-title">
+            <h1>补货工作台</h1>
+            <p>基于已锁定需求、库存快照和补货策略生成计划层补货建议，并进一步给出调拨、入仓、发运等执行建议。</p>
+          </div>
+          <div class="btn-row">
+            <button class="btn" id="btnCreateBatch">创建批次</button>
+            <button class="btn" id="btnSelectVersion">选择已锁定需求</button>
+            <button class="btn" id="btnSelectSnapshot">选择库存快照</button>
+            <button class="btn" id="btnTransferPriority">调拨优先级配置</button>
+            <button class="btn primary" id="btnGenerate">生成建议</button>
+            <button class="btn" id="btnRecalc">重新计算</button>
+            <button class="btn" id="btnExport">导出</button>
+          </div>
+        </div>
+
+        <div class="grid cols-4" style="margin-bottom:14px;">
+          <div class="card pad stat">
+            <label>当前补货批次</label>
+            <strong id="batchNo">RB-2026W18-001</strong>
+            <div class="sub" id="batchMeta">已锁定需求 2026-W18 · 库存快照 IS-0429-0900</div>
+          </div>
+          <div class="card pad stat">
+            <label>建议补货总量</label>
+            <strong id="totalQty">18,960</strong>
+            <div class="sub">较上次试算 +8.4%</div>
+          </div>
+          <div class="card pad stat">
+            <label>风险行数</label>
+            <strong id="riskRows">3</strong>
+            <div class="sub">硬约束阻断 1 · 软约束偏离 2</div>
+          </div>
+          <div class="card pad stat">
+            <label>批次状态</label>
+            <strong id="batchStatus">待确认</strong>
+            <div class="sub">引擎模式 heuristic_v1</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:14px;">
+          <div class="panel-head">
+            <div>
+              <h2>筛选条件</h2>
+              <div class="muted" style="font-size:12px;margin-top:4px;">每个筛选按钮均触发真实过滤或弹窗反馈。</div>
+            </div>
+            <div class="btn-row">
+              <button class="btn small" id="btnSaveView">保存视图</button>
+              <button class="btn small" id="btnReset">重置</button>
+              <button class="btn small primary" id="btnSearch">查询</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="filter-grid">
+              <div class="field">
+                <label>关键词</label>
+                <input id="filterKeyword" placeholder="SKU / 品名 / 仓库" />
+              </div>
+              <div class="field">
+                <label>目标仓类型</label>
+                <select id="filterWarehouse">
+                  <option value="">全部</option>
+                  <option value="平台仓">平台仓</option>
+                  <option value="国内仓">国内仓</option>
+                  <option value="海外3PL">海外3PL</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>约束状态</label>
+                <select id="filterConstraint">
+                  <option value="">全部</option>
+                  <option value="通过">通过</option>
+                  <option value="警告">警告</option>
+                  <option value="阻断">阻断</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>审批状态</label>
+                <select id="filterApproval">
+                  <option value="">全部</option>
+                  <option value="待确认">待确认</option>
+                  <option value="待审批">待审批</option>
+                  <option value="已批准">已批准</option>
+                  <option value="已驳回">已驳回</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>需求层级</label>
+                <select id="filterTier">
+                  <option value="">全部</option>
+                  <option value="Tier A">Tier A</option>
+                  <option value="Tier B">Tier B</option>
+                  <option value="Tier C">Tier C</option>
+                  <option value="Tier D">Tier D</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>计划周</label>
+                <select id="filterWeek">
+                  <option>2026-W18</option>
+                  <option>2026-W19</option>
+                  <option>2026-W20</option>
+                </select>
+              </div>
+              <button class="btn" id="btnMoreFilters">更多筛选</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="card">
+            <div class="panel-head">
+              <div>
+              <h2>补货建议明细</h2>
+              <div class="muted" style="font-size:12px;margin-top:4px;">补货建议回答“补不补、补多少、补到哪里”；执行建议回答“从哪里发、怎么入仓/发运、生成哪些执行单据”。</div>
+              </div>
+              <div class="btn-row">
+                <button class="btn small" id="btnBatchAdjust">批量调整</button>
+                <button class="btn small primary" id="btnSubmitApproval">提交审批</button>
+                <button class="btn small" id="btnApprove">审批通过</button>
+                <button class="btn small danger" id="btnReject">驳回</button>
+                <button class="btn small warn" id="btnRelease">下发执行</button>
+              </div>
+            </div>
+            <div class="tabs">
+              <button class="tab active" data-tab="">全部 <span id="tabAll"></span></button>
+              <button class="tab" data-tab="平台仓">平台仓</button>
+              <button class="tab" data-tab="国内仓">国内仓</button>
+              <button class="tab" data-tab="海外3PL">海外3PL</button>
+              <button class="tab" data-tab="阻断">约束阻断</button>
+            </div>
+            <div style="overflow:auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th><input type="checkbox" id="checkAll" /></th>
+                    <th>SKU</th>
+                      <th class="num">需求</th>
+                    <th class="num">可用</th>
+                    <th class="num">在途</th>
+                    <th class="num">净缺口</th>
+                    <th class="num">建议</th>
+                    <th class="num">调整</th>
+                    <th class="num">最终</th>
+                    <th>约束</th>
+                    <th>执行建议</th>
+                    <th>审批</th>
+                    <th>下发</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="suggestionBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <aside class="card">
+            <div class="panel-head">
+              <h2>批次运行信息</h2>
+              <button class="btn small" id="btnRefreshTimeline">刷新</button>
+            </div>
+            <div class="panel-body">
+              <div class="inline-note" id="runNote">当前批次处于待确认状态。建议先处理 1 行阻断，再提交审批。</div>
+              <div style="height:14px;"></div>
+              <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+              <div class="muted" id="progressText" style="font-size:12px;margin-top:8px;">计算完成度 100%</div>
+              <div style="height:16px;"></div>
+              <div class="timeline" id="timeline"></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <section class="modal-mask" id="modalMask" aria-hidden="true">
+    <div class="modal" id="modalBox" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalTitle">弹窗标题</h3>
+          <p id="modalSub">弹窗说明</p>
+        </div>
+        <button class="btn small ghost" id="modalClose">关闭</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-foot" id="modalFoot"></div>
+    </div>
+  </section>
+
+  <section class="drawer-mask" id="drawerMask" aria-hidden="true">
+    <div class="drawer-panel" role="dialog" aria-modal="true">
+      <div class="drawer-head">
+        <div>
+          <h3 id="drawerTitle">详情</h3>
+          <p id="drawerSub">详情说明</p>
+        </div>
+        <button class="btn small ghost" id="drawerClose">关闭</button>
+      </div>
+      <div class="drawer-body" id="drawerBody"></div>
+      <div class="drawer-foot" id="drawerFoot"></div>
+    </div>
+  </section>
+
+  <script>
+    const state = {
+      batchNo: 'RB-2026W18-001',
+      demandVersion: '2026-W18 已锁定需求',
+      snapshot: 'IS-0429-0900',
+      status: '待确认',
+      activeTab: '',
+      rows: [
+        {
+          id: 1, sku: 'SKU-A1024', name: '户外便携储能 600W', warehouse: 'FBA-US-LAX9', type: '平台仓',
+          tier: 'Tier B', demand: 4200, available: 930, inbound: 1100, safety: 700, gap: 2870,
+          suggested: 3000, adjust: 0, final: 3000, constraint: '警告', approval: '待确认', release: '未下发',
+          risk: '平台仓单次入仓上限剩余 3,200，建议量接近上限。',
+          explain: ['需求 4,200', '安全库存 700', '可用 930', '有效在途 1,100', 'MOQ 500', '箱规 100', '建议量 3,000']
+        },
+        {
+          id: 2, sku: 'SKU-B2088', name: '智能车载冰箱 45L', warehouse: '国内仓-深圳', type: '国内仓',
+          tier: 'Tier A', demand: 2600, available: 450, inbound: 300, safety: 500, gap: 2350,
+          suggested: 2400, adjust: 0, final: 2400, constraint: '通过', approval: '待确认', release: '未下发',
+          risk: 'B2B 锁单客户：德国经销商 PO-88021，需优先满足。',
+          explain: ['Tier A 锁单 2,600', '安全库存 500', '可用 450', '在途 300', '箱规 100', '建议量 2,400']
+        },
+        {
+          id: 3, sku: 'SKU-C3099', name: '宠物智能喂食器 Pro', warehouse: '3PL-DE-HH', type: '海外3PL',
+          tier: 'Tier C', demand: 1800, available: 1200, inbound: 0, safety: 400, gap: 1000,
+          suggested: 1000, adjust: 0, final: 1000, constraint: '阻断', approval: '待确认', release: '未下发',
+          risk: '海外 3PL 库存上限 2,000，当前可用 1,200，建议 1,000 后超上限 200。',
+          explain: ['需求 1,800', '安全库存 400', '可用 1,200', '库存上限 2,000', '硬约束截断失败', '需调减至 800']
+        },
+        {
+          id: 4, sku: 'SKU-D4106', name: '折叠太阳能板 200W', warehouse: 'FBA-UK-BHX4', type: '平台仓',
+          tier: 'Tier B', demand: 3200, available: 600, inbound: 1300, safety: 600, gap: 1900,
+          suggested: 2000, adjust: 0, final: 2000, constraint: '通过', approval: '待确认', release: '未下发',
+          risk: '平台大促活动 ACT-20260429，建议最晚发运日 2026-05-03。',
+          explain: ['活动需求 3,200', '安全库存 600', '可用 600', '在途 1,300', 'MOQ 500', '建议量 2,000']
+        },
+        {
+          id: 5, sku: 'SKU-E5188', name: '厨房真空封口机', warehouse: '国内仓-义乌', type: '国内仓',
+          tier: 'Tier D', demand: 900, available: 200, inbound: 0, safety: 200, gap: 900,
+          suggested: 1000, adjust: 0, final: 1000, constraint: '警告', approval: '待确认', release: '未下发',
+          risk: '已审核需求发生变更，需补充变更审批说明。',
+          explain: ['临时需求 900', '安全库存 200', '可用 200', 'MOQ 1000', '建议量 1,000', '需审批']
+        }
+      ],
+      timeline: [
+        ['09:00', '读取 2026-W18 已锁定需求，包含 5 个 SKU 行。'],
+        ['09:01', '读取库存快照 IS-0429-0900，库存同步成功。'],
+        ['09:03', '补货工作台完成建议计算，发现 1 行阻断、2 行警告。'],
+        ['09:06', '等待 PMC 确认补货建议。']
+      ],
+      demandRows: [
+        {
+          id: 101, no: 'DP-20260429-001', channel: 'B2B海外商超', customer: 'Costco',
+          sku: 'SKU-B2088', product: '智能车载冰箱 45L',
+          week: '2026-W18', qty: 2600, tier: 'Tier A', type: '订单锁定',
+          submittedQty: 2600, pmcQty: null, source: '其他', initiatorRole: '运营',
+          orderRef: 2200, activityRef: 0, forecastRef: 2350, manualRef: 250,
+          eventId: '', expectedDate: '2026-05-18', owner: '销售张三', status: '审核中',
+          createdBy: '销售张三', createdAt: '2026-04-29 09:10', confirmedBy: '', confirmedAt: '',
+          remark: '德国经销商 PO-88021，同步商超档期'
+        },
+        {
+          id: 102, no: 'DP-20260429-002', channel: 'B2C线上国外', customer: 'Amazon-US',
+          sku: 'SKU-A1024', product: '户外便携储能 600W',
+          week: '2026-W18', qty: 4200, tier: 'Tier B', type: '活动需求',
+          submittedQty: 4200, pmcQty: null, source: '促销活动', initiatorRole: '运营',
+          orderRef: 0, activityRef: 1500, forecastRef: 3100, manualRef: -400,
+          eventId: 'ACT-20260429', expectedDate: '2026-05-10', owner: '运营李四', status: '审核中',
+          createdBy: '运营李四', createdAt: '2026-04-29 09:25', confirmedBy: '', confirmedAt: '',
+          remark: '平台大促补货'
+        },
+        {
+          id: 103, no: 'DP-20260429-003', channel: 'B2C线上国内', customer: '天猫旗舰店',
+          sku: 'SKU-E5188', product: '厨房真空封口机',
+          week: '2026-W18', qty: 900, tier: 'Tier D', type: '临时加单',
+          submittedQty: 900, pmcQty: null, source: '临时加单', initiatorRole: '运营',
+          orderRef: 500, activityRef: 0, forecastRef: 680, manualRef: 220,
+          eventId: '', expectedDate: '2026-05-06', owner: '销售王五', status: '待提交',
+          createdBy: '销售王五', createdAt: '2026-04-29 10:02', confirmedBy: '', confirmedAt: '',
+          remark: '客户临时补单'
+        },
+        {
+          id: 104, no: 'DP-20260429-004', channel: 'B2C线上国外', customer: 'Amazon-UK',
+          sku: 'SKU-D4106', product: '折叠太阳能板 200W',
+          week: '2026-W18', qty: 3200, tier: 'Tier B', type: '活动需求',
+          submittedQty: 3200, pmcQty: 3200, source: '促销活动', initiatorRole: 'PMC',
+          orderRef: 0, activityRef: 1200, forecastRef: 2100, manualRef: -100,
+          eventId: 'ACT-UK-0501', expectedDate: '2026-05-12', owner: '运营赵六', status: '已审核',
+          createdBy: '运营赵六', createdAt: '2026-04-29 08:40', confirmedBy: 'PMC主管', confirmedAt: '2026-04-29 11:30',
+          remark: '英国站大促'
+        },
+        {
+          id: 105, no: 'DP-20260429-005', channel: 'B2B线下国外', customer: 'DE Distributor',
+          sku: 'SKU-C3099', product: '宠物智能喂食器 Pro',
+          week: '2026-W19', qty: 1800, tier: 'Tier C', type: '历史销量参考',
+          submittedQty: 1800, pmcQty: null, source: '销售预测', initiatorRole: '运营',
+          orderRef: 900, activityRef: 0, forecastRef: 1600, manualRef: -100,
+          eventId: '', expectedDate: '2026-05-20', owner: '销售陈七', status: '审核不通过',
+          createdBy: '销售陈七', createdAt: '2026-04-29 09:55', confirmedBy: '', confirmedAt: '',
+          remark: '需销售确认是否改国内仓发运'
+        }
+      ],
+      inventorySnapshot: 'IS-0429-1200',
+      inventoryRows: [
+        {
+          id: 201, sku: 'SKU-A1024', product: '户外便携储能 600W', warehouse: 'FBA-US-LAX9',
+          warehouseType: '平台仓', warehouseNature: '虚拟仓', physicalWarehouse: '实体仓-US-LAX', virtualAvailable: 930, virtualFrozen: 500, boundVirtualQty: 0, planReserved: 180, physicalAllocatable: 0,
+          physical: 2030, reserved: 500, unavailable: 600, inbound: 1100,
+          receiving: 120, dailyDemand: 135, lockedDemand: 1200, committedOrder: 300, approvedTransferOut: 0, safetyDays: 14, targetDays: 30, overstockDays: 75,
+          ageDays: 42, diffQty: 0, syncStatus: 'success', inboundDelayDays: 0, receivingAgeHours: 8,
+          capacityLimit: 5200, snapshotTime: '2026-04-29 12:00', source: 'Amazon SP-API'
+        },
+        {
+          id: 202, sku: 'SKU-C3099', product: '宠物智能喂食器 Pro', warehouse: '3PL-DE-HH',
+          warehouseType: '海外3PL', warehouseNature: '虚拟仓', physicalWarehouse: '实体仓-DE-HH', virtualAvailable: 1120, virtualFrozen: 0, boundVirtualQty: 0, planReserved: 0, physicalAllocatable: 0,
+          physical: 1200, reserved: 0, unavailable: 80, inbound: 900,
+          receiving: 0, dailyDemand: 18, lockedDemand: 260, committedOrder: 0, approvedTransferOut: 0, safetyDays: 21, targetDays: 45, overstockDays: 90,
+          ageDays: 118, diffQty: 0, syncStatus: 'success', inboundDelayDays: 0, receivingAgeHours: 0,
+          capacityLimit: 1800, snapshotTime: '2026-04-29 12:00', source: '3PL API'
+        },
+        {
+          id: 203, sku: 'SKU-E5188', product: '厨房真空封口机', warehouse: '国内仓-义乌',
+          warehouseType: '国内仓', warehouseNature: '实体仓', physicalWarehouse: '', virtualAvailable: 0, virtualFrozen: 0, boundVirtualQty: 260, planReserved: 90, physicalAllocatable: 150,
+          physical: 680, reserved: 180, unavailable: 300, inbound: 0,
+          receiving: 0, dailyDemand: 55, lockedDemand: 420, committedOrder: 120, approvedTransferOut: 80, safetyDays: 10, targetDays: 25, overstockDays: 80,
+          ageDays: 36, diffQty: 96, syncStatus: 'partial', inboundDelayDays: 0, receivingAgeHours: 0,
+          capacityLimit: 5000, snapshotTime: '2026-04-29 12:00', source: 'WMS'
+        },
+        {
+          id: 204, sku: 'SKU-B2088', product: '智能车载冰箱 45L', warehouse: '国内仓-深圳',
+          warehouseType: '国内仓', warehouseNature: '实体仓', physicalWarehouse: '', virtualAvailable: 0, virtualFrozen: 0, boundVirtualQty: 0, planReserved: 320, physicalAllocatable: 0,
+          physical: 0, reserved: 0, unavailable: 0, inbound: 1600,
+          receiving: 0, dailyDemand: 86, lockedDemand: 680, committedOrder: 300, approvedTransferOut: 0, safetyDays: 12, targetDays: 28, overstockDays: 80,
+          ageDays: 0, diffQty: 0, syncStatus: 'success', inboundDelayDays: 5, receivingAgeHours: 0,
+          capacityLimit: 8000, snapshotTime: '2026-04-29 12:00', source: 'WMS'
+        },
+        {
+          id: 205, sku: 'SKU-D4106', product: '折叠太阳能板 200W', warehouse: 'FBA-UK-BHX4',
+          warehouseType: '平台仓', warehouseNature: '虚拟仓', physicalWarehouse: '实体仓-UK-BHX', virtualAvailable: 2500, virtualFrozen: 120, boundVirtualQty: 0, planReserved: 240, physicalAllocatable: 0,
+          physical: 3600, reserved: 120, unavailable: 980, inbound: 0,
+          receiving: 720, dailyDemand: 42, lockedDemand: 360, committedOrder: 80, approvedTransferOut: 0, safetyDays: 14, targetDays: 35, overstockDays: 75,
+          ageDays: 76, diffQty: 0, syncStatus: 'success', inboundDelayDays: 0, receivingAgeHours: 56,
+          capacityLimit: 4200, snapshotTime: '2026-04-29 12:00', source: 'Amazon SP-API'
+        }
+      ]
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    function format(n) {
+      return Number(n).toLocaleString('zh-CN');
+    }
+
+    function nowText() {
+      const d = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    }
+
+    function toast(text) {
+      const el = $('toast');
+      el.textContent = text;
+      el.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+    }
+
+    function chip(text, tone) {
+      return '<span class="chip ' + tone + '">' + text + '</span>';
+    }
+
+    function constraintChip(v) {
+      if (v === '通过') return chip('通过', 'green');
+      if (v === '警告') return chip('警告', 'orange');
+      return chip('阻断', 'red');
+    }
+
+    function approvalChip(v) {
+      if (v === '已批准') return chip(v, 'green');
+      if (v === '已驳回') return chip(v, 'red');
+      if (v === '待审批') return chip(v, 'purple');
+      return chip(v, 'gray');
+    }
+
+    function releaseChip(v) {
+      if (v === '已下发') return chip(v, 'green');
+      if (v === '部分下发') return chip(v, 'orange');
+      return chip(v, 'gray');
+    }
+
+    function demandStatusChip(v) {
+      if (v === '待提交') return chip(v, 'gray');
+      if (v === '审核中') return chip(v, 'blue');
+      if (v === '已审核') return chip(v, 'green');
+      if (v === '审核不通过') return chip(v, 'red');
+      return chip(v, 'gray');
+    }
+
+    function visibleRows() {
+      const kw = $('filterKeyword').value.trim().toLowerCase();
+      const wh = $('filterWarehouse').value;
+      const ct = $('filterConstraint').value;
+      const ap = $('filterApproval').value;
+      const tier = $('filterTier').value;
+      return state.rows.filter(row => {
+        const matchKw = !kw || (row.sku + row.name + row.warehouse).toLowerCase().includes(kw);
+        const matchWh = !wh || row.type === wh;
+        const matchCt = !ct || row.constraint === ct || (ct === '阻断' && row.constraint === '阻断');
+        const matchAp = !ap || row.approval === ap;
+        const matchTier = !tier || row.tier === tier;
+        const matchTab = !state.activeTab || row.type === state.activeTab || row.constraint === state.activeTab;
+        return matchKw && matchWh && matchCt && matchAp && matchTier && matchTab;
+      });
+    }
+
+    function executionAdvice(row) {
+      if (row.type === '国内仓') {
+        return {
+          summary: '采购建议 PR',
+          tone: 'blue',
+          source: '供应商/工厂',
+          path: '采购补货 -> 国内仓入库',
+          docs: 'PR',
+          detail: '目标仓为国内仓，补货建议确认后优先转采购申请或生产补货需求。'
+        };
+      }
+      if (row.type === '平台仓') {
+        return {
+          summary: '入仓+发运 IB/SHIP',
+          tone: 'green',
+          source: '国内仓/供应商',
+          path: '国内发运 -> 头程运输 -> 平台预约 -> 入仓上架',
+          docs: 'IB + SHIP',
+          detail: '目标仓为平台仓，需生成平台入仓批次和发运计划，并校验入仓上限、预约和最晚发运日。'
+        };
+      }
+      return {
+        summary: '调拨/发运 TO/SHIP',
+        tone: 'orange',
+        source: '国内仓/其他海外仓',
+        path: '仓间调拨或国内发运 -> 海外仓入库',
+        docs: 'TO 或 SHIP',
+        detail: '目标仓为海外仓，先判断是否有可调拨库存；不足部分再转发运或采购建议。'
+      };
+    }
+
+    function render() {
+      const rows = visibleRows();
+      $('batchNo').textContent = state.batchNo;
+      $('batchMeta').textContent = state.demandVersion + ' · 库存快照 ' + state.snapshot;
+      $('batchStatus').textContent = state.status;
+      $('totalQty').textContent = format(state.rows.reduce((sum, r) => sum + r.final, 0));
+      $('riskRows').textContent = state.rows.filter(r => r.constraint !== '通过').length;
+      $('tabAll').textContent = '(' + state.rows.length + ')';
+
+      $('suggestionBody').innerHTML = rows.map(row => {
+        const exec = executionAdvice(row);
+        return `
+          <tr data-id="${row.id}">
+            <td><input type="checkbox" class="row-check" data-id="${row.id}" /></td>
+            <td><strong>${row.sku}</strong><div class="muted">${row.name}</div></td>
+            <td>${row.warehouse}<div class="muted">${row.type} · ${row.tier}</div></td>
+            <td class="num">${format(row.demand)}</td>
+            <td class="num">${format(row.available)}</td>
+            <td class="num">${format(row.inbound)}</td>
+            <td class="num">${format(row.gap)}</td>
+            <td class="num">${format(row.suggested)}</td>
+            <td class="num">${format(row.adjust)}</td>
+            <td class="num"><strong>${format(row.final)}</strong></td>
+            <td>${constraintChip(row.constraint)}</td>
+            <td>${chip(exec.summary, exec.tone)}<div class="muted">${exec.docs}</div></td>
+            <td>${approvalChip(row.approval)}</td>
+            <td>${releaseChip(row.release)}</td>
+            <td>
+              <div class="btn-row">
+                <button class="btn small" data-action="detail" data-id="${row.id}">明细</button>
+                <button class="btn small" data-action="adjust" data-id="${row.id}">调整</button>
+                <button class="btn small" data-action="exception" data-id="${row.id}">异常</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      if (!rows.length) {
+        $('suggestionBody').innerHTML = '<tr><td colspan="15"><div class="empty">暂无符合条件的补货建议，请调整筛选条件。</div></td></tr>';
+      }
+
+      renderTimeline();
+      bindRowActions();
+    }
+
+    function renderTimeline() {
+      $('timeline').innerHTML = state.timeline.map(item => `
+        <div class="tl">
+          <div class="dot"></div>
+          <div><p>${item[1]}</p><small>${item[0]}</small></div>
+        </div>
+      `).join('');
+    }
+
+    function selectedRows() {
+      const ids = Array.from(document.querySelectorAll('.row-check:checked')).map(x => Number(x.dataset.id));
+      return state.rows.filter(r => ids.includes(r.id));
+    }
+
+    function openModal(title, sub, body, foot, large) {
+      $('modalTitle').textContent = title;
+      $('modalSub').textContent = sub || '';
+      $('modalBody').innerHTML = body;
+      $('modalFoot').innerHTML = foot;
+      $('modalBox').classList.toggle('large', !!large);
+      $('modalMask').classList.add('show');
+      $('modalMask').setAttribute('aria-hidden', 'false');
+      bindModalButtons();
+    }
+
+    function closeModal() {
+      $('modalMask').classList.remove('show');
+      $('modalMask').setAttribute('aria-hidden', 'true');
+    }
+
+    function openDrawer(title, sub, body, foot) {
+      $('drawerTitle').textContent = title;
+      $('drawerSub').textContent = sub || '';
+      $('drawerBody').innerHTML = body;
+      $('drawerFoot').innerHTML = foot || '<button class="btn" id="drawerOk">知道了</button>';
+      $('drawerMask').classList.add('show');
+      $('drawerMask').setAttribute('aria-hidden', 'false');
+      const ok = $('drawerOk');
+      if (ok) ok.onclick = closeDrawer;
+      const adjust = document.querySelector('[data-drawer-adjust]');
+      if (adjust) {
+        adjust.onclick = () => {
+          const row = state.rows.find(item => item.id === Number(adjust.dataset.drawerAdjust));
+          closeDrawer();
+          if (row) openAdjust(row);
+        };
+      }
+    }
+
+    function closeDrawer() {
+      $('drawerMask').classList.remove('show');
+      $('drawerMask').setAttribute('aria-hidden', 'true');
+    }
+
+    function formGrid(fields) {
+      return '<div class="grid cols-2">' + fields.map(f => `
+        <div class="field">
+          <label>${f.label}</label>
+          ${f.html}
+        </div>
+      `).join('') + '</div>';
+    }
+
+    function openCreateBatch() {
+      openModal(
+        '创建补货批次',
+        '创建后批次状态为草稿，需选择已锁定需求和库存快照后才能生成建议。',
+        formGrid([
+          { label: '计划周期', html: '<select id="mWeek"><option>2026-W18</option><option>2026-W19</option></select>' },
+          { label: '补货范围', html: '<select id="mScope"><option>全渠道</option><option>B2C线上国外</option><option>B2B海外商超</option></select>' },
+          { label: '默认需求范围', html: '<select id="mVersion"><option>2026-W18 已锁定需求</option><option>2026-W19 已锁定需求</option></select>' },
+          { label: '默认库存快照', html: '<select id="mSnapshot"><option>IS-0429-0900</option><option>IS-0429-1200</option></select>' },
+          { label: '引擎模式', html: '<select id="mEngine"><option>heuristic_v1</option></select>' },
+          { label: '备注', html: '<input id="mRemark" placeholder="例如：4月第5周平台仓补货" />' }
+        ]),
+        '<button class="btn" data-close>取消</button><button class="btn" data-toast="草稿已保存，尚未生成建议">保存草稿</button><button class="btn primary" data-create-batch>创建并进入批次</button>'
+      );
+    }
+
+    function openSelectVersion() {
+      openModal(
+        '选择已锁定需求',
+        '只能选择已锁定需求；切换需求范围会提示是否重新计算。',
+        `
+          <table>
+            <thead><tr><th>选择</th><th>需求范围</th><th>计划周期</th><th>需求量</th><th>状态</th><th>确认人</th></tr></thead>
+            <tbody>
+              <tr><td><input name="version" type="radio" value="2026-W18 已锁定需求" checked /></td><td>2026-W18 已锁定需求</td><td>2026-W18</td><td>25,600</td><td>${chip('已锁定', 'green')}</td><td>PMC主管</td></tr>
+              <tr><td><input name="version" type="radio" value="2026-W19 已锁定需求" /></td><td>2026-W19 已锁定需求</td><td>2026-W19</td><td>27,300</td><td>${chip('已锁定', 'green')}</td><td>计划员A</td></tr>
+            </tbody>
+          </table>
+        `,
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-select-version>确认选择</button>',
+        true
+      );
+    }
+
+    function openSelectSnapshot() {
+      openModal(
+        '选择库存快照',
+        '建议选择最近一次同步成功的快照；切换快照后需要重新计算。',
+        `
+          <table>
+            <thead><tr><th>选择</th><th>快照号</th><th>快照时间</th><th>同步状态</th><th>库存行数</th><th>差异行</th></tr></thead>
+            <tbody>
+              <tr><td><input name="snapshot" type="radio" value="IS-0429-0900" checked /></td><td>IS-0429-0900</td><td>2026-04-29 09:00</td><td>${chip('成功', 'green')}</td><td>18,420</td><td>12</td></tr>
+              <tr><td><input name="snapshot" type="radio" value="IS-0429-1200" /></td><td>IS-0429-1200</td><td>2026-04-29 12:00</td><td>${chip('成功', 'green')}</td><td>18,421</td><td>9</td></tr>
+              <tr><td><input name="snapshot" type="radio" value="IS-0428-2100" /></td><td>IS-0428-2100</td><td>2026-04-28 21:00</td><td>${chip('成功', 'green')}</td><td>18,390</td><td>16</td></tr>
+            </tbody>
+          </table>
+        `,
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-select-snapshot>确认选择</button>',
+        true
+      );
+    }
+
+    function openGenerate() {
+      openModal(
+        '生成补货建议与执行建议',
+        '系统先按虚拟仓可用计算销售需求缺口，再读取绑定实体仓可分配和计划占用账本，生成不重复占用库存的补货建议。',
+        formGrid([
+          { label: '已锁定需求', html: '<input value="' + state.demandVersion + '" readonly />' },
+          { label: '库存快照', html: '<input value="' + state.snapshot + '" readonly />' },
+          { label: '补货策略', html: '<select><option>按 SKU×仓策略模板</option><option>平台仓优先策略</option><option>B2B锁单优先策略</option></select>' },
+          { label: '是否覆盖当前结果', html: '<select id="mOverwrite"><option>否，生成新试算批次</option><option>是，覆盖当前建议</option></select>' }
+        ]) + `
+          <div style="height:14px;"></div>
+          <div class="inline-note">计划层补货建议：先用虚拟仓可用抵扣需求；虚拟仓可用不足时，再从实体仓可分配分配，并写入计划占用账本，避免多个虚拟仓重复使用。</div>
+          <div style="height:10px;"></div>
+          <div class="inline-note">执行层入仓/发运建议：根据目标仓类型进一步判断生成 PR、TO、IB、SHIP 或实体仓到虚拟仓分货建议，并校验平台入仓上限、海外仓库存上限、调拨优先级和最晚发运日。</div>
+        `,
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-run-engine>开始生成</button>'
+      );
+    }
+
+    function openTransferPriorityConfig() {
+      const transferableFor = warehouse => {
+        const row = state.inventoryRows.find(item => item.warehouse === warehouse);
+        return row ? format(inventoryTransferableQty(row)) : '0';
+      };
+      openModal(
+        '调拨优先级配置',
+        '按目的仓配置可调出仓，系统按配置顺序从上到下依次计算，只能调拨库存分层计算出的可调拨数量。',
+        `
+          <div class="inline-note">配置逻辑：先选目的仓，再维护可调出仓清单。优先级 1 先计算；如果可调拨数量不足，再继续计算优先级 2、3。</div>
+          <div style="height:14px;"></div>
+          ${formGrid([
+            { label: '目的仓', html: '<select><option>FBA-US-LAX9</option><option>FBA-UK-BHX4</option><option>3PL-DE-HH</option><option>国内仓-深圳</option></select>' },
+            { label: '策略名称', html: '<input value="FBA-US-LAX9 可调出仓配置" />' },
+            { label: '最小调拨量', html: '<input type="number" value="100" min="0" />' },
+            { label: '箱规校验', html: '<select><option>必须满足箱规</option><option>允许向下取整</option></select>' },
+            { label: '生效方式', html: '<select><option>保存后仅新批次生效</option><option>保存并触发当前批次重算</option></select>' }
+          ])}
+          <div style="height:14px;"></div>
+          <table>
+            <thead><tr><th>优先级</th><th>可调出仓</th><th>当前可调拨数量</th><th>启用</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><select><option>3PL-DE-HH</option><option>国内仓-深圳</option><option>国内仓-义乌</option></select></td><td>${transferableFor('3PL-DE-HH')}</td><td><select><option>启用</option><option>停用</option></select></td><td>先消耗德国海外仓可调拨数量</td></tr>
+              <tr><td>2</td><td><select><option>国内仓-深圳</option><option>3PL-DE-HH</option><option>国内仓-义乌</option></select></td><td>${transferableFor('国内仓-深圳')}</td><td><select><option>启用</option><option>停用</option></select></td><td>海外仓不足时再从深圳仓调出</td></tr>
+              <tr><td>3</td><td><select><option>国内仓-义乌</option><option>国内仓-深圳</option><option>3PL-DE-HH</option></select></td><td>${transferableFor('国内仓-义乌')}</td><td><select><option>启用</option><option>停用</option></select></td><td>可调拨数量为 0 时跳过</td></tr>
+            </tbody>
+          </table>
+          <div style="height:10px;"></div>
+          <div class="inline-note">保存校验：同一目的仓下优先级不可重复；目的仓不能配置为自己的可调出仓；同一可调出仓不能重复配置。</div>
+        `,
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-close>保存配置</button>',
+        true
+      );
+    }
+
+    function openRecalc() {
+      openModal(
+        '重新计算确认',
+        '重新计算会保留历史记录，但当前未提交审批的人工调整将被清空。',
+        `
+          <div class="inline-note">当前批次已有 ${state.rows.filter(r => r.adjust !== 0).length} 行人工调整。若继续，系统将重新读取策略并生成建议。</div>
+          <div style="height:14px;"></div>
+          ${formGrid([
+            { label: '重算原因', html: '<select id="mReason"><option>库存快照更新</option><option>补货策略变更</option><option>已锁定需求变更</option><option>人工触发复核</option></select>' },
+            { label: '是否保留调整原因', html: '<select><option>保留为历史记录</option><option>不保留</option></select>' }
+          ])}
+        `,
+        '<button class="btn" data-close>取消</button><button class="btn warn" data-recalc>确认重新计算</button>'
+      );
+    }
+
+    function openExport() {
+      openModal(
+        '导出补货建议',
+        '选择导出范围和格式，导出操作会写入审计日志。',
+        formGrid([
+          { label: '导出范围', html: '<select id="mExportScope"><option>当前筛选结果</option><option>已勾选行</option><option>全部行</option></select>' },
+          { label: '文件格式', html: '<select><option>Excel</option><option>CSV</option></select>' },
+          { label: '包含字段', html: '<select><option>标准字段 + 解释因子</option><option>仅标准字段</option><option>执行下发模板</option></select>' },
+          { label: '敏感字段', html: '<select><option>不包含成本/金额</option><option>包含成本/金额（需权限）</option></select>' }
+        ]),
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-export>确认导出</button>'
+      );
+    }
+
+    function openMoreFilters() {
+      openModal(
+        '更多筛选',
+        '补充筛选项用于定位风险 SKU、活动需求和重点客户。',
+        formGrid([
+          { label: '客户/店铺', html: '<input placeholder="例如 Walmart / Amazon-US" />' },
+          { label: '活动 ID', html: '<input placeholder="例如 ACT-20260429" />' },
+          { label: '最晚发运日', html: '<input type="date" value="2026-05-03" />' },
+          { label: '覆盖天数', html: '<select><option>全部</option><option>&lt; 7天</option><option>7-14天</option><option>&gt; 30天</option></select>' },
+          { label: '是否可调拨', html: '<select><option>全部</option><option>可调拨</option><option>不可调拨</option></select>' },
+          { label: '是否有主数据缺失', html: '<select><option>全部</option><option>是</option><option>否</option></select>' }
+        ]),
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-more-filter>应用筛选</button>'
+      );
+    }
+
+    function openSaveView() {
+      openModal(
+        '保存当前视图',
+        '保存后可作为个人常用筛选方案。',
+        formGrid([
+          { label: '视图名称', html: '<input id="mViewName" value="平台仓风险补货视图" />' },
+          { label: '可见范围', html: '<select><option>仅自己可见</option><option>PMC团队可见</option></select>' }
+        ]),
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-save-view>保存视图</button>'
+      );
+    }
+
+    function openAdjust(row) {
+      openModal(
+        '调整补货建议 · ' + row.sku,
+        '调整会写入审计日志，并影响最终建议量。',
+        formGrid([
+          { label: '系统建议量', html: '<input value="' + row.suggested + '" readonly />' },
+          { label: '当前最终量', html: '<input value="' + row.final + '" readonly />' },
+          { label: '调整后数量', html: '<input id="mAdjustedFinal" type="number" value="' + row.final + '" step="100" />' },
+          { label: '调整原因', html: '<select id="mAdjustReason"><option>平台限仓</option><option>客户优先级调整</option><option>供应延期</option><option>人工复核修正</option></select>' }
+        ]) + '<div style="height:12px;"></div><div class="field"><label>补充说明</label><textarea id="mAdjustNote" placeholder="请说明调整依据，例如平台仓预约窗口不足，需要拆批入仓。"></textarea></div>',
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-save-adjust="' + row.id + '">保存调整</button>'
+      );
+    }
+
+    function openBatchAdjust() {
+      const rows = selectedRows();
+      openModal(
+        '批量调整',
+        rows.length ? '将对已勾选 ' + rows.length + ' 行执行批量调整。' : '请先勾选需要调整的补货建议行。',
+        rows.length ? formGrid([
+          { label: '调整方式', html: '<select id="mBatchAdjustType"><option>按比例调整</option><option>统一设置最终量</option><option>按箱规向下取整</option></select>' },
+          { label: '调整值', html: '<input id="mBatchAdjustValue" type="number" value="-10" />' },
+          { label: '调整原因', html: '<select><option>资金预算压缩</option><option>平台库容不足</option><option>供应能力不足</option></select>' },
+          { label: '是否重新校验约束', html: '<select><option>是</option><option>否</option></select>' }
+        ]) : '<div class="empty">当前未勾选任何行。</div>',
+        rows.length ? '<button class="btn" data-close>取消</button><button class="btn primary" data-batch-adjust>确认批量调整</button>' : '<button class="btn primary" data-close>知道了</button>'
+      );
+    }
+
+    function openDetail(row) {
+      const exec = executionAdvice(row);
+      let remainingNeed = row.gap;
+      const transferCandidates = [
+        { from: '3PL-DE-HH', relation: '目的仓配置优先级 1', effectiveSupply: 2100, futureDemand: 1100, safety: 700, eta: '2026-05-04' },
+        { from: '国内仓-深圳', relation: '目的仓配置优先级 2', effectiveSupply: 3600, futureDemand: 1600, safety: 900, eta: '2026-05-08' },
+        { from: '国内仓-义乌', relation: '目的仓配置优先级 3', effectiveSupply: 980, futureDemand: 850, safety: 300, eta: '2026-05-10' }
+      ].map(item => {
+        const protect = item.futureDemand + item.safety;
+        const transferable = Math.max(item.effectiveSupply - protect, 0);
+        const blocked = transferable <= 0 || item.eta > '2026-05-09';
+        const useQty = blocked ? 0 : Math.min(transferable, remainingNeed);
+        remainingNeed = Math.max(remainingNeed - useQty, 0);
+        const remainingGap = remainingNeed;
+        return { ...item, protect, transferable, useQty, remainingGap, blocked };
+      });
+      openDrawer(
+        '计算明细 · ' + row.sku,
+        row.name + ' / ' + row.warehouse,
+        `
+          <div class="grid cols-3">
+            <div class="card pad stat"><label>需求量</label><strong>${format(row.demand)}</strong><div class="sub">${row.tier}</div></div>
+            <div class="card pad stat"><label>净缺口</label><strong>${format(row.gap)}</strong><div class="sub">含安全库存 ${format(row.safety)}</div></div>
+            <div class="card pad stat"><label>最终建议</label><strong>${format(row.final)}</strong><div class="sub">${row.constraint}</div></div>
+          </div>
+          <div style="height:14px;"></div>
+          <div class="card">
+            <div class="panel-head"><h2>解释因子</h2></div>
+            <div class="panel-body">
+              ${row.explain.map(x => '<span class="chip blue" style="margin:0 6px 6px 0;">' + x + '</span>').join('')}
+            </div>
+          </div>
+          <div style="height:14px;"></div>
+          <div class="card">
+            <div class="panel-head"><h2>补货建议与执行建议</h2></div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>类型</th><th>解决问题</th><th>当前结果</th><th>后续对象</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td>补货建议</td>
+                    <td>补不补、补多少、补到哪个目标仓</td>
+                    <td>${row.sku} 补到 ${row.warehouse}，最终建议 ${format(row.final)}</td>
+                    <td>补货计划行，提交审批后才可下发</td>
+                  </tr>
+                  <tr>
+                    <td>入仓/发运建议</td>
+                    <td>从哪里发、怎么发、是否需要入仓预约或调拨</td>
+                    <td>${exec.path}</td>
+                    <td>${exec.docs}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="height:10px;"></div>
+              <div class="inline-note">${exec.detail}</div>
+            </div>
+          </div>
+          <div style="height:14px;"></div>
+          <div class="card">
+            <div class="panel-head"><h2>仓网调拨判断</h2></div>
+            <div class="panel-body">
+              <div class="inline-note">目的仓为虚拟仓时，系统先扣减虚拟仓缺口，再按绑定实体仓的实体仓可分配和目的仓可调出仓顺序取数；每次取数都会写入计划占用，防止同一实体仓库存被多个虚拟仓重复使用。</div>
+              <div style="height:10px;"></div>
+              <table>
+                <thead><tr><th>配置顺序</th><th>可调出仓</th><th class="num">有效供给</th><th class="num">保护库存</th><th class="num">可调拨量</th><th class="num">本次使用</th><th class="num">剩余缺口</th><th>结论</th></tr></thead>
+                <tbody>
+                  ${transferCandidates.map((item, index) => `
+                    <tr>
+                      <td>${index + 1}</td>
+                      <td>${item.from}<div class="muted">${item.relation} · ETA ${item.eta}</div></td>
+                      <td class="num">${format(item.effectiveSupply)}</td>
+                      <td class="num">${format(item.protect)}</td>
+                      <td class="num">${format(item.transferable)}</td>
+                      <td class="num">${format(item.useQty)}</td>
+                      <td class="num">${format(item.remainingGap)}</td>
+                      <td>${item.blocked ? chip('跳过', 'red') : chip('可调拨', 'green')}<div class="muted">${item.blocked ? '可调拨为 0 或 ETA 不满足' : '按配置顺序参与取数'}</div></td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+              <div style="height:10px;"></div>
+              <div class="inline-note">多仓处理：优先级 1 的可调拨数量不足时，系统继续按目的仓配置顺序取下一可调出仓；仍不足的缺口转采购/发运建议。</div>
+            </div>
+          </div>
+          <div style="height:14px;"></div>
+          <div class="card">
+            <div class="panel-head"><h2>约束与风险</h2></div>
+            <div class="panel-body">
+              <p style="margin-top:0;">${row.risk}</p>
+              <table>
+                <thead><tr><th>约束项</th><th>类型</th><th>系统处理</th></tr></thead>
+                <tbody>
+                  <tr><td>MOQ/箱规</td><td>硬约束</td><td>按 100 向上取整</td></tr>
+                  <tr><td>平台/海外仓上限</td><td>硬约束</td><td>${row.constraint === '阻断' ? '阻断下发' : '通过或警告'}</td></tr>
+                  <tr><td>调出仓保护库存</td><td>硬约束</td><td>调出后低于安全覆盖或无法满足锁定需求时阻断调拨</td></tr>
+                  <tr><td>覆盖天数</td><td>软约束</td><td>偏离时提示风险</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `,
+        '<button class="btn" id="drawerOk">关闭</button><button class="btn primary" data-drawer-adjust="' + row.id + '">调整此行</button>'
+      );
+    }
+
+    function openException(row) {
+      openModal(
+        '创建异常工单 · ' + row.sku,
+        '用于将缺货、约束阻断、延期、平台限仓等问题派发给责任人。',
+        formGrid([
+          { label: '异常类型', html: '<select id="mExceptionType"><option>约束违反</option><option>缺货风险</option><option>平台限仓</option><option>交期延期</option></select>' },
+          { label: '异常等级', html: '<select id="mExceptionLevel"><option>S2</option><option>S1</option><option>S3</option></select>' },
+          { label: '责任部门', html: '<select><option>PMC</option><option>物流</option><option>采购</option><option>销售运营</option></select>' },
+          { label: '责任人', html: '<select><option>计划员A</option><option>物流专员B</option><option>采购C</option></select>' }
+        ]) + '<div style="height:12px;"></div><div class="field"><label>异常说明</label><textarea id="mExceptionDesc">' + row.risk + '</textarea></div>',
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-create-exception="' + row.id + '">创建工单</button>'
+      );
+    }
+
+    function openApprovalSubmit() {
+      const rows = selectedRows();
+      const targetRows = rows.length ? rows : state.rows;
+      const blockers = targetRows.filter(r => r.constraint === '阻断');
+      openModal(
+        '提交审批',
+        rows.length ? '将提交已勾选 ' + rows.length + ' 行。' : '未勾选行，默认提交当前批次全部行。',
+        `
+          <div class="inline-note">${blockers.length ? '存在 ' + blockers.length + ' 行硬约束阻断，不能提交审批，请先调整。' : '系统校验通过，可提交审批。'}</div>
+          <div style="height:14px;"></div>
+          ${formGrid([
+            { label: '审批流', html: '<select><option>补货计划标准审批流</option><option>紧急补货审批流</option></select>' },
+            { label: '审批说明', html: '<input id="mApprovalNote" placeholder="例如：4月第5周平台仓补货计划" />' }
+          ])}
+        `,
+        blockers.length ? '<button class="btn primary" data-close>知道了</button>' : '<button class="btn" data-close>取消</button><button class="btn primary" data-submit-approval>确认提交</button>'
+      );
+    }
+
+    function openApprove() {
+      openModal(
+        '审批通过',
+        '审批通过后，补货计划允许下发执行。',
+        formGrid([
+          { label: '审批结论', html: '<select><option>通过</option></select>' },
+          { label: '审批备注', html: '<input id="mApproveNote" placeholder="可填写审批意见" />' }
+        ]),
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-approve>确认通过</button>'
+      );
+    }
+
+    function openReject() {
+      openModal(
+        '驳回补货计划',
+        '驳回后批次回到待确认，PMC 需调整后重新提交。',
+        '<div class="field"><label>驳回原因</label><textarea id="mRejectReason" placeholder="请说明驳回原因，例如海外仓库存上限未处理、资金预算超限等。"></textarea></div>',
+        '<button class="btn" data-close>取消</button><button class="btn danger" data-reject>确认驳回</button>'
+      );
+    }
+
+    function openRelease() {
+      const approved = state.rows.filter(r => r.approval === '已批准');
+      openModal(
+        '下发执行',
+        approved.length ? '将已批准行下发为 PR、TO、IB 或发运计划。' : '当前没有已批准行，无法下发执行。',
+        approved.length ? `
+          <table>
+            <thead><tr><th>执行对象</th><th>生成规则</th><th>预计数量</th><th>责任角色</th></tr></thead>
+            <tbody>
+              <tr><td>采购申请 PR</td><td>国内仓新增采购需求</td><td>2 行</td><td>采购</td></tr>
+              <tr><td>调拨单 TO</td><td>存在可调拨库存</td><td>1 行</td><td>仓储</td></tr>
+              <tr><td>入仓批次 IB</td><td>平台仓/海外3PL入仓</td><td>2 行</td><td>物流</td></tr>
+              <tr><td>发运计划 SHIP</td><td>跨境头程发运</td><td>3 行</td><td>物流</td></tr>
+            </tbody>
+          </table>
+          <div style="height:12px;"></div>
+          <div class="field"><label>下发备注</label><input id="mReleaseNote" placeholder="例如：优先下发平台仓大促 SKU" /></div>
+        ` : '<div class="empty">请先完成审批通过。</div>',
+        approved.length ? '<button class="btn" data-close>取消</button><button class="btn warn" data-release>确认下发</button>' : '<button class="btn primary" data-close>知道了</button>',
+        true
+      );
+    }
+
+    function openMessages() {
+      openModal(
+        '消息中心',
+        '展示与当前补货批次相关的待办和预警。',
+        `
+          <table>
+            <thead><tr><th>类型</th><th>内容</th><th>时间</th><th>状态</th></tr></thead>
+            <tbody>
+              <tr><td>审批</td><td>RB-2026W18-001 待提交审批</td><td>09:06</td><td>${chip('待处理', 'orange')}</td></tr>
+              <tr><td>异常</td><td>SKU-C3099 海外仓上限阻断</td><td>09:03</td><td>${chip('未关闭', 'red')}</td></tr>
+              <tr><td>库存</td><td>FBA-US-LAX9 库容剩余不足</td><td>08:58</td><td>${chip('预警', 'orange')}</td></tr>
+            </tbody>
+          </table>
+        `,
+        '<button class="btn primary" data-close>知道了</button>',
+        true
+      );
+    }
+
+    function openHelp() {
+      openModal(
+        '按钮级交互说明',
+        '本页面所有主要按钮均可点击，并会触发弹窗、抽屉、状态变化或筛选结果。',
+        `
+          <table>
+            <thead><tr><th>按钮</th><th>交互结果</th></tr></thead>
+            <tbody>
+              <tr><td>创建批次</td><td>打开创建弹窗，确认后更新批次号和状态</td></tr>
+              <tr><td>选择已锁定需求/库存快照</td><td>打开选择弹窗，确认后更新批次元信息</td></tr>
+              <tr><td>生成建议/重新计算</td><td>打开确认弹窗，并模拟异步进度</td></tr>
+              <tr><td>查询/重置/更多筛选</td><td>真实过滤表格或打开高级筛选弹窗</td></tr>
+              <tr><td>明细/调整/异常</td><td>分别打开计算抽屉、调整弹窗、异常工单弹窗</td></tr>
+              <tr><td>提交审批/审批/驳回/下发</td><td>触发批次或行状态变化，并刷新表格</td></tr>
+            </tbody>
+          </table>
+        `,
+        '<button class="btn primary" data-close>知道了</button>',
+        true
+      );
+    }
+
+    function openBenchmark() {
+      openModal(
+        '竞品能力参考与本系统采纳',
+        '基于悠桦林、杉数科技、预见科技的产品能力，将可借鉴点转化为本系统页面和功能设计。',
+        `
+          <div class="grid cols-3">
+            <div class="card pad">
+              <h3 style="margin:0 0 8px;">悠桦林 UHAlean</h3>
+              <p class="muted" style="line-height:1.6;">参考 DP、S&OP、MRP、SCCT 的端到端计划体系，强调一致性计划、异常控制塔、根因分析和 What-if。</p>
+              <div>${chip('已锁定需求', 'blue')} ${chip('轻量S&OP', 'purple')} ${chip('控制塔', 'orange')}</div>
+            </div>
+            <div class="card pad">
+              <h3 style="margin:0 0 8px;">杉数科技</h3>
+              <p class="muted" style="line-height:1.6;">参考 Planiverse、COPT、多级仓网、安全库存模拟和补货约束优化，落到可解释的补货建议计算。</p>
+              <div>${chip('硬/软约束', 'blue')} ${chip('仓网分配', 'green')} ${chip('仿真演进', 'purple')}</div>
+            </div>
+            <div class="card pad">
+              <h3 style="margin:0 0 8px;">预见科技</h3>
+              <p class="muted" style="line-height:1.6;">参考 MOE 场景路由、外部因子、因子分解和预测准确率复盘，增强预测可信度。</p>
+              <div>${chip('scene_tag', 'blue')} ${chip('白盒解释', 'green')}</div>
+            </div>
+          </div>
+          <div style="height:14px;"></div>
+          <table>
+            <thead><tr><th>本系统页面</th><th>吸收的竞品能力</th><th>一期设计落点</th><th>二期演进</th></tr></thead>
+            <tbody>
+              <tr><td>销售计划与需求池</td><td>预见场景路由 + 悠桦林 DP</td><td>人工提报、PMC确认数量、重叠校验、操作留痕</td><td>协同预测、准确率评分</td></tr>
+              <tr><td>补货工作台</td><td>杉数约束补货 + 多级仓网</td><td>硬/软约束、截断原因、解释因子、调拨优先</td><td>OR 求解、策略仿真</td></tr>
+              <tr><td>执行协同</td><td>悠桦林计划执行跟踪</td><td>PR/TO/IB/SHIP 节点回写</td><td>供应商门户、物流轨迹自动回写</td></tr>
+              <tr><td>异常中心</td><td>悠桦林 SCCT 控制塔</td><td>异常工单、影响测算、根因标签</td><td>What-if、方案推荐、经验库</td></tr>
+              <tr><td>数据看板</td><td>杉数 Insight + 预见准确率复盘</td><td>采纳率、缺货率、执行达成、异常闭环</td><td>KPI 仿真、财务计划联动</td></tr>
+            </tbody>
+          </table>
+        `,
+        '<button class="btn primary" data-close>知道了</button>',
+        true
+      );
+    }
+
+    function runProgress(done) {
+      $('progress').style.width = '0%';
+      $('progressText').textContent = '计算完成度 0%';
+      let p = 0;
+      const timer = setInterval(() => {
+        p += 20;
+        $('progress').style.width = p + '%';
+        $('progressText').textContent = '计算完成度 ' + p + '%';
+        if (p >= 100) {
+          clearInterval(timer);
+          if (done) done();
+        }
+      }, 260);
+    }
+
+    function bindModalButtons() {
+      document.querySelectorAll('[data-close]').forEach(btn => btn.onclick = closeModal);
+      document.querySelectorAll('[data-toast]').forEach(btn => btn.onclick = () => toast(btn.dataset.toast));
+
+      const create = document.querySelector('[data-create-batch]');
+      if (create) create.onclick = () => {
+        state.batchNo = 'RB-2026W18-' + Math.floor(Math.random() * 900 + 100);
+        state.status = '草稿';
+        state.timeline.unshift(['刚刚', '创建新补货批次 ' + state.batchNo + '。']);
+        closeModal(); render(); toast('已创建补货批次');
+      };
+
+      const selectVersion = document.querySelector('[data-select-version]');
+      if (selectVersion) selectVersion.onclick = () => {
+        const chosen = document.querySelector('input[name=version]:checked').value;
+        state.demandVersion = chosen;
+        state.timeline.unshift(['刚刚', '切换已锁定需求为 ' + chosen + '，建议重新计算。']);
+        closeModal(); render(); toast('已选择已锁定需求');
+      };
+
+      const selectSnapshot = document.querySelector('[data-select-snapshot]');
+      if (selectSnapshot) selectSnapshot.onclick = () => {
+        const chosen = document.querySelector('input[name=snapshot]:checked').value;
+        state.snapshot = chosen;
+        state.timeline.unshift(['刚刚', '切换库存快照为 ' + chosen + '，建议重新计算。']);
+        closeModal(); render(); toast('已选择库存快照');
+      };
+
+      const runEngine = document.querySelector('[data-run-engine]');
+      if (runEngine) runEngine.onclick = () => {
+        closeModal();
+        state.status = '计算中';
+        render();
+        runProgress(() => {
+          state.status = '待确认';
+          state.timeline.unshift(['刚刚', '重新生成补货建议，补货工作台计算完成。']);
+          render();
+          toast('补货建议已生成');
+        });
+      };
+
+      const recalc = document.querySelector('[data-recalc]');
+      if (recalc) recalc.onclick = () => {
+        closeModal();
+        state.rows.forEach(r => { r.adjust = 0; r.final = r.suggested; r.approval = '待确认'; r.release = '未下发'; });
+        state.status = '计算中';
+        render();
+        runProgress(() => {
+          state.status = '待确认';
+          state.timeline.unshift(['刚刚', '按最新策略完成重新计算，人工调整已清空。']);
+          render();
+          toast('重新计算完成');
+        });
+      };
+
+      const exportBtn = document.querySelector('[data-export]');
+      if (exportBtn) exportBtn.onclick = () => {
+        closeModal();
+        toast('导出任务已创建：replenishment_' + state.batchNo + '.xlsx');
+      };
+
+      const moreFilter = document.querySelector('[data-more-filter]');
+      if (moreFilter) moreFilter.onclick = () => {
+        closeModal();
+        toast('高级筛选已应用');
+      };
+
+      const saveView = document.querySelector('[data-save-view]');
+      if (saveView) saveView.onclick = () => {
+        closeModal();
+        toast('视图已保存');
+      };
+
+      const saveAdjust = document.querySelector('[data-save-adjust]');
+      if (saveAdjust) saveAdjust.onclick = () => {
+        const row = state.rows.find(r => r.id === Number(saveAdjust.dataset.saveAdjust));
+        const newFinal = Number($('mAdjustedFinal').value);
+        if (!newFinal || newFinal < 0) {
+          toast('调整后数量必须大于等于 0');
+          return;
+        }
+        row.adjust = newFinal - row.suggested;
+        row.final = newFinal;
+        if (row.constraint === '阻断' && newFinal <= 800) row.constraint = '通过';
+        row.approval = '待确认';
+        row.release = '未下发';
+        state.timeline.unshift(['刚刚', row.sku + ' 最终建议量调整为 ' + format(newFinal) + '。']);
+        closeModal(); render(); toast('调整已保存');
+      };
+
+      const batchAdjust = document.querySelector('[data-batch-adjust]');
+      if (batchAdjust) batchAdjust.onclick = () => {
+        selectedRows().forEach(row => {
+          const newFinal = Math.max(0, Math.round(row.final * 0.9 / 100) * 100);
+          row.adjust = newFinal - row.suggested;
+          row.final = newFinal;
+        });
+        state.timeline.unshift(['刚刚', '完成批量调整，默认按 -10% 处理。']);
+        closeModal(); render(); toast('批量调整已完成');
+      };
+
+      const createException = document.querySelector('[data-create-exception]');
+      if (createException) createException.onclick = () => {
+        const row = state.rows.find(r => r.id === Number(createException.dataset.createException));
+        state.timeline.unshift(['刚刚', '为 ' + row.sku + ' 创建异常工单 EX-' + Date.now().toString().slice(-5) + '。']);
+        closeModal(); render(); toast('异常工单已创建');
+      };
+
+      const submitApproval = document.querySelector('[data-submit-approval]');
+      if (submitApproval) submitApproval.onclick = () => {
+        const rows = selectedRows().length ? selectedRows() : state.rows;
+        rows.forEach(row => { if (row.constraint !== '阻断') row.approval = '待审批'; });
+        state.status = '待审批';
+        state.timeline.unshift(['刚刚', '补货计划已提交审批。']);
+        closeModal(); render(); toast('已提交审批');
+      };
+
+      const approve = document.querySelector('[data-approve]');
+      if (approve) approve.onclick = () => {
+        state.rows.forEach(row => { if (row.approval === '待审批' || row.approval === '待确认') row.approval = row.constraint === '阻断' ? '待确认' : '已批准'; });
+        state.status = '已批准';
+        state.timeline.unshift(['刚刚', '审批通过，可下发执行。']);
+        closeModal(); render(); toast('审批已通过');
+      };
+
+      const reject = document.querySelector('[data-reject]');
+      if (reject) reject.onclick = () => {
+        state.rows.forEach(row => { if (row.approval !== '已批准') row.approval = '已驳回'; });
+        state.status = '已驳回';
+        state.timeline.unshift(['刚刚', '补货计划被驳回，需 PMC 调整后重新提交。']);
+        closeModal(); render(); toast('已驳回');
+      };
+
+      const release = document.querySelector('[data-release]');
+      if (release) release.onclick = () => {
+        state.rows.forEach(row => { if (row.approval === '已批准') row.release = '已下发'; });
+        state.status = '已下发';
+        state.timeline.unshift(['刚刚', '已下发执行对象：PR 2 条、TO 1 条、IB 2 条、SHIP 3 条。']);
+        closeModal(); render(); toast('已下发执行');
+      };
+
+      const demandSaveDraft = document.querySelector('[data-demand-save-draft]');
+      const demandAddSubmit = document.querySelector('[data-demand-add-submit]');
+      [demandSaveDraft, demandAddSubmit].forEach(btn => {
+        if (!btn) return;
+        btn.onclick = () => {
+          const data = readDemandForm();
+          const error = validateDemandForm(data);
+          if (error) {
+            toast(error);
+            return;
+          }
+          const overlap = demandOverlapMessage(data);
+          if (overlap) {
+            toast(overlap);
+            return;
+          }
+          state.demandRows.unshift({
+            id: Date.now(), no: 'DP-20260429-' + String(Math.floor(Math.random() * 900) + 100),
+            channel: data.channel, customer: data.customer, sku: data.sku, product: data.product,
+            week: data.week, qty: data.qty, tier: data.tier,
+            type: data.type, orderRef: data.orderRef, activityRef: data.activityRef, forecastRef: data.forecastRef, manualRef: data.manualRef,
+            submittedQty: data.submittedQty, pmcQty: data.initiatorRole === 'PMC' ? data.submittedQty : null,
+            source: data.source, initiatorRole: data.initiatorRole, eventId: data.eventId, expectedDate: data.expectedDate,
+            owner: '当前用户', status: btn === demandAddSubmit ? (data.initiatorRole === 'PMC' ? '已审核' : '审核中') : '待提交',
+            createdBy: '当前用户', createdAt: nowText(),
+            confirmedBy: data.initiatorRole === 'PMC' && btn === demandAddSubmit ? '当前用户' : '',
+            confirmedAt: data.initiatorRole === 'PMC' && btn === demandAddSubmit ? nowText() : '',
+            remark: data.remark
+          });
+          closeModal();
+          renderDemandRows();
+          toast(btn === demandAddSubmit ? '销售计划已保存并提交审核' : '销售计划已保存为待提交');
+        };
+      });
+
+      const demandDownloadTemplate = document.querySelector('[data-demand-download-template]');
+      if (demandDownloadTemplate) demandDownloadTemplate.onclick = () => toast('模板下载任务已创建：sales_plan_template.xlsx');
+
+      const demandImportConfirm = document.querySelector('[data-demand-import-confirm]');
+      if (demandImportConfirm) demandImportConfirm.onclick = () => {
+        state.demandRows.unshift({
+          id: Date.now(), no: 'DP-IMPORT-' + String(Math.floor(Math.random() * 900) + 100),
+          channel: 'B2C线上国外', customer: 'Amazon-US', sku: 'SKU-F6201', product: '无线泳池清洁机器人',
+          week: '2026-W19', qty: 1500, tier: 'Final',
+          type: '综合判断', orderRef: 0, activityRef: 600, forecastRef: 900, manualRef: 0,
+          submittedQty: 1500, pmcQty: null, source: '促销活动', initiatorRole: '运营',
+          eventId: 'ACT-US-0505', expectedDate: '2026-05-22',
+          owner: '导入用户', status: $('mDemandImportStatus').value === '审核中' ? '审核中' : '待提交',
+          createdBy: '导入用户', createdAt: nowText(), confirmedBy: '', confirmedAt: '',
+          remark: 'Excel导入模拟数据'
+        });
+        closeModal();
+        renderDemandRows();
+        toast('导入完成：成功 1 行，失败 0 行');
+      };
+
+      const demandSubmitConfirm = document.querySelector('[data-demand-submit-confirm]');
+      if (demandSubmitConfirm) demandSubmitConfirm.onclick = () => {
+        const rows = selectedDemandRows().length ? selectedDemandRows() : state.demandRows.filter(r => r.status === '待提交');
+        closeModal();
+        submitDemandRows(rows, true);
+      };
+
+      const demandReturnConfirm = document.querySelector('[data-demand-return-confirm]');
+      if (demandReturnConfirm) demandReturnConfirm.onclick = () => {
+        const ids = demandReturnConfirm.dataset.demandReturnConfirm
+          ? demandReturnConfirm.dataset.demandReturnConfirm.split(',').map(Number)
+          : [];
+        const rows = ids.length ? state.demandRows.filter(r => ids.includes(r.id)) : selectedDemandRows();
+        const target = rows.length ? rows : state.demandRows.filter(r => r.status === '审核中');
+        const note = $('mDemandReturnNote') ? $('mDemandReturnNote').value.trim() : '';
+        if (!note) {
+          toast('退回说明不能为空');
+          return;
+        }
+        target.forEach(row => {
+          if (row.status !== '已审核') {
+            row.status = '审核不通过';
+            row.remark = note;
+          }
+        });
+        closeModal();
+        renderDemandRows();
+        toast('需求已标记为审核不通过');
+      };
+
+      const demandLockConfirm = document.querySelector('[data-demand-lock-confirm]');
+      if (demandLockConfirm) demandLockConfirm.onclick = () => {
+        const rows = selectedDemandRows().length ? selectedDemandRows() : state.demandRows.filter(r => ['已审核'].includes(r.status));
+        rows.forEach(row => {
+          row.status = '已审核';
+        });
+        closeModal();
+        renderDemandRows();
+        toast('已审核需求可进入补货计算');
+      };
+
+      const demandChangeConfirm = document.querySelector('[data-demand-change-confirm]');
+      if (demandChangeConfirm) demandChangeConfirm.onclick = () => {
+        const reason = $('mDemandChangeReason').value.trim();
+        if (!reason) {
+          toast('变更原因不能为空');
+          return;
+        }
+        selectedDemandRows().filter(row => row.status === '已审核').forEach(row => {
+          row.status = '审核中';
+          row.remark = reason;
+        });
+        closeModal();
+        renderDemandRows();
+        toast('需求变更申请已提交');
+      };
+
+      const demandMoreFilter = document.querySelector('[data-demand-more-filter]');
+      if (demandMoreFilter) demandMoreFilter.onclick = () => {
+        closeModal();
+        toast('高级筛选已应用');
+      };
+
+      const demandSaveView = document.querySelector('[data-demand-save-view]');
+      if (demandSaveView) demandSaveView.onclick = () => {
+        closeModal();
+        toast('需求池视图已保存');
+      };
+
+      const demandConfirm = document.querySelector('[data-demand-confirm]');
+      if (demandConfirm) demandConfirm.onclick = () => {
+        const ids = demandConfirm.dataset.demandConfirm.split(',').filter(Boolean).map(Number);
+        const rows = state.demandRows.filter(row => ids.includes(row.id));
+        const single = rows.length === 1 ? rows[0] : null;
+        const note = $('mDemandConfirmReason') ? $('mDemandConfirmReason').value.trim() : '';
+        if (single) {
+          const pmcQty = Number($('mDemandConfirmQty').value);
+          if (!pmcQty || pmcQty <= 0) {
+            toast('PMC确认数量必须大于 0');
+            return;
+          }
+          if (pmcQty !== (single.submittedQty || single.qty) && !note) {
+            toast('PMC确认数量与运营提报数量不一致时，必须填写调整原因');
+            return;
+          }
+          single.pmcQty = pmcQty;
+          single.qty = pmcQty;
+          single.pmcAdjustReason = note || '无需调整，按运营提报数量确认';
+          single.confirmedBy = '当前用户';
+          single.confirmedAt = nowText();
+          single.status = '已审核';
+        } else {
+          rows.forEach(row => {
+            row.pmcQty = row.submittedQty || row.qty;
+            row.qty = row.pmcQty;
+            row.pmcAdjustReason = '批量确认，按提报数量确认';
+            row.confirmedBy = '当前用户';
+            row.confirmedAt = nowText();
+            row.status = '已审核';
+          });
+        }
+        closeModal();
+        renderDemandRows();
+        toast((rows.length > 1 ? '批量' : '单行') + 'PMC确认完成');
+      };
+
+      const demandQtySave = document.querySelector('[data-demand-qty-save]');
+      if (demandQtySave) demandQtySave.onclick = () => {
+        const row = state.demandRows.find(item => item.id === Number(demandQtySave.dataset.id));
+        const field = demandQtySave.dataset.field;
+        const qty = Number($('mDemandQuickQty').value);
+        const reason = $('mDemandQuickQtyReason') ? $('mDemandQuickQtyReason').value.trim() : '';
+        if (!qty || qty <= 0) {
+          toast('数量必须大于 0');
+          return;
+        }
+        if (row.status === '已审核' || row.status === '审核不通过') {
+          toast('当前状态不可直接编辑数量');
+          return;
+        }
+        if (field === 'submitted') {
+          row.submittedQty = qty;
+          row.qty = row.pmcQty || qty;
+          row.pmcQty = null;
+          row.status = row.status === '待提交' ? '待提交' : '审核中';
+          row.qtyEditReason = reason || '页面快捷编辑运营提报数量';
+        } else {
+          row.pmcQty = qty;
+          row.qty = qty;
+          row.pmcAdjustReason = reason || (qty === (row.submittedQty || row.qty) ? '页面快捷录入 PMC 确认数量' : '页面快捷调整 PMC 确认数量');
+        }
+        closeModal();
+        renderDemandRows();
+        toast('数量已更新');
+      };
+
+      const demandEditConfirm = document.querySelector('[data-demand-edit-confirm]');
+      if (demandEditConfirm) demandEditConfirm.onclick = () => {
+        const row = state.demandRows.find(item => item.id === Number(demandEditConfirm.dataset.demandEditConfirm));
+        const data = readDemandForm();
+        const error = validateDemandForm(data);
+        if (error) {
+          toast(error);
+          return;
+        }
+        const overlap = demandOverlapMessage(data, row.id);
+        if (overlap) {
+          toast(overlap);
+          return;
+        }
+        Object.assign(row, data, {
+          status: row.status === '审核中' || row.status === '已审核' ? '待提交' : row.status,
+          pmcQty: row.status === '已审核' ? row.pmcQty : null,
+          qtyEditReason: '完整编辑需求信息'
+        });
+        closeModal();
+        renderDemandRows();
+        toast('需求已保存；如审核中需重新提交审核');
+      };
+    }
+
+    function bindRowActions() {
+      document.querySelectorAll('[data-action]').forEach(btn => {
+        btn.onclick = () => {
+          const row = state.rows.find(r => r.id === Number(btn.dataset.id));
+          const action = btn.dataset.action;
+          if (action === 'detail') openDetail(row);
+          if (action === 'adjust') openAdjust(row);
+          if (action === 'exception') openException(row);
+        };
+      });
+    }
+
+    function initEvents() {
+      $('btnCreateBatch').onclick = openCreateBatch;
+      $('btnSelectVersion').onclick = openSelectVersion;
+      $('btnSelectSnapshot').onclick = openSelectSnapshot;
+      $('btnTransferPriority').onclick = openTransferPriorityConfig;
+      $('btnGenerate').onclick = openGenerate;
+      $('btnRecalc').onclick = openRecalc;
+      $('btnExport').onclick = openExport;
+      $('btnMoreFilters').onclick = openMoreFilters;
+      $('btnSaveView').onclick = openSaveView;
+      $('btnBatchAdjust').onclick = openBatchAdjust;
+      $('btnSubmitApproval').onclick = openApprovalSubmit;
+      $('btnApprove').onclick = openApprove;
+      $('btnReject').onclick = openReject;
+      $('btnRelease').onclick = openRelease;
+      $('btnMessage').onclick = openMessages;
+      $('btnHelp').onclick = openHelp;
+      $('btnBenchmark').onclick = openBenchmark;
+
+      $('modalClose').onclick = closeModal;
+      $('modalMask').addEventListener('click', e => { if (e.target === $('modalMask')) closeModal(); });
+      $('drawerClose').onclick = closeDrawer;
+      $('drawerMask').addEventListener('click', e => { if (e.target === $('drawerMask')) closeDrawer(); });
+
+      $('btnSearch').onclick = () => { render(); toast('查询完成'); };
+      $('btnReset').onclick = () => {
+        ['filterKeyword', 'filterWarehouse', 'filterConstraint', 'filterApproval', 'filterTier'].forEach(id => $(id).value = '');
+        state.activeTab = '';
+        document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+        render();
+        toast('筛选已重置');
+      };
+
+      $('globalSearch').addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          $('filterKeyword').value = e.target.value;
+          render();
+          toast('已按全局关键词筛选');
+        }
+      });
+
+      $('checkAll').addEventListener('change', e => {
+        document.querySelectorAll('.row-check').forEach(chk => { chk.checked = e.target.checked; });
+      });
+
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.onclick = () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          state.activeTab = tab.dataset.tab;
+          render();
+        };
+      });
+
+      $('btnRefreshTimeline').onclick = () => {
+        state.timeline.unshift(['刚刚', '已刷新批次运行信息。']);
+        render();
+        toast('批次运行信息已刷新');
+      };
+    }
+
+    function bindMenuEvents() {
+      document.querySelectorAll('[data-menu]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll('[data-menu]').forEach(item => item.classList.remove('active'));
+          btn.classList.add('active');
+          const name = btn.dataset.menu;
+          renderMenuPage(name);
+        };
+      });
+    }
+
+    function renderMenuPage(name) {
+      const content = document.querySelector('.content');
+      if (name === '补货工作台') {
+        content.innerHTML = state.workbenchHtml;
+        initEvents();
+        render();
+        $('progress').style.width = '100%';
+        toast('已进入补货工作台');
+        return;
+      }
+      if (name === '销售计划与需求池') {
+        content.innerHTML = demandPageHtml();
+        bindDemandPageButtons();
+        renderDemandRows();
+        toast('已进入销售计划与需求池');
+        return;
+      }
+      if (name === '库存分层可视化') {
+        content.innerHTML = inventoryPageHtml();
+        bindInventoryPageButtons();
+        renderInventoryRows();
+        toast('已进入库存分层可视化');
+        return;
+      }
+      content.innerHTML = menuPageHtml(name);
+      bindGenericPageButtons(name);
+      toast('已进入' + name);
+    }
+
+    function demandPageHtml() {
+      const total = state.demandRows.length;
+      const pending = state.demandRows.filter(r => r.status === '审核中').length;
+      const confirmed = state.demandRows.filter(r => r.status === '已审核').length;
+      const rejected = state.demandRows.filter(r => r.status === '审核不通过').length;
+      return `
+        <div class="crumbs">首页 / M1 / 销售计划与需求池</div>
+        <div class="page-head">
+          <div class="page-title">
+            <h1>销售计划与需求池</h1>
+            <p>运营或 PMC 可发起需求提报；运营提报后由 PMC 确认数量，补货计算读取 PMC 确认数量。</p>
+          </div>
+          <div class="btn-row">
+            <button class="btn primary" id="demandAdd">录入需求提报</button>
+            <button class="btn" id="demandImport">导入需求提报</button>
+            <button class="btn" id="demandSubmit">提交评审</button>
+            <button class="btn danger" id="demandReturn">批量退回</button>
+            <button class="btn warn" id="demandLock">锁定需求</button>
+            <button class="btn" id="demandChange">发起变更</button>
+          </div>
+        </div>
+        <div class="grid cols-4" style="margin-bottom:14px;">
+          <div class="card pad stat"><label>需求提报记录</label><strong id="demandTotal">${total}</strong><div class="sub">运营/PMC 发起</div></div>
+          <div class="card pad stat"><label>审核中</label><strong id="demandPending">${pending}</strong><div class="sub">需 PMC 审核</div></div>
+          <div class="card pad stat"><label>已审核</label><strong id="demandConfirmed">${confirmed}</strong><div class="sub">已形成 PMC 确认量</div></div>
+          <div class="card pad stat"><label>审核不通过</label><strong id="demandRejected">${rejected}</strong><div class="sub">需调整后重提</div></div>
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="panel-head">
+            <div>
+              <h2>筛选条件</h2>
+              <div class="muted" style="font-size:12px;margin-top:4px;">支持按渠道、需求来源、状态快速定位待处理需求。</div>
+            </div>
+            <div class="btn-row">
+              <button class="btn small" id="demandSaveView">保存视图</button>
+              <button class="btn small" id="demandReset">重置</button>
+              <button class="btn small primary" id="demandSearch">查询</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="filter-grid">
+              <div class="field"><label>关键词</label><input id="demandKeyword" placeholder="需求单号 / SKU / 客户 / 店铺" /></div>
+              <div class="field"><label>渠道</label><select id="demandChannel"><option value="">全部</option><option>B2C线上国外</option><option>B2C线上国内</option><option>B2B海外商超</option><option>B2B线下国外</option></select></div>
+              <div class="field"><label>需求来源</label><select id="demandTier"><option value="">全部</option><option>销售预测</option><option>临时加单</option><option>促销活动</option><option>其他</option></select></div>
+              <div class="field"><label>状态</label><select id="demandStatusFilter"><option value="">全部</option><option>待提交</option><option>审核中</option><option>已审核</option><option>审核不通过</option></select></div>
+              <div class="field"><label>计划周</label><select id="demandWeek"><option value="">全部</option><option>2026-W18</option><option>2026-W19</option></select></div>
+              <button class="btn" id="demandMoreFilters">更多筛选</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="panel-head">
+            <div>
+              <h2>需求池明细</h2>
+              <div class="muted" style="font-size:12px;margin-top:4px;">运营提报数量保留原始值；PMC确认数量是进入补货计算的有效需求。</div>
+            </div>
+            <div class="btn-row">
+              <button class="btn small" id="demandFieldHelp">字段说明</button>
+              <button class="btn small" id="demandBatchApprove">批量确认</button>
+              <button class="btn small danger" id="demandBatchReturn">批量退回</button>
+              <button class="btn small" id="demandExport">导出</button>
+            </div>
+          </div>
+          <div style="overflow:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="demandCheckAll" /></th>
+                  <th>需求单号</th>
+                  <th>渠道/客户</th>
+                  <th>SKU</th>
+                  <th>时间桶</th>
+                  <th class="num">运营提报数量</th>
+                  <th class="num">PMC确认数量</th>
+                  <th>需求来源</th>
+                  <th>审核人(最新)</th>
+                  <th>审核完成时间</th>
+                  <th>创建人</th>
+                  <th>创建时间</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="demandBody"></tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function demandVisibleRows() {
+      const kw = $('demandKeyword') ? $('demandKeyword').value.trim().toLowerCase() : '';
+      const channel = $('demandChannel') ? $('demandChannel').value : '';
+      const source = $('demandTier') ? $('demandTier').value : '';
+      const status = $('demandStatusFilter') ? $('demandStatusFilter').value : '';
+      const week = $('demandWeek') ? $('demandWeek').value : '';
+      return state.demandRows.filter(row => {
+        const text = (row.no + row.channel + row.customer + row.sku + row.product).toLowerCase();
+        return (!kw || text.includes(kw)) &&
+          (!channel || row.channel === channel) &&
+          (!source || row.source === source) &&
+          (!status || row.status === status) &&
+          (!week || row.week === week);
+      });
+    }
+
+    function renderDemandRows() {
+      const rows = demandVisibleRows();
+      if (!$('demandBody')) return;
+      $('demandTotal').textContent = state.demandRows.length;
+      $('demandPending').textContent = state.demandRows.filter(r => r.status === '审核中').length;
+      $('demandConfirmed').textContent = state.demandRows.filter(r => r.status === '已审核').length;
+      $('demandRejected').textContent = state.demandRows.filter(r => r.status === '审核不通过').length;
+      $('demandBody').innerHTML = rows.map(row => `
+        <tr data-demand-id="${row.id}">
+          <td><input type="checkbox" class="demand-check" data-id="${row.id}" /></td>
+          <td><strong>${row.no}</strong><div class="muted">${row.createdBy || row.owner} · ${row.createdAt || '-'}</div></td>
+          <td>${row.channel}<div class="muted">${row.customer}</div></td>
+          <td><strong>${row.sku}</strong><div class="muted">${row.product}</div></td>
+          <td>${row.week}<div class="muted">${row.expectedDate}</div></td>
+          <td class="num"><strong>${format(row.submittedQty || row.qty)}</strong>${demandQtyEditButton(row, 'submitted')}</td>
+          <td class="num"><strong>${row.pmcQty != null ? format(row.pmcQty) : '-'}</strong>${demandQtyEditButton(row, 'pmc')}</td>
+          <td>${chip(row.source || '其他', 'blue')}<div class="muted">${row.initiatorRole || '运营'}发起</div></td>
+          <td>${row.confirmedBy || '-'}</td>
+          <td>${row.confirmedAt || '-'}</td>
+          <td>${row.createdBy || row.owner || '-'}</td>
+          <td>${row.createdAt || '-'}</td>
+          <td>${demandStatusChip(row.status)}</td>
+          <td>
+            ${demandRowActions(row)}
+          </td>
+        </tr>
+      `).join('');
+      if (!rows.length) {
+        $('demandBody').innerHTML = '<tr><td colspan="14"><div class="empty">暂无符合条件的需求，请调整筛选条件。</div></td></tr>';
+      }
+      bindDemandRowActions();
+    }
+
+    function demandQtyEditButton(row, field) {
+      if (['已审核', '审核不通过'].includes(row.status)) return '';
+      return '<div class="muted"><button class="btn small" data-demand-row="qty-' + field + '" data-id="' + row.id + '">编辑</button></div>';
+    }
+
+    function demandRowActions(row) {
+      const mainAction = row.status === '待提交'
+        ? '<button class="erp-link" data-demand-row="submit" data-id="' + row.id + '">提交</button>'
+        : row.status === '审核中'
+          ? '<button class="erp-link" data-demand-row="approve" data-id="' + row.id + '">审核</button>'
+          : '';
+      const separator = mainAction ? '<span class="erp-sep">|</span>' : '';
+      const editAction = row.status !== '已审核'
+        ? '<button data-demand-row="edit" data-id="' + row.id + '">编辑</button>'
+        : '';
+      const feedbackAction = row.status === '审核中'
+        ? '<button data-demand-row="return" data-id="' + row.id + '">反馈</button>'
+        : '';
+      const revokeAction = ['待提交', '审核中'].includes(row.status)
+        ? '<button data-demand-row="return" data-id="' + row.id + '">撤销</button>'
+        : '';
+      return `
+        <div class="erp-actions">
+          ${mainAction}
+          ${separator}
+          <span class="erp-more">
+            <button class="erp-link" type="button">更多⌄</button>
+            <span class="erp-menu">
+              <button data-demand-row="view" data-id="${row.id}">详情</button>
+              ${editAction}
+              ${feedbackAction}
+              ${revokeAction}
+            </span>
+          </span>
+        </div>
+      `;
+    }
+
+    function selectedDemandRows() {
+      const ids = Array.from(document.querySelectorAll('.demand-check:checked')).map(x => Number(x.dataset.id));
+      return state.demandRows.filter(row => ids.includes(row.id));
+    }
+
+    function inventoryAvailable(row) {
+      if (row.warehouseNature === '虚拟仓') return row.virtualAvailable || 0;
+      return Math.max(0, row.physical - row.reserved - row.unavailable);
+    }
+
+    function inventoryEffectiveSupply(row) {
+      const onTimeInbound = row.inboundDelayDays > 0 ? 0 : row.inbound;
+      return inventoryAvailable(row) + row.receiving + onTimeInbound;
+    }
+
+    function inventoryPhysicalCommonQty(row) {
+      if (row.warehouseNature !== '实体仓') return row.physicalAllocatable || 0;
+      const safetyQty = Math.round((row.dailyDemand || 0) * (row.safetyDays || 0));
+      const common = inventoryAvailable(row) - (row.boundVirtualQty || 0) - (row.planReserved || 0) - safetyQty;
+      return Math.max(common, 0);
+    }
+
+    function inventoryProtectionQty(row) {
+      const safetyQty = Math.round((row.dailyDemand || 0) * (row.safetyDays || 0));
+      return (row.lockedDemand || 0) + (row.committedOrder || 0) + (row.approvedTransferOut || 0) + (row.planReserved || 0) + safetyQty;
+    }
+
+    function inventoryTransferableQty(row) {
+      if (row.syncStatus !== 'success' || Math.abs(row.diffQty) > 50) return 0;
+      return Math.max(inventoryEffectiveSupply(row) - inventoryProtectionQty(row), 0);
+    }
+
+    function inventoryCoverageDays(row) {
+      if (!row.dailyDemand) return 999;
+      return Math.round(inventoryEffectiveSupply(row) / row.dailyDemand);
+    }
+
+    function inventoryStatusInfo(row) {
+      const available = inventoryAvailable(row);
+      const effectiveSupply = inventoryEffectiveSupply(row);
+      const coverage = inventoryCoverageDays(row);
+      const unavailableRate = row.physical ? row.unavailable / row.physical : 0;
+      const reservedRate = row.physical ? row.reserved / row.physical : 0;
+      const totalAfterInbound = row.physical + row.inbound + row.receiving;
+      if (row.syncStatus !== 'success' || Math.abs(row.diffQty) > 50) {
+        return { status: '库存差异', tone: 'red', reason: '源系统同步异常或差异数量超过阈值', formula: '|ERP/WMS/平台差异| > 50 或同步状态非成功' };
+      }
+      if (available <= 0 && row.dailyDemand > 0) {
+        return { status: '缺货', tone: 'red', reason: '当前可用库存为 0，且仍有日均需求', formula: '可用库存 <= 0 且 日均需求 > 0' };
+      }
+      if (row.inboundDelayDays > 0 && coverage < row.safetyDays) {
+        return { status: '在途延期', tone: 'red', reason: '在途晚于需求窗口，准时供给不足', formula: '延期在途 > 0 且 覆盖天数 < 安全覆盖天数' };
+      }
+      if (coverage < row.safetyDays) {
+        return { status: '覆盖不足', tone: 'orange', reason: '有效供给低于安全覆盖要求', formula: '覆盖天数 < 安全覆盖天数' };
+      }
+      if (totalAfterInbound > row.capacityLimit) {
+        return { status: '库容/上限风险', tone: 'orange', reason: '实物、在途、上架中合计超过仓库或平台上限', formula: '实物库存 + 在途 + 上架中 > 仓库上限' };
+      }
+      if (row.receiving > 0 && row.receivingAgeHours > 48) {
+        return { status: '上架中积压', tone: 'orange', reason: '到仓后长时间未上架，尚不能转为可售', formula: '上架中数量 > 0 且 上架时长 > 48小时' };
+      }
+      if (unavailableRate > 0.2) {
+        return { status: '不可售过高', tone: 'orange', reason: '不可用/不可售库存占比偏高', formula: '不可用库存 / 实物库存 > 20%' };
+      }
+      if (reservedRate > 0.4) {
+        return { status: '预留过高', tone: 'orange', reason: '库存被订单、活动或调拨大量占用', formula: '预留库存 / 实物库存 > 40%' };
+      }
+      if (row.ageDays >= 90 || coverage > row.overstockDays) {
+        return { status: '长库龄/高库存', tone: 'blue', reason: '库存周转慢或覆盖天数明显高于上限', formula: '库龄 >= 90天 或 覆盖天数 > 高库存阈值' };
+      }
+      return { status: '健康', tone: 'green', reason: '可用、覆盖、库龄和同步均在策略范围内', formula: '安全覆盖天数 <= 覆盖天数 <= 高库存阈值，且无差异/延期/不可售风险' };
+    }
+
+    function inventoryVisibleRows() {
+      const kw = $('inventoryKeyword') ? $('inventoryKeyword').value.trim().toLowerCase() : '';
+      const warehouseType = $('inventoryWarehouseType') ? $('inventoryWarehouseType').value : '';
+      const status = $('inventoryStatus') ? $('inventoryStatus').value : '';
+      return state.inventoryRows.filter(row => {
+        const info = inventoryStatusInfo(row);
+        const text = (row.sku + row.product + row.warehouse + row.warehouseType).toLowerCase();
+        return (!kw || text.includes(kw)) &&
+          (!warehouseType || row.warehouseType === warehouseType) &&
+          (!status || info.status === status);
+      });
+    }
+
+    function inventoryPageHtml() {
+      const totalAvailable = state.inventoryRows
+        .filter(row => row.warehouseNature === '虚拟仓')
+        .reduce((sum, row) => sum + inventoryAvailable(row), 0);
+      const totalFrozen = state.inventoryRows
+        .filter(row => row.warehouseNature === '虚拟仓')
+        .reduce((sum, row) => sum + (row.virtualFrozen || 0), 0);
+      const totalTransferable = state.inventoryRows.reduce((sum, row) => sum + inventoryTransferableQty(row), 0);
+      const totalCommonPool = state.inventoryRows.reduce((sum, row) => sum + inventoryPhysicalCommonQty(row), 0);
+      const riskCount = state.inventoryRows.filter(row => inventoryStatusInfo(row).status !== '健康').length;
+      const agingCount = state.inventoryRows.filter(row => row.ageDays >= 90).length;
+      return `
+        <div class="crumbs">首页 / M2 / 库存分层可视化</div>
+        <div class="page-head">
+          <div class="page-title">
+            <h1>库存分层可视化</h1>
+            <p>基于库存快照统一展示实体仓、虚拟仓、虚拟仓可用、虚拟仓冻结、实体仓可分配、计划占用、保护库存和可调拨数量。</p>
+          </div>
+          <div class="btn-row">
+            <button class="btn primary" id="inventoryRefresh">刷新快照</button>
+            <button class="btn" id="inventoryStatusRule">状态计算规则</button>
+            <button class="btn" id="inventoryReservation">查看预留</button>
+            <button class="btn" id="inventoryTransit">查看在途</button>
+            <button class="btn" id="inventoryTask">创建核对任务</button>
+            <button class="btn" id="inventoryExport">导出库存</button>
+          </div>
+        </div>
+        <div class="grid cols-4" style="margin-bottom:14px;">
+          <div class="card pad stat"><label>库存快照</label><strong id="inventorySnapshot">${state.inventorySnapshot}</strong><div class="sub">WMS/平台/3PL 当前同步</div></div>
+          <div class="card pad stat"><label>虚拟仓可用</label><strong id="inventoryAvailable">${format(totalAvailable)}</strong><div class="sub">销售订单可占用</div></div>
+          <div class="card pad stat"><label>虚拟仓冻结</label><strong id="inventoryFrozen">${format(totalFrozen)}</strong><div class="sub">订单占用后冻结</div></div>
+          <div class="card pad stat"><label>实体仓可分配</label><strong id="inventoryCommonPool">${format(totalCommonPool)}</strong><div class="sub">未分配且未计划占用</div></div>
+          <div class="card pad stat"><label>可调拨数量</label><strong id="inventoryTransferable">${format(totalTransferable)}</strong><div class="sub">有效供给 - 保护库存</div></div>
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="panel-head">
+            <div>
+              <h2>快照口径</h2>
+              <div class="muted" style="font-size:12px;margin-top:4px;">库存状态不是直接读一个字段，而是基于快照数据、需求消耗、在途节点和策略阈值实时计算。</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <table>
+              <tbody>
+                <tr><td>快照来源</td><td>国内仓 WMS、平台仓 API、海外 3PL API</td><td>快照维度</td><td>SKU + 实体仓 + 虚拟仓 + 快照时间</td></tr>
+                <tr><td>虚拟仓可用</td><td>ERP 虚拟仓可用，分货后增加</td><td>虚拟仓冻结</td><td>ERP 虚拟仓冻结，订单占用后从可用转冻结</td></tr>
+                <tr><td>实体仓可分配</td><td colspan="3">实体仓可用 - 绑定虚拟仓可用合计 - 绑定虚拟仓冻结合计 - 计划占用 - 安全库存</td></tr>
+                <tr><td>覆盖天数</td><td>有效供给 / 日均需求</td><td>日均需求</td><td>优先取已锁定需求，缺失时取近4/8周销量</td></tr>
+                <tr><td>保护库存</td><td>已锁定需求 + 已承诺订单 + 已批准调拨出库 + 计划占用 + 安全库存</td><td>可调拨数量</td><td>max(有效供给 - 保护库存, 0)</td></tr>
+                <tr><td>防重复占用</td><td colspan="3">同一实体仓被多个虚拟仓共用时，补货试算先写入计划占用账本，后续虚拟仓只能使用扣减后的实体仓可分配。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="panel-head">
+            <div>
+              <h2>筛选条件</h2>
+              <div class="muted" style="font-size:12px;margin-top:4px;">按仓型、状态、SKU 或仓库定位库存风险。</div>
+            </div>
+            <div class="btn-row">
+              <button class="btn small" id="inventoryReset">重置</button>
+              <button class="btn small primary" id="inventorySearch">查询</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="filter-grid">
+              <div class="field"><label>关键词</label><input id="inventoryKeyword" placeholder="SKU / 商品 / 仓库" /></div>
+              <div class="field"><label>仓库类型</label><select id="inventoryWarehouseType"><option value="">全部</option><option>国内仓</option><option>平台仓</option><option>海外3PL</option></select></div>
+              <div class="field"><label>库存状态</label><select id="inventoryStatus"><option value="">全部</option><option>健康</option><option>缺货</option><option>覆盖不足</option><option>在途延期</option><option>库存差异</option><option>不可售过高</option><option>预留过高</option><option>上架中积压</option><option>库容/上限风险</option><option>长库龄/高库存</option></select></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="panel-head">
+            <div>
+              <h2>库存快照明细</h2>
+              <div class="muted" style="font-size:12px;margin-top:4px;">状态按优先级计算：差异/缺货/延期优先于覆盖、高库存和健康。</div>
+            </div>
+          </div>
+          <div style="overflow:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>SKU</th><th>仓库</th><th>性质</th><th>绑定实体仓</th><th class="num">实体实物</th><th class="num">虚拟仓可用</th><th class="num">虚拟仓冻结</th><th class="num">实体仓可分配</th><th class="num">计划占用</th><th class="num">可调拨</th><th class="num">覆盖天数</th><th>库存状态</th><th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryBody"></tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderInventoryRows() {
+      if (!$('inventoryBody')) return;
+      const rows = inventoryVisibleRows();
+      $('inventoryAvailable').textContent = format(state.inventoryRows
+        .filter(row => row.warehouseNature === '虚拟仓')
+        .reduce((sum, row) => sum + inventoryAvailable(row), 0));
+      $('inventoryFrozen').textContent = format(state.inventoryRows
+        .filter(row => row.warehouseNature === '虚拟仓')
+        .reduce((sum, row) => sum + (row.virtualFrozen || 0), 0));
+      $('inventoryCommonPool').textContent = format(state.inventoryRows.reduce((sum, row) => sum + inventoryPhysicalCommonQty(row), 0));
+      $('inventoryTransferable').textContent = format(state.inventoryRows.reduce((sum, row) => sum + inventoryTransferableQty(row), 0));
+      if ($('inventoryRisk')) {
+        $('inventoryRisk').textContent = state.inventoryRows.filter(row => inventoryStatusInfo(row).status !== '健康').length;
+      }
+      $('inventoryBody').innerHTML = rows.map(row => {
+        const available = inventoryAvailable(row);
+        const physicalAllocatable = inventoryPhysicalCommonQty(row);
+        const protection = inventoryProtectionQty(row);
+        const transferable = inventoryTransferableQty(row);
+        const coverage = inventoryCoverageDays(row);
+        const info = inventoryStatusInfo(row);
+        return `
+          <tr>
+            <td><strong>${row.sku}</strong><div class="muted">${row.product}</div></td>
+            <td>${row.warehouse}<div class="muted">${row.warehouseType} · ${row.source}</div></td>
+            <td>${row.warehouseNature}</td>
+            <td>${row.physicalWarehouse || '-'}</td>
+            <td class="num">${row.warehouseNature === '实体仓' ? format(row.physical) : '-'}</td>
+            <td class="num"><strong>${row.warehouseNature === '虚拟仓' ? format(available) : '-'}</strong></td>
+            <td class="num">${row.warehouseNature === '虚拟仓' ? format(row.virtualFrozen || 0) : '-'}</td>
+            <td class="num">${format(physicalAllocatable)}</td>
+            <td class="num">${format(row.planReserved || 0)}</td>
+            <td class="num"><strong>${format(transferable)}</strong></td>
+            <td class="num">${coverage}</td>
+            <td>${chip(info.status, info.tone)}<div class="muted">${info.reason}</div></td>
+            <td><button class="btn small" data-inventory-detail="${row.id}">详情</button></td>
+          </tr>
+        `;
+      }).join('');
+      if (!rows.length) {
+        $('inventoryBody').innerHTML = '<tr><td colspan="13"><div class="empty">暂无符合条件的库存快照，请调整筛选条件。</div></td></tr>';
+      }
+      document.querySelectorAll('[data-inventory-detail]').forEach(btn => {
+        btn.onclick = () => {
+          const row = state.inventoryRows.find(item => item.id === Number(btn.dataset.inventoryDetail));
+          if (row) openInventoryDetail(row);
+        };
+      });
+    }
+
+    function bindInventoryPageButtons() {
+      $('inventorySearch').onclick = renderInventoryRows;
+      $('inventoryReset').onclick = () => {
+        $('inventoryKeyword').value = '';
+        $('inventoryWarehouseType').value = '';
+        $('inventoryStatus').value = '';
+        renderInventoryRows();
+      };
+      $('inventoryRefresh').onclick = () => {
+        state.inventorySnapshot = 'IS-0429-' + String(new Date().getHours()).padStart(2, '0') + String(new Date().getMinutes()).padStart(2, '0');
+        $('inventorySnapshot').textContent = state.inventorySnapshot;
+        toast('库存快照已刷新，状态已按最新快照重算');
+      };
+      $('inventoryStatusRule').onclick = openInventoryStatusRules;
+      $('inventoryReservation').onclick = () => openModal('查看预留', '展示订单、调拨、活动锁定等预留来源。', '<div class="inline-note">点击明细行「详情」可查看该 SKU 的预留拆分；此处为批量查看入口。</div>', '<button class="btn primary" data-close>知道了</button>', true);
+      $('inventoryTransit').onclick = () => openModal('查看在途', '展示采购、调拨、头程、清关、预约、上架等在途节点。', '<div class="inline-note">延期在途不会计入有效供给；准时在途可按策略计入覆盖天数。</div>', '<button class="btn primary" data-close>知道了</button>', true);
+      $('inventoryTask').onclick = () => openModal('创建库存核对任务', '用于处理库存差异、不可售异常、上架中积压等问题。', formGrid([
+        { label: '任务类型', html: '<select><option>库存差异核对</option><option>不可售原因核查</option><option>上架超时跟进</option></select>' },
+        { label: '责任部门', html: '<select><option>仓储</option><option>平台运营</option><option>物流</option></select>' },
+        { label: '处理时限', html: '<input type="date" value="2026-05-02" />' }
+      ]), '<button class="btn" data-close>取消</button><button class="btn primary" data-close>创建任务</button>', true);
+      $('inventoryExport').onclick = () => toast('已导出库存快照明细和状态计算结果');
+    }
+
+    function openInventoryDetail(row) {
+      const available = inventoryAvailable(row);
+      const effectiveSupply = inventoryEffectiveSupply(row);
+      const physicalAllocatable = inventoryPhysicalCommonQty(row);
+      const protection = inventoryProtectionQty(row);
+      const transferable = inventoryTransferableQty(row);
+      const coverage = inventoryCoverageDays(row);
+      const info = inventoryStatusInfo(row);
+      openDrawer(
+        '库存详情 · ' + row.sku,
+        row.warehouse + ' / ' + row.warehouseType + ' / ' + state.inventorySnapshot,
+        `
+          <div class="grid cols-3">
+            <div class="card pad stat"><label>${row.warehouseNature === '虚拟仓' ? '虚拟仓可用' : '实体仓可用'}</label><strong>${format(available)}</strong><div class="sub">${row.warehouseNature === '虚拟仓' ? 'ERP 虚拟仓可用' : '实物 - 预留 - 不可用'}</div></div>
+            <div class="card pad stat"><label>实体仓可分配</label><strong>${format(physicalAllocatable)}</strong><div class="sub">扣除虚拟仓可用/冻结和计划占用</div></div>
+            <div class="card pad stat"><label>库存状态</label><strong>${info.status}</strong><div class="sub">${info.reason}</div></div>
+          </div>
+          <div style="height:14px;"></div>
+          <div class="card"><div class="panel-head"><h2>快照字段</h2></div><div class="panel-body">
+            <table><tbody>
+              <tr><td>仓库性质</td><td>${row.warehouseNature}</td><td>绑定实体仓</td><td>${row.physicalWarehouse || '-'}</td></tr>
+              <tr><td>实体仓实物</td><td>${row.warehouseNature === '实体仓' ? format(row.physical) : '-'}</td><td>实体仓可用</td><td>${row.warehouseNature === '实体仓' ? format(available) : '-'}</td></tr>
+              <tr><td>虚拟仓可用</td><td>${row.warehouseNature === '虚拟仓' ? format(available) : '-'}</td><td>虚拟仓冻结</td><td>${row.warehouseNature === '虚拟仓' ? format(row.virtualFrozen || 0) : '-'}</td></tr>
+              <tr><td>在途数量</td><td>${format(row.inbound)}</td><td>上架中</td><td>${format(row.receiving)}</td></tr>
+              <tr><td>虚拟仓可用+冻结</td><td>${format(row.boundVirtualQty || 0)}</td><td>计划占用</td><td>${format(row.planReserved || 0)}</td></tr>
+              <tr><td>实体仓可分配</td><td>${format(physicalAllocatable)}</td><td>可调拨数量</td><td>${format(transferable)}</td></tr>
+              <tr><td>库龄</td><td>${row.ageDays}天</td><td>同步状态</td><td>${row.syncStatus}</td></tr>
+              <tr><td>快照时间</td><td>${row.snapshotTime}</td><td>来源系统</td><td>${row.source}</td></tr>
+            </tbody></table>
+          </div></div>
+          <div style="height:14px;"></div>
+          <div class="card"><div class="panel-head"><h2>状态计算逻辑</h2></div><div class="panel-body">
+            <table><tbody>
+              <tr><td>命中状态</td><td>${info.status}</td><td>状态优先级</td><td>差异/缺货/延期 > 覆盖不足 > 上限/不可售/预留/积压 > 高库存 > 健康</td></tr>
+              <tr><td>命中公式</td><td colspan="3">${info.formula}</td></tr>
+              <tr><td>计算过程</td><td colspan="3">可用 ${format(available)}，有效供给 ${format(effectiveSupply)}，实体仓可分配 ${format(physicalAllocatable)}，保护库存 ${format(protection)}，可调拨 ${format(transferable)}，日均需求 ${format(row.dailyDemand)}，覆盖天数 ${coverage}。</td></tr>
+              <tr><td>保护库存拆分</td><td colspan="3">已锁定需求 ${format(row.lockedDemand || 0)} + 已承诺订单 ${format(row.committedOrder || 0)} + 已批准调拨出库 ${format(row.approvedTransferOut || 0)} + 计划占用 ${format(row.planReserved || 0)} + 安全库存 ${format(Math.round((row.dailyDemand || 0) * (row.safetyDays || 0)))}。</td></tr>
+              <tr><td>防重复占用</td><td colspan="3">补货试算会写入计划占用账本；同一实体仓可分配被一个虚拟仓占用后，其他虚拟仓只能使用扣减后的余额。</td></tr>
+            </tbody></table>
+          </div></div>
+        `,
+        '<button class="btn" id="drawerOk">关闭</button>'
+      );
+    }
+
+    function openInventoryStatusRules() {
+      openModal(
+        '库存状态计算规则',
+        '状态基于库存快照实时计算，按优先级取最严重状态展示。',
+        `
+          <table>
+            <thead><tr><th>状态</th><th>计算逻辑</th><th>业务含义</th></tr></thead>
+            <tbody>
+              <tr><td>库存差异</td><td>|源系统差异| > 阈值，或 sync_status != success</td><td>先核对数据可信度，再进入补货计算</td></tr>
+              <tr><td>虚拟仓可用</td><td>ERP 虚拟仓可用，分货后增加</td><td>销售订单只能占用虚拟仓可用</td></tr>
+              <tr><td>虚拟仓冻结</td><td>ERP 虚拟仓冻结，订单占用后从可用转冻结</td><td>出库后扣减实体仓实物和虚拟仓冻结</td></tr>
+              <tr><td>实体仓可分配</td><td>实体仓可用 - 虚拟仓可用+冻结未消耗 - 计划占用 - 安全库存</td><td>供多个虚拟仓共享，但必须通过计划占用防重复</td></tr>
+              <tr><td>缺货</td><td>可用库存 <= 0 且 日均需求 > 0</td><td>当前不可售或不可履约，需优先补货/调拨</td></tr>
+              <tr><td>在途延期</td><td>延期在途 > 0 且 覆盖天数 < 安全覆盖天数</td><td>账面有在途，但赶不上需求窗口</td></tr>
+              <tr><td>覆盖不足</td><td>覆盖天数 < 安全覆盖天数</td><td>有效供给低于策略安全水位</td></tr>
+              <tr><td>库容/上限风险</td><td>实物 + 在途 + 上架中 > 仓库/平台上限</td><td>继续补货可能入不了仓或产生超仓费</td></tr>
+              <tr><td>上架中积压</td><td>上架中数量 > 0 且 上架时长 > SLA</td><td>货已到但未转可售，需仓储跟进</td></tr>
+              <tr><td>不可售过高</td><td>不可用库存 / 实物库存 > 阈值</td><td>破损、待检、平台不可售占比过高</td></tr>
+              <tr><td>预留过高</td><td>预留库存 / 实物库存 > 阈值</td><td>库存被订单、活动、调拨占用，实际可调度少</td></tr>
+              <tr><td>长库龄/高库存</td><td>库龄 >= 90天 或 覆盖天数 > 高库存阈值</td><td>周转慢，需控制补货或促销清理</td></tr>
+              <tr><td>健康</td><td>未命中以上风险，且覆盖天数在安全与高库存区间</td><td>库存水位相对合理</td></tr>
+            </tbody>
+          </table>
+        `,
+        '<button class="btn primary" data-close>知道了</button>',
+        true
+      );
+    }
+
+    function menuPageHtml(name) {
+      const config = {
+        '销售计划与需求池': {
+          code: 'M1',
+          desc: '承接运营/PMC人工提报数量，经 PMC 确认后形成可评审、可锁定、可追溯的有效需求。',
+          stats: [['待提交', '18'], ['审核中', '126'], ['已审核', '117'], ['审核不通过', '5']],
+          buttons: ['录入需求提报', '导入需求提报', '提交评审', '批量退回', '锁定需求', '发起变更'],
+          headers: ['需求单号', '渠道/客户', 'SKU数', '运营提报', 'PMC确认', '状态', '操作'],
+          rows: [
+            ['DP-20260429-001', 'B2B海外商超 / Costco', '32', 'Tier A', '国内仓-深圳', '审核中'],
+            ['DP-20260429-002', 'B2C国外 / Amazon-US', '86', 'Tier B', 'FBA-US-LAX9', '审核不通过'],
+            ['DP-20260429-003', 'B2C国内 / 天猫', '44', 'Tier C', '国内仓-义乌', '待提交']
+          ]
+        },
+        '库存分层可视化': {
+          code: 'M2',
+          desc: '统一展示实体仓、虚拟仓、虚拟仓可用、虚拟仓冻结、实体仓可分配、计划占用和可调拨数量。',
+          stats: [['库存快照', 'IS-0429-1200'], ['虚拟仓可用', '4,550'], ['虚拟仓冻结', '620'], ['实体仓可分配', '150']],
+          buttons: ['刷新快照', '导入库存差异', '查看预留', '查看在途', '创建核对任务', '导出库存'],
+          headers: ['SKU', '仓库', '性质', '绑定实体仓', '虚拟仓可用/冻结', '实体仓可分配', '状态'],
+          rows: [
+            ['SKU-A1024', 'FBA-US-LAX9', '虚拟仓', '实体仓-US-LAX', '可用 930 / 冻结 500', '-', '覆盖不足'],
+            ['SKU-C3099', '3PL-DE-HH', '虚拟仓', '实体仓-DE-HH', '可用 1,120 / 冻结 0', '-', '库存上限风险'],
+            ['SKU-E5188', '国内仓-义乌', '实体仓', '-', '-', '150', '库存差异']
+          ]
+        },
+        '执行协同': {
+          code: 'M4',
+          desc: '承接补货计划下发结果，跟踪采购申请、调拨单、平台入仓批次和发运计划的关键节点。',
+          stats: [['待承接', '14'], ['执行中', '39'], ['延期', '6'], ['今日需更新', '11']],
+          buttons: ['承接任务', '批量分派', '回写节点', '更新ETA', '创建延期异常', '导出执行单'],
+          headers: ['执行单号', '类型', 'SKU数', '责任部门', '计划到仓', '当前阶段', '操作'],
+          rows: [
+            ['PR-20260429-018', '采购申请', '12', '采购部', '2026-05-12', '待承接'],
+            ['IB-20260429-006', '平台入仓', '8', '物流部', '2026-05-08', '预约中'],
+            ['SHIP-20260429-011', '发运计划', '16', '物流部', '2026-05-15', '头程在途']
+          ]
+        },
+        '异常中心': {
+          code: 'M5',
+          desc: '统一承接缺货、延期、限仓、预测偏差、库存差异和约束违反，支持分派、升级、关闭和复盘。',
+          stats: [['S1异常', '3'], ['S2异常', '18'], ['超时工单', '5'], ['关闭率', '82%']],
+          buttons: ['新建异常', '批量分派', '升级', '更新进展', '关闭复盘', '导出工单'],
+          headers: ['异常编号', '类型', '等级', '影响对象', '责任人', '状态', '操作'],
+          rows: [
+            ['EX-20260429-021', '平台限仓', 'S1', 'SKU-C3099 / 3PL-DE-HH', '物流专员B', '处理中'],
+            ['EX-20260429-022', '采购延期', 'S2', 'PR-20260429-018', '采购C', '已分派'],
+            ['EX-20260429-023', '库存差异', 'S2', '国内仓-义乌', '仓储A', '待验证']
+          ]
+        },
+        '数据看板': {
+          code: 'M6',
+          desc: '展示需求质量、库存健康、补货计划、执行达成和异常闭环指标，辅助管理层和PMC复盘。',
+          stats: [['需求准确率', '76%'], ['补货采纳率', '68%'], ['计划达成率', '81%'], ['异常关闭率', '82%']],
+          buttons: ['切换周期', '选择渠道', '刷新数据', '查看口径', '导出报表', '订阅报告'],
+          headers: ['指标', '本期', '上期', '变化', '责任模块', '状态', '操作'],
+          rows: [
+            ['销售计划提报及时率', '91%', '86%', '+5%', 'M1', '正常'],
+            ['库存覆盖不足SKU', '27', '35', '-8', 'M2', '改善'],
+            ['S1平均处理时长', '18h', '26h', '-8h', 'M5', '改善']
+          ]
+        }
+      }[name];
+
+      return `
+        <div class="crumbs">首页 / ${config.code} / ${name}</div>
+        <div class="page-head">
+          <div class="page-title">
+            <h1>${name}</h1>
+            <p>${config.desc}</p>
+          </div>
+          <div class="btn-row">
+            ${config.buttons.map((btn, index) => '<button class="btn ' + (index === 0 ? 'primary' : '') + '" data-page-action="' + btn + '">' + btn + '</button>').join('')}
+          </div>
+        </div>
+        <div class="grid cols-4" style="margin-bottom:14px;">
+          ${config.stats.map(item => `
+            <div class="card pad stat">
+              <label>${item[0]}</label>
+              <strong>${item[1]}</strong>
+              <div class="sub">${name}核心指标</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="panel-head">
+            <div>
+              <h2>${name}筛选区</h2>
+              <div class="muted" style="font-size:12px;margin-top:4px;">该页面已可进入，按钮先提供真实弹窗交互；后续可按此页面继续细化到完整按钮级流程。</div>
+            </div>
+            <div class="btn-row">
+              <button class="btn small" data-page-action="保存视图">保存视图</button>
+              <button class="btn small" data-page-action="重置">重置</button>
+              <button class="btn small primary" data-page-action="查询">查询</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="filter-grid">
+              <div class="field"><label>关键词</label><input placeholder="输入单号 / SKU / 客户 / 仓库" /></div>
+              <div class="field"><label>渠道</label><select><option>全部</option><option>B2C国外</option><option>B2B海外商超</option></select></div>
+              <div class="field"><label>仓库</label><select><option>全部</option><option>国内仓</option><option>平台仓</option><option>海外3PL</option></select></div>
+              <div class="field"><label>状态</label><select><option>全部</option><option>待处理</option><option>处理中</option><option>已完成</option></select></div>
+              <div class="field"><label>计划周</label><select><option>2026-W18</option><option>2026-W19</option></select></div>
+              <div class="field"><label>负责人</label><select><option>全部</option><option>PMC</option><option>采购</option><option>物流</option></select></div>
+              <button class="btn" data-page-action="更多筛选">更多筛选</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="panel-head">
+            <h2>${name}列表</h2>
+            <div class="btn-row">
+              <button class="btn small" data-page-action="批量操作">批量操作</button>
+              <button class="btn small" data-page-action="导出">导出</button>
+            </div>
+          </div>
+          <div style="overflow:auto;">
+            <table>
+              <thead><tr>${config.headers.map(h => '<th>' + h + '</th>').join('')}</tr></thead>
+              <tbody>
+                ${config.rows.map(row => `
+                  <tr>
+                    ${row.map(cell => '<td>' + cell + '</td>').join('')}
+                    <td><button class="btn small" data-page-action="查看详情">查看</button><button class="btn small" data-page-action="编辑">编辑</button></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function bindGenericPageButtons(name) {
+      document.querySelectorAll('[data-page-action]').forEach(btn => {
+        btn.onclick = () => {
+          const action = btn.dataset.pageAction;
+          openModal(
+            name + ' · ' + action,
+            '当前已进入具体菜单页面。该按钮已绑定真实弹窗，下一步可继续细化为完整业务交互。',
+            `
+              <div class="inline-note">你点击了「${action}」。后续细化时会补充字段、校验、状态流转、确认弹窗和数据变化。</div>
+              <div style="height:14px;"></div>
+              ${formGrid([
+                { label: '操作对象', html: '<input value="' + name + '" readonly />' },
+                { label: '操作类型', html: '<input value="' + action + '" readonly />' },
+                { label: '处理意见', html: '<input placeholder="请输入备注或处理意见" />' },
+                { label: '责任人', html: '<select><option>当前用户</option><option>PMC负责人</option><option>采购</option><option>物流</option></select>' }
+              ])}
+            `,
+            '<button class="btn" data-close>取消</button><button class="btn primary" data-toast="' + action + '已执行">确认</button>'
+          );
+        };
+      });
+    }
+
+    function bindDemandPageButtons() {
+      $('demandAdd').onclick = openDemandAdd;
+      $('demandImport').onclick = openDemandImport;
+      $('demandSubmit').onclick = openDemandSubmit;
+      $('demandReturn').onclick = openDemandReturn;
+      $('demandLock').onclick = openDemandLock;
+      $('demandChange').onclick = openDemandChange;
+      $('demandBatchApprove').onclick = () => approveDemandRows(selectedDemandRows(), true);
+      $('demandBatchReturn').onclick = openDemandReturn;
+      $('demandExport').onclick = () => toast('需求池导出任务已创建：demand_pool_2026W18.xlsx');
+      $('demandFieldHelp').onclick = openDemandFieldHelp;
+      $('demandSearch').onclick = () => { renderDemandRows(); toast('需求池查询完成'); };
+      $('demandReset').onclick = () => {
+        ['demandKeyword', 'demandChannel', 'demandTier', 'demandStatusFilter', 'demandWeek'].forEach(id => { if ($(id)) $(id).value = ''; });
+        renderDemandRows();
+        toast('需求池筛选已重置');
+      };
+      $('demandSaveView').onclick = () => openModal(
+        '保存需求池视图',
+        '保存当前筛选条件，便于 PMC 下次快速进入相同视图。',
+        formGrid([
+          { label: '视图名称', html: '<input id="mDemandViewName" value="待PMC确认需求" />' },
+          { label: '可见范围', html: '<select><option>仅自己</option><option>PMC团队</option><option>销售运营团队</option></select>' }
+        ]),
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-save-view>保存</button>'
+      );
+      $('demandMoreFilters').onclick = openDemandMoreFilters;
+      $('demandCheckAll').onchange = e => {
+        document.querySelectorAll('.demand-check').forEach(chk => { chk.checked = e.target.checked; });
+      };
+    }
+
+    function bindDemandRowActions() {
+      document.querySelectorAll('[data-demand-row]').forEach(btn => {
+        btn.onclick = () => {
+          const row = state.demandRows.find(item => item.id === Number(btn.dataset.id));
+          const action = btn.dataset.demandRow;
+          if (action === 'view') openDemandView(row);
+          if (action === 'edit') openDemandEdit(row);
+          if (action === 'qty-submitted') openDemandQtyEdit(row, 'submitted');
+          if (action === 'qty-pmc') openDemandQtyEdit(row, 'pmc');
+          if (action === 'submit') submitDemandRows([row], false);
+          if (action === 'approve') approveDemandRows([row], false);
+          if (action === 'return') openDemandReturn(row);
+        };
+      });
+    }
+
+    function submitDemandRows(rows, batch) {
+      const target = (rows && rows.length ? rows : []).filter(row => row.status === '待提交');
+      if (!target.length) {
+        toast('只有待提交状态可以提交');
+        return;
+      }
+      target.forEach(row => { row.status = '审核中'; });
+      renderDemandRows();
+      toast((batch ? '批量' : '单行') + '已提交审核');
+    }
+
+    function demandForm(row) {
+      const data = row || {};
+      return formGrid([
+        { label: '发起角色', html: '<select id="mDemandInitiator"><option ' + (data.initiatorRole === '运营' ? 'selected' : '') + '>运营</option><option ' + (data.initiatorRole === 'PMC' ? 'selected' : '') + '>PMC</option></select>' },
+        { label: '渠道', html: '<select id="mDemandChannel"><option ' + (data.channel === 'B2C线上国外' ? 'selected' : '') + '>B2C线上国外</option><option ' + (data.channel === 'B2C线上国内' ? 'selected' : '') + '>B2C线上国内</option><option ' + (data.channel === 'B2B海外商超' ? 'selected' : '') + '>B2B海外商超</option><option ' + (data.channel === 'B2B线下国外' ? 'selected' : '') + '>B2B线下国外</option></select>' },
+        { label: '客户/店铺', html: '<input id="mDemandCustomer" value="' + (data.customer || '') + '" placeholder="例如 Amazon-US / Costco" />' },
+        { label: 'SKU', html: '<input id="mDemandSku" value="' + (data.sku || '') + '" placeholder="例如 SKU-A1024" />' },
+        { label: '商品名称', html: '<input id="mDemandProduct" value="' + (data.product || '') + '" placeholder="系统可按 SKU 带出" />' },
+        { label: '时间桶', html: '<select id="mDemandWeek"><option ' + (data.week === '2026-W18' ? 'selected' : '') + '>2026-W18</option><option ' + (data.week === '2026-W19' ? 'selected' : '') + '>2026-W19</option></select>' },
+        { label: '运营提报数量', html: '<input id="mDemandQty" type="number" min="1" step="1" value="' + (data.submittedQty || data.qty || '') + '" placeholder="发起人提报数量，必须 > 0" />' },
+        { label: '需求来源', html: '<select id="mDemandSource"><option ' + (data.source === '销售预测' ? 'selected' : '') + '>销售预测</option><option ' + (data.source === '临时加单' ? 'selected' : '') + '>临时加单</option><option ' + (data.source === '促销活动' ? 'selected' : '') + '>促销活动</option><option ' + (data.source === '其他' ? 'selected' : '') + '>其他</option></select>' },
+        { label: '需求明细类型', html: '<select id="mDemandType"><option ' + (data.type === '订单锁定' ? 'selected' : '') + '>订单锁定</option><option ' + (data.type === '活动需求' ? 'selected' : '') + '>活动需求</option><option ' + (data.type === '历史销量参考' ? 'selected' : '') + '>历史销量参考</option><option ' + (data.type === '临时加单' ? 'selected' : '') + '>临时加单</option><option>综合判断</option></select>' },
+        { label: '订单/锁单参考量', html: '<input id="mDemandOrderRef" type="number" min="0" value="' + (data.orderRef || '') + '" placeholder="选填" />' },
+        { label: '活动增量参考量', html: '<input id="mDemandActivityRef" type="number" min="0" value="' + (data.activityRef || '') + '" placeholder="选填" />' },
+        { label: '历史销量参考量', html: '<input id="mDemandForecastRef" type="number" min="0" value="' + (data.forecastRef || '') + '" placeholder="选填" />' },
+        { label: '临时调整量', html: '<input id="mDemandManualRef" type="number" value="' + (data.manualRef || '') + '" placeholder="选填，可正可负" />' },
+        { label: '活动ID', html: '<input id="mDemandEvent" value="' + (data.eventId || '') + '" placeholder="选填，用于活动复盘" />' },
+        { label: '期望交付日', html: '<input id="mDemandDate" type="date" value="' + (data.expectedDate || '2026-05-10') + '" />' }
+      ]) + '<div style="height:12px;"></div><div class="field"><label>提报说明</label><textarea id="mDemandRemark" placeholder="说明需求如何形成，例如：历史销量 + 平台大促 + 客户锁单；非强制拆分。">' + (data.remark || '') + '</textarea></div>';
+    }
+
+    function readDemandForm() {
+      return {
+        initiatorRole: $('mDemandInitiator').value,
+        channel: $('mDemandChannel').value,
+        customer: $('mDemandCustomer').value.trim(),
+        sku: $('mDemandSku').value.trim(),
+        product: $('mDemandProduct').value.trim(),
+        week: $('mDemandWeek').value,
+        qty: Number($('mDemandQty').value),
+        submittedQty: Number($('mDemandQty').value),
+        tier: 'Final',
+        source: $('mDemandSource').value,
+        type: $('mDemandType').value,
+        orderRef: Number($('mDemandOrderRef').value || 0),
+        activityRef: Number($('mDemandActivityRef').value || 0),
+        forecastRef: Number($('mDemandForecastRef').value || 0),
+        manualRef: Number($('mDemandManualRef').value || 0),
+        eventId: $('mDemandEvent').value.trim(),
+        expectedDate: $('mDemandDate').value,
+        remark: $('mDemandRemark').value.trim()
+      };
+    }
+
+    function validateDemandForm(data) {
+      if (!data.customer) return '客户/店铺不能为空';
+      if (!data.sku) return 'SKU不能为空';
+      if (!data.product) return '商品名称不能为空';
+      if (!data.qty || data.qty <= 0) return '运营提报数量必须大于 0';
+      return '';
+    }
+
+    function demandOverlapMessage(data, editingId) {
+      const hit = state.demandRows.find(row =>
+        row.id !== editingId &&
+        row.sku === data.sku &&
+        row.channel === data.channel &&
+        row.week === data.week &&
+        !['审核不通过', '已作废'].includes(row.status)
+      );
+      if (!hit) return '';
+      return '存在相同产品、相同渠道且时间范围重叠的需求：' + hit.no + '，重叠区间为 ' + hit.week + '。请修改时间桶或合并原需求后再提报。';
+    }
+
+    function openDemandAdd() {
+      openModal(
+        '录入需求提报',
+        '运营或 PMC 均可发起需求提报；运营提报后由 PMC 确认数量，PMC 确认数量将进入补货计算。',
+        demandForm(),
+          '<button class="btn" data-close>取消</button><button class="btn" data-demand-save-draft>保存待提交</button><button class="btn primary" data-demand-add-submit>保存并提交</button>',
+        true
+      );
+    }
+
+    function openDemandImport() {
+      openModal(
+        '导入需求提报',
+        '支持 Excel 模板导入运营提报数量；导入后仍需 PMC 确认数量。',
+        `
+          <div class="inline-note">模板字段：渠道、客户/店铺、SKU、时间桶、运营提报数量、需求来源、订单参考量、活动增量参考量、历史销量参考量、临时调整量、期望交付日、提报说明。</div>
+          <div style="height:14px;"></div>
+          ${formGrid([
+            { label: '选择文件', html: '<input id="mDemandImportFile" type="file" accept=".xlsx,.xls,.csv" />' },
+            { label: '重复处理策略', html: '<select id="mDemandDuplicate"><option>覆盖同维度待提交行</option><option>累加数量</option><option>跳过重复行</option></select>' },
+            { label: '错误处理', html: '<select><option>错误行跳过，正确行导入</option><option>有错误则全部失败</option></select>' },
+            { label: '导入后状态', html: '<select id="mDemandImportStatus"><option>待提交</option><option>审核中</option></select>' }
+          ])}
+        `,
+        '<button class="btn" data-close>取消</button><button class="btn" data-demand-download-template>下载模板</button><button class="btn primary" data-demand-import-confirm>开始导入</button>'
+      );
+    }
+
+    function openDemandSubmit() {
+      const rows = selectedDemandRows();
+      const target = rows.length ? rows : state.demandRows.filter(r => r.status === '待提交');
+      openModal(
+        '提交评审',
+        rows.length ? '将提交已勾选 ' + rows.length + ' 行。' : '未勾选行，默认提交全部待提交行。',
+        `
+          <div class="inline-note">${target.length ? '共 ' + target.length + ' 行可提交。提交后状态变为“审核中”，PMC 可进入审核。' : '当前没有可提交的待提交行。'}</div>
+          <div style="height:14px;"></div>
+          <div class="field"><label>提交说明</label><textarea id="mDemandSubmitNote" placeholder="例如：4月第5周销售计划，请PMC评审。"></textarea></div>
+        `,
+        target.length ? '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-submit-confirm>确认提交</button>' : '<button class="btn primary" data-close>知道了</button>'
+      );
+    }
+
+    function openDemandReturn(singleRow) {
+      const rows = singleRow && singleRow.id ? [singleRow] : selectedDemandRows();
+      openModal(
+        singleRow && singleRow.id ? '退回需求 · ' + singleRow.no : '批量退回',
+        rows.length ? '将退回 ' + rows.length + ' 行需求，退回原因会同步给销售/销售运营。' : '请先勾选需要退回的需求。',
+        rows.length ? formGrid([
+          { label: '退回原因分类', html: '<select id="mDemandReturnReason"><option>数量异常</option><option>活动信息缺失</option><option>重复需求</option><option>变更未审批</option></select>' },
+          { label: '要求完成时间', html: '<input type="date" id="mDemandReturnDue" value="2026-04-30" />' }
+        ]) + '<div style="height:12px;"></div><div class="field"><label>退回说明</label><textarea id="mDemandReturnNote" placeholder="请说明需要销售修正的内容"></textarea></div>' : '<div class="empty">当前未勾选任何需求。</div>',
+        rows.length ? '<button class="btn" data-close>取消</button><button class="btn danger" data-demand-return-confirm="' + rows.map(r => r.id).join(',') + '">确认退回</button>' : '<button class="btn primary" data-close>知道了</button>'
+      );
+    }
+
+    function openDemandLock() {
+      const rows = selectedDemandRows().length ? selectedDemandRows() : state.demandRows.filter(r => ['已审核'].includes(r.status));
+      const blockers = rows.filter(r => r.status !== '已审核' || r.pmcQty == null);
+      openModal(
+        '锁定已审核需求',
+        '锁定后该需求可进入补货计算；相同渠道、SKU、时间范围只保留一条有效需求，不再生成版本号。',
+        `
+          <div class="inline-note">${rows.length ? '本次拟锁定 ' + rows.length + ' 行；阻断 ' + blockers.length + ' 行。' : '当前没有可锁定需求。'}</div>
+          <div style="height:14px;"></div>
+          ${formGrid([
+            { label: '锁定范围', html: '<select><option>当前筛选/勾选行</option><option>当前计划周全部已审核行</option></select>' },
+            { label: '锁定说明', html: '<input value="已审核需求锁定后可进入补货计算，后续关键字段变更必须走审批" readonly />' }
+          ])}
+        `,
+        rows.length && !blockers.length ? '<button class="btn" data-close>取消</button><button class="btn warn" data-demand-lock-confirm>确认锁定</button>' : '<button class="btn primary" data-close>知道了</button>',
+        true
+      );
+    }
+
+    function openDemandChange() {
+      const rows = selectedDemandRows();
+      const locked = rows.filter(r => r.status === '已审核');
+      openModal(
+        '发起需求变更',
+        locked.length ? '将对已审核需求发起变更申请，审核通过后更新当前有效需求。' : '请先勾选已审核需求。',
+        locked.length ? formGrid([
+          { label: '变更类型', html: '<select id="mDemandChangeType"><option>数量变更</option><option>交付日期变更</option><option>取消需求</option></select>' },
+          { label: '影响范围', html: '<select><option>影响补货计划</option><option>影响采购/发运</option><option>仅计划备注修正</option></select>' },
+          { label: '变更后数量', html: '<input id="mDemandChangeQty" type="number" min="0" placeholder="数量变更时填写" />' },
+          { label: '期望审批完成日', html: '<input id="mDemandChangeDue" type="date" value="2026-04-30" />' }
+        ]) + '<div style="height:12px;"></div><div class="inline-note">需求变更只根据审核状态判断：已审核需求的关键字段变更必须走审批，审批通过后才更新有效需求。</div><div style="height:12px;"></div><div class="field"><label>变更原因</label><textarea id="mDemandChangeReason" placeholder="请说明业务原因、客户影响、是否影响补货/采购/调拨/发运。"></textarea></div>' : '<div class="empty">当前未选择已审核需求。</div>',
+        locked.length ? '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-change-confirm>提交变更申请</button>' : '<button class="btn primary" data-close>知道了</button>'
+      );
+    }
+
+    function openDemandMoreFilters() {
+      openModal(
+        '更多筛选',
+        '高级筛选用于定位需求来源、活动信息和操作留痕。',
+        formGrid([
+          { label: '需求来源', html: '<select><option>全部</option><option>销售预测</option><option>临时加单</option><option>促销活动</option><option>其他</option></select>' },
+          { label: '活动ID', html: '<input placeholder="例如 ACT-20260429" />' },
+          { label: '期望交付日早于', html: '<input type="date" />' },
+          { label: '责任销售', html: '<input placeholder="销售/运营姓名" />' },
+          { label: '是否已审核', html: '<select><option>全部</option><option>是</option><option>否</option></select>' }
+        ]),
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-more-filter>应用筛选</button>'
+      );
+    }
+
+    function openDemandFieldHelp() {
+      openModal(
+        '关键字段说明：运营提报数量 / PMC确认数量',
+        '需求池保留两个数量口径：运营提报数量用于记录原始提报，PMC确认数量用于进入补货计算。',
+        `
+          <table>
+            <thead><tr><th>字段</th><th>含义</th><th>来源</th><th>更新触发</th><th>对流程影响</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>运营提报数量</td>
+                <td>运营或 PMC 发起需求时录入的原始数量。</td>
+                <td>手工录入或 Excel 导入。</td>
+                <td>新增、导入、编辑未审核需求。</td>
+                <td>必须保留，不允许被 PMC 确认数量覆盖。</td>
+              </tr>
+              <tr>
+                <td>PMC确认数量</td>
+                <td>PMC 评审后确认的有效需求数量。</td>
+                <td>PMC 单行确认或批量确认。</td>
+                <td>如果与运营提报数量不一致，必须填写调整原因。</td>
+                <td>补货工作台读取该数量生成补货建议。</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="height:14px;"></div>
+          <div class="inline-note">重叠校验：新增或编辑时，若相同产品、相同渠道存在重叠时间范围，页面提示重叠区间并限制保存。</div>
+        `,
+        '<button class="btn primary" data-close>知道了</button>',
+        true
+      );
+    }
+
+    function openDemandView(row) {
+      const orderRef = row.orderRef || 0;
+      const activityRef = row.activityRef || 0;
+      const forecastRef = row.forecastRef || 0;
+      const manualRef = row.manualRef || 0;
+      const last4Avg = Math.max(1, Math.round(row.qty * 0.82));
+      const last8Avg = Math.max(1, Math.round(row.qty * 0.76));
+      const historyRef = forecastRef || last4Avg;
+      const historyGap = row.qty - historyRef;
+      const historyGapRate = Math.round((historyGap / Math.max(row.qty, 1)) * 100);
+      openDrawer(
+        '需求详情 · ' + row.no,
+        row.channel + ' / ' + row.customer + ' / ' + row.sku,
+        `
+          <div class="grid cols-3">
+            <div class="card pad stat"><label>运营提报数量</label><strong>${format(row.submittedQty || row.qty)}</strong><div class="sub">${row.initiatorRole || '运营'}发起</div></div>
+            <div class="card pad stat"><label>PMC确认数量</label><strong>${row.pmcQty != null ? format(row.pmcQty) : '-'}</strong><div class="sub">补货计算读取值</div></div>
+            <div class="card pad stat"><label>当前状态</label><strong>${row.status}</strong><div class="sub">${row.confirmedAt ? '确认于 ' + row.confirmedAt : '待确认'}</div></div>
+          </div>
+          <div style="height:14px;"></div>
+          <div class="card"><div class="panel-head"><h2>1. 需求数量与基础信息</h2></div><div class="panel-body">
+            <table>
+              <tbody>
+                <tr><td>渠道</td><td>${row.channel}</td><td>客户/店铺</td><td>${row.customer}</td></tr>
+                <tr><td>SKU</td><td>${row.sku}</td><td>商品</td><td>${row.product}</td></tr>
+                <tr><td>时间桶</td><td>${row.week}</td><td>期望交付日</td><td>${row.expectedDate}</td></tr>
+                <tr><td>运营提报数量</td><td>${format(row.submittedQty || row.qty)}</td><td>PMC确认数量</td><td>${row.pmcQty != null ? format(row.pmcQty) : '-'}</td></tr>
+                <tr><td>需求来源</td><td>${row.source || '其他'}</td><td>责任人</td><td>${row.owner}</td></tr>
+                <tr><td>创建人</td><td>${row.createdBy || row.owner || '-'}</td><td>创建时间</td><td>${row.createdAt || '-'}</td></tr>
+                <tr><td>确认人</td><td>${row.confirmedBy || '-'}</td><td>确认时间</td><td>${row.confirmedAt || '-'}</td></tr>
+              </tbody>
+            </table>
+          </div></div>
+          <div style="height:14px;"></div>
+          <div class="card"><div class="panel-head"><h2>2. 运营提报依据（非计算构成）</h2></div><div class="panel-body">
+            <div class="inline-note">运营提报数量是原始提报值，PMC确认数量是补货计算读取值；以下信息只用于说明提报依据和审核参考，不参与系统加总。</div>
+            <div style="height:10px;"></div>
+            <table>
+              <thead><tr><th>参考信息</th><th class="num">参考量</th><th>审核意义</th></tr></thead>
+              <tbody>
+                <tr><td>订单/锁单参考</td><td class="num">${format(orderRef)}</td><td>说明是否已有客户 PO、B2B 锁单或确定性订单支撑。</td></tr>
+                <tr><td>活动参考</td><td class="num">${format(activityRef)}</td><td>说明是否受平台大促、渠道活动或铺货计划影响。</td></tr>
+                <tr><td>历史销量参考</td><td class="num">${format(historyRef)}</td><td>给 PMC 一个历史销量对照，不能替代运营提交值。</td></tr>
+                <tr><td>人工判断说明</td><td class="num">${format(manualRef)}</td><td>记录运营基于客户沟通、市场判断做出的上调或下调依据。</td></tr>
+              </tbody>
+            </table>
+            <div style="height:10px;"></div>
+            <table>
+              <thead><tr><th colspan="4">PMC确认数量与参考量关系</th></tr></thead>
+              <tbody>
+                <tr><td>关系口径</td><td colspan="3">PMC确认数量是补货主口径；参考量是审核线索，不是计算公式，也不是必填构成。</td></tr>
+                <tr><td>审核方式</td><td colspan="3">PMC 逐项查看订单、活动、历史销量和人工判断是否支撑运营提报，不按“参考量合计”判断确认或退回。</td></tr>
+                <tr><td>历史参考偏离</td><td>${format(historyGap)}（${historyGapRate}%）</td><td>提示规则</td><td>${Math.abs(historyGapRate) >= 30 ? '偏离较大，建议审核备注' : '偏离在常规观察范围'}</td></tr>
+                <tr><td>订单支撑情况</td><td colspan="3">${orderRef > 0 ? '存在订单/锁单参考，审核时优先核对客户 PO 或锁单依据。' : '暂无订单/锁单参考，更多依赖历史销量、活动或运营判断。'}</td></tr>
+              </tbody>
+            </table>
+          </div></div>
+          <div style="height:14px;"></div>
+          <div class="card"><div class="panel-head"><h2>3. 历史销量</h2></div><div class="panel-body">
+            <table>
+              <thead><tr><th>周期</th><th class="num">销量</th><th>库存状态</th><th>备注</th></tr></thead>
+              <tbody>
+                <tr><td>${row.week} - 1</td><td class="num">${format(Math.round(row.qty * 0.72))}</td><td>正常</td><td>近周实销参考</td></tr>
+                <tr><td>${row.week} - 2</td><td class="num">${format(Math.round(row.qty * 0.81))}</td><td>正常</td><td>可用作历史销量参考</td></tr>
+                <tr><td>${row.week} - 3</td><td class="num">${format(Math.round(row.qty * 0.76))}</td><td>正常</td><td>常规销量</td></tr>
+                <tr><td>${row.week} - 4</td><td class="num">${format(Math.round(row.qty * 0.98))}</td><td>正常</td><td>常规销量</td></tr>
+                <tr><td>近4周均值</td><td class="num">${format(last4Avg)}</td><td>-</td><td>用于判断 PMC 确认数量是否异常偏离</td></tr>
+                <tr><td>近8周均值</td><td class="num">${format(last8Avg)}</td><td>-</td><td>用于历史销量参考</td></tr>
+              </tbody>
+            </table>
+          </div></div>
+          <div style="height:14px;"></div>
+          <div class="card"><div class="panel-head"><h2>4. 人工提报对照</h2></div><div class="panel-body">
+            <table>
+              <tbody>
+                <tr><td>一期口径</td><td>人工提报</td><td>参考维度</td><td>渠道 + 客户/店铺 + SKU + 周</td></tr>
+                <tr><td>历史销量参考</td><td>${format(historyRef)}</td><td>人工提报值</td><td>${format(row.qty)}</td></tr>
+                <tr><td>参考因素</td><td colspan="3">${row.type === '活动需求' ? '历史销量、平台大促、活动档期、运营人工判断' : '历史销量、近周实销、库存可售状态、运营人工判断'}</td></tr>
+                <tr><td>与 PMC 确认量差异</td><td colspan="3">PMC 确认数量高于/低于历史销量参考时不阻断提交，仅用于 PMC 评审和需求复盘。</td></tr>
+              </tbody>
+            </table>
+          </div></div>
+          <div style="height:14px;"></div>
+          <div class="card"><div class="panel-head"><h2>5. 销售备注与 PMC 调整记录</h2></div><div class="panel-body">
+            <table>
+              <tbody>
+                <tr><td>销售/运营备注</td><td colspan="3">${row.remark || '-'}</td></tr>
+                <tr><td>PMC 调整记录</td><td colspan="3">${row.pmcQty != null ? 'PMC 已审核数量。' : '暂无 PMC 审核；待 PMC 审核。'}</td></tr>
+                <tr><td>运营提报值</td><td>${format(row.submittedQty || row.qty)}</td><td>PMC确认值</td><td>${row.pmcQty != null ? format(row.pmcQty) : '-'}</td></tr>
+                <tr><td>调整原因</td><td colspan="3">${row.pmcAdjustReason || row.qtyEditReason || '-'}</td></tr>
+              </tbody>
+            </table>
+          </div></div>
+        `,
+        '<button class="btn" id="drawerOk">关闭</button>'
+      );
+    }
+
+    function openDemandEdit(row) {
+      if (row.status === '已审核') {
+        toast('已审核需求不可直接编辑，请发起变更');
+        return;
+      }
+      openModal(
+        '编辑销售计划 · ' + row.no,
+        '待提交、审核中、审核不通过需求可编辑；审核中需求编辑后需重新提交审核。',
+        demandForm(row),
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-edit-confirm="' + row.id + '">保存修改</button>',
+        true
+      );
+    }
+
+    function openDemandQtyEdit(row, field) {
+      if (['已审核', '审核不通过'].includes(row.status)) {
+        toast('当前状态不可直接编辑数量');
+        return;
+      }
+      const isSubmitted = field === 'submitted';
+      const currentQty = isSubmitted ? (row.submittedQty || row.qty) : (row.pmcQty || row.submittedQty || row.qty);
+      openModal(
+        (isSubmitted ? '编辑运营提报数量 · ' : '编辑PMC确认数量 · ') + row.no,
+        isSubmitted ? '确认前可直接调整运营提报数量；保存后需要 PMC 重新确认。' : '确认前可先录入或调整 PMC确认数量，正式确认时仍会校验调整原因。',
+        formGrid([
+          { label: '当前状态', html: '<input value="' + row.status + '" readonly />' },
+          { label: isSubmitted ? '运营提报数量' : 'PMC确认数量', html: '<input id="mDemandQuickQty" type="number" min="1" step="1" value="' + currentQty + '" />' },
+          { label: '需求来源', html: '<input value="' + (row.source || '其他') + '" readonly />' },
+          { label: '对照数量', html: '<input value="' + (isSubmitted ? (row.pmcQty != null ? 'PMC确认 ' + format(row.pmcQty) : 'PMC未确认') : '运营提报 ' + format(row.submittedQty || row.qty)) + '" readonly />' }
+        ]) + '<div style="height:12px;"></div><div class="field"><label>编辑原因</label><textarea id="mDemandQuickQtyReason" placeholder="建议填写数量调整原因，便于追溯。"></textarea></div>',
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-qty-save data-id="' + row.id + '" data-field="' + field + '">保存数量</button>',
+        true
+      );
+    }
+
+    function approveDemandRows(rows, batch) {
+      const target = rows && rows.length ? rows : [];
+      if (!target.length) {
+        toast('请先勾选需要确认的需求');
+        return;
+      }
+      const blocked = target.filter(r => r.status === '待提交' || r.status === '已审核' || r.status === '审核不通过');
+      if (blocked.length) {
+        toast('待提交、已审核或审核不通过需求不可重复审核');
+        return;
+      }
+      const ids = target.map(row => row.id).join(',');
+      if (target.length === 1 && !batch) {
+        const row = target[0];
+        openModal(
+          'PMC确认需求 · ' + row.no,
+          'PMC确认数量是进入补货计算的有效需求；如不同于运营提报数量，必须填写调整原因。',
+          formGrid([
+            { label: '运营提报数量', html: '<input value="' + (row.submittedQty || row.qty) + '" readonly />' },
+            { label: 'PMC确认数量', html: '<input id="mDemandConfirmQty" type="number" min="1" value="' + (row.pmcQty || row.submittedQty || row.qty) + '" />' },
+            { label: '需求来源', html: '<input value="' + (row.source || '其他') + '" readonly />' },
+            { label: '发起角色', html: '<input value="' + (row.initiatorRole || '运营') + '" readonly />' }
+          ]) + '<div style="height:12px;"></div><div class="field"><label>调整原因</label><textarea id="mDemandConfirmReason" placeholder="如 PMC 确认数量不同于运营提报数量，必须填写原因。">' + (row.pmcAdjustReason || '') + '</textarea></div>',
+          '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-confirm="' + ids + '">确认</button>',
+          true
+        );
+        return;
+      }
+      openModal(
+        '批量PMC确认',
+        '批量确认将默认以运营提报数量作为 PMC 确认数量；如需逐行调整，请使用单行确认。',
+        '<div class="inline-note">本次将审核 ' + target.length + ' 条需求，审核后状态变为“已审核”，可进入需求锁定。</div>',
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-confirm="' + ids + '">确认</button>',
+        true
+      );
+    }
+
+    function boot() {
+      state.workbenchHtml = document.querySelector('.content').innerHTML;
+      initEvents();
+      bindMenuEvents();
+      render();
+      $('progress').style.width = '100%';
+      console.info('智能补货工作台原型已初始化');
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+  </script>
+</body>
+</html>
