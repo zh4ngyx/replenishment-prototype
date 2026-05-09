@@ -669,6 +669,7 @@
       </div>
       <div class="nav-title">页面顺序</div>
       <nav class="nav">
+        <button type="button" data-menu="主数据与策略配置"><span>主数据与策略配置</span><small>M0</small></button>
         <button type="button" data-menu="销售计划与需求池"><span>销售计划与需求池</span><small>M1</small></button>
         <button type="button" data-menu="库存分层可视化"><span>库存分层可视化</span><small>M2</small></button>
         <button type="button" data-menu="补货工作台" class="active"><span>补货工作台</span><small>M3</small></button>
@@ -954,7 +955,7 @@
           id: 101, no: 'DP-20260429-001', channel: 'B2B海外商超', customer: '奥莱B2B',
           sku: 'C00B5B01+F22B5601', product: 'FALCAM F22&F38 快装免笼（FOR ZR）套装',
           week: '2026-05', startMonth: '2026-05', endMonth: '2026-07', qty: 7800, tier: 'Tier A', type: '订单锁定',
-          submittedQty: 7800, pmcQty: null, source: '其他', initiatorRole: '运营',
+          submittedQty: 7800, pmcSubmittedQty: null, pmcQty: null, source: '其他', initiatorRole: '运营',
           orderRef: 2200, activityRef: 0, forecastRef: 2350, manualRef: 250,
           eventId: '', expectedDate: '2026-05-18', owner: '销售张三', status: '审核中',
           createdBy: '销售张三', createdAt: '2026-04-29 09:10', confirmedBy: '', confirmedAt: '',
@@ -964,7 +965,7 @@
           id: 102, no: 'DP-20260429-002', channel: 'B2C线上国外', customer: '奥莱B2C',
           sku: 'C00B5B02+2550', product: 'FALCAM F22&F38 快装免笼（FOR C50）套装',
           week: '2026-05', startMonth: '2026-05', endMonth: '2026-06', qty: 8400, tier: 'Tier B', type: '活动需求',
-          submittedQty: 8400, pmcQty: null, source: '促销活动', initiatorRole: '运营',
+          submittedQty: 8400, pmcSubmittedQty: null, pmcQty: null, source: '促销活动', initiatorRole: '运营',
           orderRef: 0, activityRef: 1500, forecastRef: 3100, manualRef: -400,
           eventId: 'ACT-20260429', expectedDate: '2026-05-10', owner: '运营李四', status: '审核中',
           createdBy: '运营李四', createdAt: '2026-04-29 09:25', confirmedBy: '', confirmedAt: '',
@@ -974,7 +975,7 @@
           id: 103, no: 'DP-20260429-003', channel: 'B2C线上国内', customer: '天猫旗舰店',
           sku: 'MJC26050800014', product: '两侧按键+按键定位扣',
           week: '2026-05', startMonth: '2026-05', endMonth: '2026-05', qty: 900, tier: 'Tier D', type: '临时加单',
-          submittedQty: 900, pmcQty: null, source: '临时加单', initiatorRole: '运营',
+          submittedQty: 900, pmcSubmittedQty: null, pmcQty: null, source: '临时加单', initiatorRole: '运营',
           orderRef: 500, activityRef: 0, forecastRef: 680, manualRef: 220,
           eventId: '', expectedDate: '2026-05-06', owner: '销售王五', status: '待提交',
           createdBy: '销售王五', createdAt: '2026-04-29 10:02', confirmedBy: '', confirmedAt: '',
@@ -984,7 +985,7 @@
           id: 104, no: 'DP-20260429-004', channel: 'B2C线上国外', customer: '京东自营',
           sku: 'MJC26050800013', product: '上壳+下壳',
           week: '2026-06', startMonth: '2026-06', endMonth: '2026-07', qty: 6400, tier: 'Tier B', type: '活动需求',
-          submittedQty: 6400, pmcQty: 6400, source: '促销活动', initiatorRole: 'PMC',
+          submittedQty: null, pmcSubmittedQty: 6400, pmcQty: 6400, source: '促销活动', initiatorRole: 'PMC',
           orderRef: 0, activityRef: 1200, forecastRef: 2100, manualRef: -100,
           eventId: 'ACT-UK-0501', expectedDate: '2026-05-12', owner: '运营赵六', status: '已审核',
           createdBy: '运营赵六', createdAt: '2026-04-29 08:40', confirmedBy: 'PMC主管', confirmedAt: '2026-04-29 11:30',
@@ -994,11 +995,28 @@
           id: 105, no: 'DP-20260429-005', channel: 'B2B线下国外', customer: '速卖通LCM',
           sku: 'C00B3809+2549', product: 'FALCAM F22&F38&F50 快装折叠半笼套件套装',
           week: '2026-07', startMonth: '2026-07', endMonth: '2026-08', qty: 3600, tier: 'Tier C', type: '历史销量参考',
-          submittedQty: 3600, pmcQty: null, source: '销售预测', initiatorRole: '运营',
+          submittedQty: 3600, pmcSubmittedQty: null, pmcQty: null, source: '销售预测', initiatorRole: '运营',
           orderRef: 900, activityRef: 0, forecastRef: 1600, manualRef: -100,
           eventId: '', expectedDate: '2026-05-20', owner: '销售陈七', status: '审核不通过',
           createdBy: '销售陈七', createdAt: '2026-04-29 09:55', confirmedBy: '', confirmedAt: '',
           remark: '需销售确认是否改国内仓发运'
+        }
+      ],
+      strategyRows: [
+        {
+          id: 'ST-001', name: '平台仓标准补货策略', warehouseType: 'platform', scope: 'B2C线上国外 / 平台仓',
+          targetCover: 30, safetyDays: 14, frequency: 'weekly', leadTime: 42, moq: 500, casePack: 100,
+          maxQty: 5200, overstockDays: 75, status: '启用', owner: 'PMC主管', updatedAt: '2026-04-29 09:20'
+        },
+        {
+          id: 'ST-002', name: '海外3PL长链路策略', warehouseType: 'oversea_3pl', scope: 'B2B海外商超 / 海外3PL',
+          targetCover: 45, safetyDays: 21, frequency: 'weekly', leadTime: 65, moq: 1000, casePack: 100,
+          maxQty: 8800, overstockDays: 95, status: '启用', owner: '计划员A', updatedAt: '2026-04-28 16:05'
+        },
+        {
+          id: 'ST-003', name: '国内仓快速补货策略', warehouseType: 'domestic', scope: 'B2C线上国内 / 国内仓',
+          targetCover: 21, safetyDays: 7, frequency: 'weekly', leadTime: 15, moq: 300, casePack: 50,
+          maxQty: 12000, overstockDays: 60, status: '停用', owner: 'PMC主管', updatedAt: '2026-04-26 11:40'
         }
       ],
       inventorySnapshot: 'IS-0429-1200',
@@ -1118,6 +1136,12 @@
 
     function demandMonthOverlap(a, b) {
       return demandStartMonth(a) <= demandEndMonth(b) && demandEndMonth(a) >= demandStartMonth(b);
+    }
+
+    function demandOriginalQty(row) {
+      return row.initiatorRole === 'PMC'
+        ? (row.pmcSubmittedQty || row.qty)
+        : (row.submittedQty || row.qty);
     }
 
     function visibleRows() {
@@ -1910,7 +1934,8 @@
             channel: data.channel, customer: data.customer, sku: data.sku, product: data.product,
             week: data.week, startMonth: data.startMonth, endMonth: data.endMonth, qty: data.qty, tier: data.tier,
             type: data.type, orderRef: data.orderRef, activityRef: data.activityRef, forecastRef: data.forecastRef, manualRef: data.manualRef,
-            submittedQty: data.submittedQty, pmcQty: data.initiatorRole === 'PMC' ? data.submittedQty : null,
+            submittedQty: data.submittedQty, pmcSubmittedQty: data.pmcSubmittedQty,
+            pmcQty: data.initiatorRole === 'PMC' && btn === demandAddSubmit ? data.pmcSubmittedQty : null,
             source: data.source, initiatorRole: data.initiatorRole, eventId: data.eventId, expectedDate: data.expectedDate,
             owner: '当前用户', status: btn === demandAddSubmit ? (data.initiatorRole === 'PMC' ? '已审核' : '审核中') : '待提交',
             createdBy: '当前用户', createdAt: nowText(),
@@ -1934,7 +1959,7 @@
           channel: 'B2C线上国外', customer: '奥莱B2C', sku: 'MJC26050800012', product: '引磁片',
           week: '2026-06', startMonth: '2026-06', endMonth: '2026-08', qty: 4500, tier: 'Final',
           type: '综合判断', orderRef: 0, activityRef: 600, forecastRef: 900, manualRef: 0,
-          submittedQty: 4500, pmcQty: null, source: '促销活动', initiatorRole: '运营',
+          submittedQty: 4500, pmcSubmittedQty: null, pmcQty: null, source: '促销活动', initiatorRole: '运营',
           eventId: 'ACT-US-0505', expectedDate: '2026-05-22',
           owner: '导入用户', status: $('mDemandImportStatus').value === '审核中' ? '审核中' : '待提交',
           createdBy: '导入用户', createdAt: nowText(), confirmedBy: '', confirmedAt: '',
@@ -2026,19 +2051,20 @@
             toast('PMC确认数量必须大于 0');
             return;
           }
-          if (pmcQty !== (single.submittedQty || single.qty) && !note) {
-            toast('PMC确认数量与运营提报数量不一致时，必须填写调整原因');
+          const originalQty = demandOriginalQty(single);
+          if (pmcQty !== originalQty && !note) {
+            toast('PMC确认数量与原始提报数量不一致时，必须填写调整原因');
             return;
           }
           single.pmcQty = pmcQty;
           single.qty = pmcQty;
-          single.pmcAdjustReason = note || '无需调整，按运营提报数量确认';
+          single.pmcAdjustReason = note || '无需调整，按原始提报数量确认';
           single.confirmedBy = '当前用户';
           single.confirmedAt = nowText();
           single.status = '已审核';
         } else {
           rows.forEach(row => {
-            row.pmcQty = row.submittedQty || row.qty;
+            row.pmcQty = demandOriginalQty(row);
             row.qty = row.pmcQty;
             row.pmcAdjustReason = '批量确认，按提报数量确认';
             row.confirmedBy = '当前用户';
@@ -2071,10 +2097,16 @@
           row.pmcQty = null;
           row.status = row.status === '待提交' ? '待提交' : '审核中';
           row.qtyEditReason = reason || '页面快捷编辑运营提报数量';
+        } else if (field === 'pmcSubmitted') {
+          row.pmcSubmittedQty = qty;
+          row.qty = row.pmcQty || qty;
+          row.pmcQty = null;
+          row.status = row.status === '待提交' ? '待提交' : '审核中';
+          row.qtyEditReason = reason || '页面快捷编辑 PMC 提报数量';
         } else {
           row.pmcQty = qty;
           row.qty = qty;
-          row.pmcAdjustReason = reason || (qty === (row.submittedQty || row.qty) ? '页面快捷录入 PMC 确认数量' : '页面快捷调整 PMC 确认数量');
+          row.pmcAdjustReason = reason || (qty === demandOriginalQty(row) ? '页面快捷录入 PMC 确认数量' : '页面快捷调整 PMC 确认数量');
         }
         closeModal();
         renderDemandRows();
@@ -2103,6 +2135,29 @@
         closeModal();
         renderDemandRows();
         toast('需求已保存；如审核中需重新提交审核');
+      };
+
+      const strategySave = document.querySelector('[data-strategy-save]');
+      if (strategySave) strategySave.onclick = () => {
+        const id = strategySave.dataset.strategySave;
+        const existing = id ? state.strategyRows.find(row => row.id === id) : null;
+        const data = readStrategyForm(existing);
+        if (!data.name || !data.scope) {
+          toast('策略名称和生效范围不能为空');
+          return;
+        }
+        if (data.safetyDays > data.targetCover) {
+          toast('安全库存天数不能大于目标覆盖天数');
+          return;
+        }
+        if (existing) {
+          Object.assign(existing, data);
+        } else {
+          state.strategyRows.unshift(data);
+        }
+        closeModal();
+        renderStrategyRows();
+        toast('补货策略已保存');
       };
     }
 
@@ -2200,6 +2255,12 @@
         toast('已进入补货工作台');
         return;
       }
+      if (name === '主数据与策略配置') {
+        content.innerHTML = strategyPageHtml();
+        bindStrategyPageButtons();
+        toast('已进入主数据与策略配置');
+        return;
+      }
       if (name === '销售计划与需求池') {
         content.innerHTML = demandPageHtml();
         bindDemandPageButtons();
@@ -2273,7 +2334,7 @@
           <div class="panel-head">
             <div>
               <h2>需求池明细</h2>
-              <div class="muted" style="font-size:12px;margin-top:4px;">运营提报数量保留原始值；PMC确认数量是进入补货计算的有效需求。</div>
+              <div class="muted" style="font-size:12px;margin-top:4px;">运营提报和 PMC提报分别保留原始值；PMC确认数量是进入补货计算的有效需求。</div>
             </div>
             <div class="btn-row">
               <button class="btn small" id="demandFieldHelp">字段说明</button>
@@ -2292,6 +2353,7 @@
                   <th>SKU</th>
                   <th>提报月份范围</th>
                   <th class="num">运营提报数量</th>
+                  <th class="num">PMC提报数量</th>
                   <th class="num">PMC确认数量</th>
                   <th>需求来源</th>
                   <th>审核人(最新)</th>
@@ -2339,7 +2401,8 @@
           <td>${row.channel}<div class="muted">${row.customer}</div></td>
           <td><strong>${row.sku}</strong><div class="muted">${row.product}</div></td>
           <td>${demandMonthRange(row)}<div class="muted">按月展示，执行按周滚动</div></td>
-          <td class="num"><strong>${format(row.submittedQty || row.qty)}</strong>${demandQtyEditButton(row, 'submitted')}</td>
+          <td class="num"><strong>${row.submittedQty != null ? format(row.submittedQty) : '-'}</strong>${demandQtyEditButton(row, 'submitted')}</td>
+          <td class="num"><strong>${row.pmcSubmittedQty != null ? format(row.pmcSubmittedQty) : '-'}</strong>${demandQtyEditButton(row, 'pmcSubmitted')}</td>
           <td class="num"><strong>${row.pmcQty != null ? format(row.pmcQty) : '-'}</strong>${demandQtyEditButton(row, 'pmc')}</td>
           <td>${chip(row.source || '其他', 'blue')}<div class="muted">${row.initiatorRole || '运营'}发起</div></td>
           <td>${row.confirmedBy || '-'}</td>
@@ -2353,13 +2416,15 @@
         </tr>
       `).join('');
       if (!rows.length) {
-        $('demandBody').innerHTML = '<tr><td colspan="14"><div class="empty">暂无符合条件的需求，请调整筛选条件。</div></td></tr>';
+        $('demandBody').innerHTML = '<tr><td colspan="15"><div class="empty">暂无符合条件的需求，请调整筛选条件。</div></td></tr>';
       }
       bindDemandRowActions();
     }
 
     function demandQtyEditButton(row, field) {
       if (['已审核', '审核不通过'].includes(row.status)) return '';
+      if (field === 'submitted' && row.initiatorRole === 'PMC') return '';
+      if (field === 'pmcSubmitted' && row.initiatorRole !== 'PMC') return '';
       return '<div class="muted"><button class="btn small" data-demand-row="qty-' + field + '" data-id="' + row.id + '">编辑</button></div>';
     }
 
@@ -2481,6 +2546,142 @@
           (!warehouseType || row.warehouseType === warehouseType) &&
           (!status || info.status === status);
       });
+    }
+
+    function strategyWarehouseTypeText(type) {
+      if (type === 'domestic') return '国内仓';
+      if (type === 'platform') return '平台仓';
+      return '海外3PL';
+    }
+
+    function strategyVisibleRows() {
+      const kw = $('strategyKeyword') ? $('strategyKeyword').value.trim().toLowerCase() : '';
+      const warehouseType = $('strategyWarehouseType') ? $('strategyWarehouseType').value : '';
+      const status = $('strategyStatus') ? $('strategyStatus').value : '';
+      return state.strategyRows.filter(row => {
+        const text = (row.id + row.name + row.scope + row.owner).toLowerCase();
+        return (!kw || text.includes(kw)) &&
+          (!warehouseType || row.warehouseType === warehouseType) &&
+          (!status || row.status === status);
+      });
+    }
+
+    function strategyRowHtml(row) {
+      return `
+        <tr>
+          <td><strong>${row.id}</strong></td>
+          <td><strong>${row.name}</strong><div class="muted">${row.scope}</div></td>
+          <td>${strategyWarehouseTypeText(row.warehouseType)}</td>
+          <td class="num">${row.targetCover}</td>
+          <td class="num">${row.safetyDays}</td>
+          <td>${row.frequency}</td>
+          <td class="num">${row.leadTime}</td>
+          <td class="num">${row.moq} / ${row.casePack}</td>
+          <td class="num">${format(row.maxQty)}</td>
+          <td class="num">${row.overstockDays}</td>
+          <td>${chip(row.status, row.status === '启用' ? 'green' : 'gray')}</td>
+          <td>${row.owner}<div class="muted">${row.updatedAt}</div></td>
+          <td>
+            <button class="btn small" data-strategy-action="view" data-id="${row.id}">查看</button>
+            <button class="btn small" data-strategy-action="edit" data-id="${row.id}">编辑</button>
+            <button class="btn small" data-strategy-action="toggle" data-id="${row.id}">${row.status === '启用' ? '停用' : '启用'}</button>
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderStrategyRows() {
+      if (!$('strategyBody')) return;
+      const rows = strategyVisibleRows();
+      $('strategyBody').innerHTML = rows.length
+        ? rows.map(row => strategyRowHtml(row)).join('')
+        : '<tr><td colspan="13"><div class="empty">暂无符合条件的策略模板。</div></td></tr>';
+      bindStrategyRowActions();
+    }
+
+    function strategyPageHtml() {
+      const enabled = state.strategyRows.filter(row => row.status === '启用').length;
+      const avgLeadTime = Math.round(state.strategyRows.reduce((sum, row) => sum + row.leadTime, 0) / Math.max(state.strategyRows.length, 1));
+      return `
+        <div class="crumbs">首页 / M0 / 主数据与策略配置 / 补货策略模板</div>
+        <div class="page-head">
+          <div class="page-title">
+            <h1>主数据与策略配置</h1>
+            <p>维护补货计算读取的策略模板，包含覆盖天数、安全库存、评审频率、提前期、MOQ、箱规、仓容上限和高库存阈值。</p>
+          </div>
+          <div class="btn-row">
+            <button class="btn primary" id="strategyAdd">新增补货策略</button>
+            <button class="btn" id="strategyImport">导入策略</button>
+            <button class="btn" id="strategyTransfer">仓网调拨策略</button>
+            <button class="btn" id="strategyAudit">策略变更日志</button>
+          </div>
+        </div>
+        <div class="grid cols-4" style="margin-bottom:14px;">
+          <div class="card pad stat"><label>策略模板数</label><strong>${state.strategyRows.length}</strong><div class="sub">按渠道/仓型/SKU范围生效</div></div>
+          <div class="card pad stat"><label>启用中</label><strong>${enabled}</strong><div class="sub">补货引擎可读取</div></div>
+          <div class="card pad stat"><label>平均提前期</label><strong>${avgLeadTime}天</strong><div class="sub">生产 + 采购 + 头程 + 上架</div></div>
+          <div class="card pad stat"><label>周度评审</label><strong>${state.strategyRows.filter(row => row.frequency === 'weekly').length}</strong><div class="sub">采购/调拨/发货按周执行</div></div>
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="panel-head">
+            <div>
+              <h2>补货策略筛选</h2>
+              <div class="muted" style="font-size:12px;margin-top:4px;">策略变更不自动改写历史补货批次；未提交批次需重新计算后才应用新策略。</div>
+            </div>
+            <div class="btn-row">
+              <button class="btn small" id="strategySaveView">保存视图</button>
+              <button class="btn small" id="strategyReset">重置</button>
+              <button class="btn small primary" id="strategySearch">查询</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="filter-grid">
+              <div class="field"><label>关键词</label><input id="strategyKeyword" placeholder="策略编号 / 策略名称 / 生效范围" /></div>
+              <div class="field"><label>仓型</label><select id="strategyWarehouseType"><option value="">全部</option><option value="domestic">国内仓</option><option value="platform">平台仓</option><option value="oversea_3pl">海外3PL</option></select></div>
+              <div class="field"><label>状态</label><select id="strategyStatus"><option value="">全部</option><option>启用</option><option>停用</option></select></div>
+              <div class="field"><label>评审频率</label><select><option>全部</option><option>daily</option><option>weekly</option><option>monthly</option></select></div>
+              <div class="field"><label>渠道/范围</label><input placeholder="例如 B2C线上国外 / 奥莱B2C" /></div>
+              <button class="btn" id="strategyMoreFilters">更多筛选</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="panel-head">
+            <div>
+              <h2>补货策略模板列表</h2>
+              <div class="muted" style="font-size:12px;margin-top:4px;">M0.3 字段在此维护，M3 生成建议时按策略 ID 读取。</div>
+            </div>
+            <div class="btn-row">
+              <button class="btn small" id="strategyBatchEnable">批量启用</button>
+              <button class="btn small" id="strategyExport">导出</button>
+            </div>
+          </div>
+          <div style="overflow:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>策略编号</th>
+                  <th>策略名称/生效范围</th>
+                  <th>仓型</th>
+                  <th class="num">目标覆盖天数</th>
+                  <th class="num">安全库存天数</th>
+                  <th>评审频率</th>
+                  <th class="num">综合提前期</th>
+                  <th class="num">MOQ/箱规</th>
+                  <th class="num">仓容上限</th>
+                  <th class="num">高库存阈值</th>
+                  <th>状态</th>
+                  <th>更新人/时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="strategyBody">
+                ${strategyVisibleRows().map(row => strategyRowHtml(row)).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
     }
 
     function inventoryPageHtml() {
@@ -2913,6 +3114,134 @@
       };
     }
 
+    function strategyForm(row) {
+      const data = row || {};
+      return formGrid([
+        { label: '策略名称', html: '<input id="mStrategyName" value="' + (data.name || '') + '" placeholder="例如 平台仓标准补货策略" />' },
+        { label: '仓型', html: '<select id="mStrategyWarehouseType"><option value="domestic" ' + (data.warehouseType === 'domestic' ? 'selected' : '') + '>国内仓</option><option value="platform" ' + (data.warehouseType === 'platform' ? 'selected' : '') + '>平台仓</option><option value="oversea_3pl" ' + (data.warehouseType === 'oversea_3pl' ? 'selected' : '') + '>海外3PL</option></select>' },
+        { label: '生效范围', html: '<input id="mStrategyScope" value="' + (data.scope || '') + '" placeholder="渠道 / 客户 / 仓型 / SKU范围" />' },
+        { label: '目标覆盖天数', html: '<input id="mStrategyTargetCover" type="number" min="1" value="' + (data.targetCover || 30) + '" />' },
+        { label: '安全库存天数', html: '<input id="mStrategySafetyDays" type="number" min="0" value="' + (data.safetyDays || 14) + '" />' },
+        { label: '评审频率', html: '<select id="mStrategyFrequency"><option ' + (data.frequency === 'daily' ? 'selected' : '') + '>daily</option><option ' + (data.frequency === 'weekly' || !data.frequency ? 'selected' : '') + '>weekly</option><option ' + (data.frequency === 'monthly' ? 'selected' : '') + '>monthly</option></select>' },
+        { label: '综合提前期', html: '<input id="mStrategyLeadTime" type="number" min="0" value="' + (data.leadTime || 30) + '" />' },
+        { label: 'MOQ', html: '<input id="mStrategyMoq" type="number" min="0" value="' + (data.moq || 500) + '" />' },
+        { label: '箱规', html: '<input id="mStrategyCasePack" type="number" min="1" value="' + (data.casePack || 100) + '" />' },
+        { label: '仓容/入仓上限', html: '<input id="mStrategyMaxQty" type="number" min="0" value="' + (data.maxQty || 5000) + '" />' },
+        { label: '高库存覆盖天数阈值', html: '<input id="mStrategyOverstockDays" type="number" min="1" value="' + (data.overstockDays || 75) + '" />' },
+        { label: '状态', html: '<select id="mStrategyStatus"><option ' + (data.status === '启用' || !data.status ? 'selected' : '') + '>启用</option><option ' + (data.status === '停用' ? 'selected' : '') + '>停用</option></select>' }
+      ]);
+    }
+
+    function readStrategyForm(existing) {
+      return {
+        id: existing ? existing.id : 'ST-' + String(state.strategyRows.length + 1).padStart(3, '0'),
+        name: $('mStrategyName').value.trim(),
+        warehouseType: $('mStrategyWarehouseType').value,
+        scope: $('mStrategyScope').value.trim(),
+        targetCover: Number($('mStrategyTargetCover').value),
+        safetyDays: Number($('mStrategySafetyDays').value),
+        frequency: $('mStrategyFrequency').value,
+        leadTime: Number($('mStrategyLeadTime').value),
+        moq: Number($('mStrategyMoq').value),
+        casePack: Number($('mStrategyCasePack').value),
+        maxQty: Number($('mStrategyMaxQty').value),
+        overstockDays: Number($('mStrategyOverstockDays').value),
+        status: $('mStrategyStatus').value,
+        owner: '当前用户',
+        updatedAt: nowText()
+      };
+    }
+
+    function openStrategyEdit(row) {
+      openModal(
+        (row ? '编辑补货策略 · ' + row.id : '新增补货策略'),
+        '维护 M0.3 补货策略字段。保存后新生成的补货试算会读取最新策略，历史批次不自动改写。',
+        strategyForm(row),
+        '<button class="btn" data-close>取消</button><button class="btn primary" data-strategy-save="' + (row ? row.id : '') + '">保存策略</button>',
+        true
+      );
+    }
+
+    function openStrategyView(row) {
+      openDrawer(
+        '补货策略详情 · ' + row.id,
+        row.name,
+        `
+          <div class="grid cols-3">
+            <div class="card pad stat"><label>目标覆盖天数</label><strong>${row.targetCover}</strong><div class="sub">覆盖库存目标</div></div>
+            <div class="card pad stat"><label>安全库存天数</label><strong>${row.safetyDays}</strong><div class="sub">低于则预警/补货</div></div>
+            <div class="card pad stat"><label>综合提前期</label><strong>${row.leadTime}天</strong><div class="sub">做货+采购+头程+上架</div></div>
+          </div>
+          <div style="height:14px;"></div>
+          <div class="card"><div class="panel-head"><h2>策略字段</h2></div><div class="panel-body">
+            <table>
+              <tbody>
+                <tr><td>策略名称</td><td>${row.name}</td><td>仓型</td><td>${strategyWarehouseTypeText(row.warehouseType)}</td></tr>
+                <tr><td>生效范围</td><td>${row.scope}</td><td>评审频率</td><td>${row.frequency}</td></tr>
+                <tr><td>MOQ</td><td>${row.moq}</td><td>箱规</td><td>${row.casePack}</td></tr>
+                <tr><td>仓容/入仓上限</td><td>${format(row.maxQty)}</td><td>高库存阈值</td><td>${row.overstockDays}天</td></tr>
+                <tr><td>状态</td><td>${row.status}</td><td>更新人/时间</td><td>${row.owner} · ${row.updatedAt}</td></tr>
+              </tbody>
+            </table>
+          </div></div>
+          <div style="height:14px;"></div>
+          <div class="inline-note">补货建议计算会读取目标覆盖天数、安全库存天数、提前期、MOQ、箱规和仓容上限；仓网调拨策略通过同一策略模板关联。</div>
+        `,
+        '<button class="btn" id="drawerOk">关闭</button>'
+      );
+    }
+
+    function bindStrategyRowActions() {
+      document.querySelectorAll('[data-strategy-action]').forEach(btn => {
+        btn.onclick = () => {
+          const row = state.strategyRows.find(item => item.id === btn.dataset.id);
+          if (!row) return;
+          const action = btn.dataset.strategyAction;
+          if (action === 'view') openStrategyView(row);
+          if (action === 'edit') openStrategyEdit(row);
+          if (action === 'toggle') {
+            row.status = row.status === '启用' ? '停用' : '启用';
+            row.owner = '当前用户';
+            row.updatedAt = nowText();
+            renderStrategyRows();
+            toast('策略状态已更新为' + row.status);
+          }
+        };
+      });
+    }
+
+    function bindStrategyPageButtons() {
+      $('strategyAdd').onclick = () => openStrategyEdit();
+      $('strategyImport').onclick = () => openModal('导入补货策略', '支持按模板导入策略字段。', '<div class="inline-note">模板字段：策略名称、仓型、生效范围、目标覆盖天数、安全库存天数、评审频率、综合提前期、MOQ、箱规、仓容上限、高库存阈值、状态。</div><div style="height:14px;"></div><input type="file" accept=".xlsx,.xls,.csv" />', '<button class="btn" data-close>取消</button><button class="btn primary" data-toast="策略导入完成：成功 3 条">开始导入</button>', true);
+      $('strategyTransfer').onclick = openTransferPriorityConfig;
+      $('strategyAudit').onclick = () => openModal('策略变更日志', '记录策略新增、编辑、启停和重新计算引用情况。', `
+        <table>
+          <thead><tr><th>时间</th><th>策略</th><th>操作</th><th>操作人</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>2026-04-29 09:20</td><td>平台仓标准补货策略</td><td>编辑</td><td>PMC主管</td><td>安全库存 10 -> 14 天</td></tr>
+            <tr><td>2026-04-28 16:05</td><td>海外3PL长链路策略</td><td>启用</td><td>计划员A</td><td>海外仓头程提前期更新</td></tr>
+          </tbody>
+        </table>
+      `, '<button class="btn primary" data-close>知道了</button>', true);
+      $('strategySearch').onclick = () => { renderStrategyRows(); toast('补货策略查询完成'); };
+      $('strategyReset').onclick = () => {
+        ['strategyKeyword', 'strategyWarehouseType', 'strategyStatus'].forEach(id => { if ($(id)) $(id).value = ''; });
+        renderStrategyRows();
+        toast('策略筛选已重置');
+      };
+      $('strategySaveView').onclick = () => toast('补货策略视图已保存');
+      $('strategyMoreFilters').onclick = () => openModal('更多筛选', '按渠道、客户、SKU 范围和生效时间筛选策略。', formGrid([
+        { label: '渠道', html: '<select><option>全部</option><option>B2C线上国外</option><option>B2B海外商超</option></select>' },
+        { label: 'SKU范围', html: '<input placeholder="SKU / 类目 / 组合 SKU" />' },
+        { label: '生效开始', html: '<input type="date" />' },
+        { label: '是否被批次引用', html: '<select><option>全部</option><option>是</option><option>否</option></select>' }
+      ]), '<button class="btn" data-close>取消</button><button class="btn primary" data-close>应用筛选</button>');
+      $('strategyBatchEnable').onclick = () => toast('已启用当前筛选策略');
+      $('strategyExport').onclick = () => toast('补货策略导出任务已创建：replenishment_strategy.xlsx');
+      bindStrategyRowActions();
+    }
+
+
     function bindDemandRowActions() {
       document.querySelectorAll('[data-demand-row]').forEach(btn => {
         btn.onclick = () => {
@@ -2921,6 +3250,7 @@
           if (action === 'view') openDemandView(row);
           if (action === 'edit') openDemandEdit(row);
           if (action === 'qty-submitted') openDemandQtyEdit(row, 'submitted');
+          if (action === 'qty-pmcSubmitted') openDemandQtyEdit(row, 'pmcSubmitted');
           if (action === 'qty-pmc') openDemandQtyEdit(row, 'pmc');
           if (action === 'submit') submitDemandRows([row], false);
           if (action === 'approve') approveDemandRows([row], false);
@@ -2952,7 +3282,8 @@
         { label: '商品名称', html: '<input id="mDemandProduct" value="' + (data.product || '') + '" placeholder="系统可按 SKU 带出" />' },
         { label: '开始月份', html: '<select id="mDemandStartMonth"><option ' + (startMonth === '2026-05' ? 'selected' : '') + '>2026-05</option><option ' + (startMonth === '2026-06' ? 'selected' : '') + '>2026-06</option><option ' + (startMonth === '2026-07' ? 'selected' : '') + '>2026-07</option></select>' },
         { label: '结束月份', html: '<select id="mDemandEndMonth"><option ' + (endMonth === '2026-05' ? 'selected' : '') + '>2026-05</option><option ' + (endMonth === '2026-06' ? 'selected' : '') + '>2026-06</option><option ' + (endMonth === '2026-07' ? 'selected' : '') + '>2026-07</option><option ' + (endMonth === '2026-08' ? 'selected' : '') + '>2026-08</option></select>' },
-        { label: '运营提报数量', html: '<input id="mDemandQty" type="number" min="1" step="1" value="' + (data.submittedQty || data.qty || '') + '" placeholder="发起人提报数量，必须 > 0" />' },
+        { label: '运营提报数量', html: '<input id="mDemandOperatorQty" type="number" min="1" step="1" value="' + (data.submittedQty || '') + '" placeholder="发起角色为运营时必填" />' },
+        { label: 'PMC提报数量', html: '<input id="mDemandPmcSubmittedQty" type="number" min="1" step="1" value="' + (data.pmcSubmittedQty || '') + '" placeholder="发起角色为 PMC 时必填" />' },
         { label: '需求来源', html: '<select id="mDemandSource"><option ' + (data.source === '销售预测' ? 'selected' : '') + '>销售预测</option><option ' + (data.source === '临时加单' ? 'selected' : '') + '>临时加单</option><option ' + (data.source === '促销活动' ? 'selected' : '') + '>促销活动</option><option ' + (data.source === '其他' ? 'selected' : '') + '>其他</option></select>' },
         { label: '需求明细类型', html: '<select id="mDemandType"><option ' + (data.type === '订单锁定' ? 'selected' : '') + '>订单锁定</option><option ' + (data.type === '活动需求' ? 'selected' : '') + '>活动需求</option><option ' + (data.type === '历史销量参考' ? 'selected' : '') + '>历史销量参考</option><option ' + (data.type === '临时加单' ? 'selected' : '') + '>临时加单</option><option>综合判断</option></select>' },
         { label: '订单/锁单参考量', html: '<input id="mDemandOrderRef" type="number" min="0" value="' + (data.orderRef || '') + '" placeholder="选填" />' },
@@ -2961,7 +3292,7 @@
         { label: '临时调整量', html: '<input id="mDemandManualRef" type="number" value="' + (data.manualRef || '') + '" placeholder="选填，可正可负" />' },
         { label: '活动ID', html: '<input id="mDemandEvent" value="' + (data.eventId || '') + '" placeholder="选填，用于活动复盘" />' },
         { label: '期望交付日', html: '<input id="mDemandDate" type="date" value="' + (data.expectedDate || '2026-05-10') + '" />' }
-      ]) + '<div style="height:12px;"></div><div class="field"><label>提报说明</label><textarea id="mDemandRemark" placeholder="说明需求如何形成，例如：历史销量 + 平台大促 + 客户锁单；非强制拆分。">' + (data.remark || '') + '</textarea></div>';
+      ]) + '<div style="height:12px;"></div><div class="inline-note">同一个弹窗兼容运营提报和 PMC 提报：发起角色为运营时填写运营提报数量；发起角色为 PMC 时填写 PMC提报数量。PMC确认数量在审核环节形成，作为补货计算主口径。</div><div style="height:12px;"></div><div class="field"><label>提报说明</label><textarea id="mDemandRemark" placeholder="说明需求如何形成，例如：历史销量 + 平台大促 + 客户锁单；非强制拆分。">' + (data.remark || '') + '</textarea></div>';
     }
 
     function readDemandForm() {
@@ -2974,8 +3305,9 @@
         startMonth: $('mDemandStartMonth').value,
         endMonth: $('mDemandEndMonth').value,
         week: $('mDemandStartMonth').value,
-        qty: Number($('mDemandQty').value),
-        submittedQty: Number($('mDemandQty').value),
+        qty: Number($('mDemandOperatorQty').value || $('mDemandPmcSubmittedQty').value),
+        submittedQty: $('mDemandOperatorQty').value ? Number($('mDemandOperatorQty').value) : null,
+        pmcSubmittedQty: $('mDemandPmcSubmittedQty').value ? Number($('mDemandPmcSubmittedQty').value) : null,
         tier: 'Final',
         source: $('mDemandSource').value,
         type: $('mDemandType').value,
@@ -2994,7 +3326,8 @@
       if (!data.sku) return 'SKU不能为空';
       if (!data.product) return '商品名称不能为空';
       if (data.endMonth < data.startMonth) return '结束月份不能早于开始月份';
-      if (!data.qty || data.qty <= 0) return '运营提报数量必须大于 0';
+      if (data.initiatorRole === '运营' && (!data.submittedQty || data.submittedQty <= 0)) return '运营发起时，运营提报数量必须大于 0';
+      if (data.initiatorRole === 'PMC' && (!data.pmcSubmittedQty || data.pmcSubmittedQty <= 0)) return 'PMC发起时，PMC提报数量必须大于 0';
       return '';
     }
 
@@ -3024,9 +3357,9 @@
     function openDemandImport() {
       openModal(
         '导入需求提报',
-        '支持 Excel 模板导入运营提报数量；导入后仍需 PMC 确认数量。',
+        '支持 Excel 模板导入运营提报数量或 PMC提报数量；导入后仍需 PMC 确认数量。',
         `
-          <div class="inline-note">模板字段：渠道、客户/店铺、SKU、开始月份、结束月份、运营提报数量、需求来源、订单参考量、活动增量参考量、历史销量参考量、临时调整量、期望交付日、提报说明。</div>
+          <div class="inline-note">模板字段：渠道、客户/店铺、SKU、开始月份、结束月份、发起角色、运营提报数量、PMC提报数量、需求来源、订单参考量、活动增量参考量、历史销量参考量、临时调整量、期望交付日、提报说明。</div>
           <div style="height:14px;"></div>
           ${formGrid([
             { label: '选择文件', html: '<input id="mDemandImportFile" type="file" accept=".xlsx,.xls,.csv" />' },
@@ -3119,16 +3452,23 @@
 
     function openDemandFieldHelp() {
       openModal(
-        '关键字段说明：运营提报数量 / PMC确认数量',
-        '需求池保留两个数量口径：运营提报数量用于记录原始提报，PMC确认数量用于进入补货计算。',
+        '关键字段说明：运营提报数量 / PMC提报数量 / PMC确认数量',
+        '需求池保留三个数量口径：运营提报数量、PMC提报数量用于记录不同角色的原始提报，PMC确认数量用于进入补货计算。',
         `
           <table>
             <thead><tr><th>字段</th><th>含义</th><th>来源</th><th>更新触发</th><th>对流程影响</th></tr></thead>
             <tbody>
               <tr>
                 <td>运营提报数量</td>
-                <td>运营或 PMC 发起需求时录入的原始数量。</td>
+                <td>运营发起需求时录入的原始数量。</td>
                 <td>手工录入或 Excel 导入。</td>
+                <td>新增、导入、编辑未审核需求。</td>
+                <td>必须保留，不允许被 PMC 确认数量覆盖。</td>
+              </tr>
+              <tr>
+                <td>PMC提报数量</td>
+                <td>PMC 在运营提报范围外或基于补充判断发起需求时录入的原始数量。</td>
+                <td>PMC 手工录入或 Excel 导入。</td>
                 <td>新增、导入、编辑未审核需求。</td>
                 <td>必须保留，不允许被 PMC 确认数量覆盖。</td>
               </tr>
@@ -3136,7 +3476,7 @@
                 <td>PMC确认数量</td>
                 <td>PMC 评审后确认的有效需求数量。</td>
                 <td>PMC 单行确认或批量确认。</td>
-                <td>如果与运营提报数量不一致，必须填写调整原因。</td>
+                <td>如果与原始提报数量不一致，必须填写调整原因。</td>
                 <td>补货工作台读取该数量生成补货建议。</td>
               </tr>
             </tbody>
@@ -3164,7 +3504,7 @@
         row.channel + ' / ' + row.customer + ' / ' + row.sku,
         `
           <div class="grid cols-3">
-            <div class="card pad stat"><label>运营提报数量</label><strong>${format(row.submittedQty || row.qty)}</strong><div class="sub">${row.initiatorRole || '运营'}发起</div></div>
+            <div class="card pad stat"><label>原始提报数量</label><strong>${format(demandOriginalQty(row))}</strong><div class="sub">${row.initiatorRole || '运营'}发起</div></div>
             <div class="card pad stat"><label>PMC确认数量</label><strong>${row.pmcQty != null ? format(row.pmcQty) : '-'}</strong><div class="sub">补货计算读取值</div></div>
             <div class="card pad stat"><label>当前状态</label><strong>${row.status}</strong><div class="sub">${row.confirmedAt ? '确认于 ' + row.confirmedAt : '待确认'}</div></div>
           </div>
@@ -3175,7 +3515,8 @@
                 <tr><td>渠道</td><td>${row.channel}</td><td>客户/店铺</td><td>${row.customer}</td></tr>
                 <tr><td>SKU</td><td>${row.sku}</td><td>商品</td><td>${row.product}</td></tr>
                 <tr><td>提报月份范围</td><td>${demandMonthRange(row)}</td><td>期望交付日</td><td>${row.expectedDate}</td></tr>
-                <tr><td>运营提报数量</td><td>${format(row.submittedQty || row.qty)}</td><td>PMC确认数量</td><td>${row.pmcQty != null ? format(row.pmcQty) : '-'}</td></tr>
+                <tr><td>运营提报数量</td><td>${row.submittedQty != null ? format(row.submittedQty) : '-'}</td><td>PMC提报数量</td><td>${row.pmcSubmittedQty != null ? format(row.pmcSubmittedQty) : '-'}</td></tr>
+                <tr><td>PMC确认数量</td><td>${row.pmcQty != null ? format(row.pmcQty) : '-'}</td><td>原始提报数量</td><td>${format(demandOriginalQty(row))}</td></tr>
                 <tr><td>需求来源</td><td>${row.source || '其他'}</td><td>责任人</td><td>${row.owner}</td></tr>
                 <tr><td>创建人</td><td>${row.createdBy || row.owner || '-'}</td><td>创建时间</td><td>${row.createdAt || '-'}</td></tr>
                 <tr><td>确认人</td><td>${row.confirmedBy || '-'}</td><td>确认时间</td><td>${row.confirmedAt || '-'}</td></tr>
@@ -3184,7 +3525,7 @@
           </div></div>
           <div style="height:14px;"></div>
           <div class="card"><div class="panel-head"><h2>2. 运营提报依据（非计算构成）</h2></div><div class="panel-body">
-            <div class="inline-note">运营提报数量是原始提报值，PMC确认数量是补货计算读取值；以下信息只用于说明提报依据和审核参考，不参与系统加总。</div>
+            <div class="inline-note">运营提报数量和 PMC提报数量是不同角色的原始提报值，PMC确认数量是补货计算读取值；以下信息只用于说明提报依据和审核参考，不参与系统加总。</div>
             <div style="height:10px;"></div>
             <table>
               <thead><tr><th>参考信息</th><th class="num">参考量</th><th>审核意义</th></tr></thead>
@@ -3200,7 +3541,7 @@
               <thead><tr><th colspan="4">PMC确认数量与参考量关系</th></tr></thead>
               <tbody>
                 <tr><td>关系口径</td><td colspan="3">PMC确认数量是补货主口径；参考量是审核线索，不是计算公式，也不是必填构成。</td></tr>
-                <tr><td>审核方式</td><td colspan="3">PMC 逐项查看订单、活动、历史销量和人工判断是否支撑运营提报，不按“参考量合计”判断确认或退回。</td></tr>
+                <tr><td>审核方式</td><td colspan="3">PMC 逐项查看订单、活动、历史销量和人工判断是否支撑原始提报，不按“参考量合计”判断确认或退回。</td></tr>
                 <tr><td>历史参考偏离</td><td>${format(historyGap)}（${historyGapRate}%）</td><td>提示规则</td><td>${Math.abs(historyGapRate) >= 30 ? '偏离较大，建议审核备注' : '偏离在常规观察范围'}</td></tr>
                 <tr><td>订单支撑情况</td><td colspan="3">${orderRef > 0 ? '存在订单/锁单参考，审核时优先核对客户 PO 或锁单依据。' : '暂无订单/锁单参考，更多依赖历史销量、活动或运营判断。'}</td></tr>
               </tbody>
@@ -3237,7 +3578,8 @@
               <tbody>
                 <tr><td>销售/运营备注</td><td colspan="3">${row.remark || '-'}</td></tr>
                 <tr><td>PMC 调整记录</td><td colspan="3">${row.pmcQty != null ? 'PMC 已审核数量。' : '暂无 PMC 审核；待 PMC 审核。'}</td></tr>
-                <tr><td>运营提报值</td><td>${format(row.submittedQty || row.qty)}</td><td>PMC确认值</td><td>${row.pmcQty != null ? format(row.pmcQty) : '-'}</td></tr>
+                <tr><td>运营提报值</td><td>${row.submittedQty != null ? format(row.submittedQty) : '-'}</td><td>PMC提报值</td><td>${row.pmcSubmittedQty != null ? format(row.pmcSubmittedQty) : '-'}</td></tr>
+                <tr><td>PMC确认值</td><td>${row.pmcQty != null ? format(row.pmcQty) : '-'}</td><td>原始提报值</td><td>${format(demandOriginalQty(row))}</td></tr>
                 <tr><td>调整原因</td><td colspan="3">${row.pmcAdjustReason || row.qtyEditReason || '-'}</td></tr>
               </tbody>
             </table>
@@ -3267,15 +3609,16 @@
         return;
       }
       const isSubmitted = field === 'submitted';
-      const currentQty = isSubmitted ? (row.submittedQty || row.qty) : (row.pmcQty || row.submittedQty || row.qty);
+      const isPmcSubmitted = field === 'pmcSubmitted';
+      const currentQty = isSubmitted ? (row.submittedQty || row.qty) : isPmcSubmitted ? (row.pmcSubmittedQty || row.qty) : (row.pmcQty || demandOriginalQty(row));
       openModal(
-        (isSubmitted ? '编辑运营提报数量 · ' : '编辑PMC确认数量 · ') + row.no,
-        isSubmitted ? '确认前可直接调整运营提报数量；保存后需要 PMC 重新确认。' : '确认前可先录入或调整 PMC确认数量，正式确认时仍会校验调整原因。',
+        (isSubmitted ? '编辑运营提报数量 · ' : isPmcSubmitted ? '编辑PMC提报数量 · ' : '编辑PMC确认数量 · ') + row.no,
+        isSubmitted || isPmcSubmitted ? '确认前可直接调整原始提报数量；保存后需要 PMC 重新确认。' : '确认前可先录入或调整 PMC确认数量，正式确认时仍会校验调整原因。',
         formGrid([
           { label: '当前状态', html: '<input value="' + row.status + '" readonly />' },
-          { label: isSubmitted ? '运营提报数量' : 'PMC确认数量', html: '<input id="mDemandQuickQty" type="number" min="1" step="1" value="' + currentQty + '" />' },
+          { label: isSubmitted ? '运营提报数量' : isPmcSubmitted ? 'PMC提报数量' : 'PMC确认数量', html: '<input id="mDemandQuickQty" type="number" min="1" step="1" value="' + currentQty + '" />' },
           { label: '需求来源', html: '<input value="' + (row.source || '其他') + '" readonly />' },
-          { label: '对照数量', html: '<input value="' + (isSubmitted ? (row.pmcQty != null ? 'PMC确认 ' + format(row.pmcQty) : 'PMC未确认') : '运营提报 ' + format(row.submittedQty || row.qty)) + '" readonly />' }
+          { label: '对照数量', html: '<input value="' + (isSubmitted || isPmcSubmitted ? (row.pmcQty != null ? 'PMC确认 ' + format(row.pmcQty) : 'PMC未确认') : '原始提报 ' + format(demandOriginalQty(row))) + '" readonly />' }
         ]) + '<div style="height:12px;"></div><div class="field"><label>编辑原因</label><textarea id="mDemandQuickQtyReason" placeholder="建议填写数量调整原因，便于追溯。"></textarea></div>',
         '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-qty-save data-id="' + row.id + '" data-field="' + field + '">保存数量</button>',
         true
@@ -3298,13 +3641,14 @@
         const row = target[0];
         openModal(
           'PMC确认需求 · ' + row.no,
-          'PMC确认数量是进入补货计算的有效需求；如不同于运营提报数量，必须填写调整原因。',
+          'PMC确认数量是进入补货计算的有效需求；如不同于原始提报数量，必须填写调整原因。',
           formGrid([
-            { label: '运营提报数量', html: '<input value="' + (row.submittedQty || row.qty) + '" readonly />' },
-            { label: 'PMC确认数量', html: '<input id="mDemandConfirmQty" type="number" min="1" value="' + (row.pmcQty || row.submittedQty || row.qty) + '" />' },
+            { label: '运营提报数量', html: '<input value="' + (row.submittedQty != null ? format(row.submittedQty) : '-') + '" readonly />' },
+            { label: 'PMC提报数量', html: '<input value="' + (row.pmcSubmittedQty != null ? format(row.pmcSubmittedQty) : '-') + '" readonly />' },
+            { label: 'PMC确认数量', html: '<input id="mDemandConfirmQty" type="number" min="1" value="' + (row.pmcQty || demandOriginalQty(row)) + '" />' },
             { label: '需求来源', html: '<input value="' + (row.source || '其他') + '" readonly />' },
             { label: '发起角色', html: '<input value="' + (row.initiatorRole || '运营') + '" readonly />' }
-          ]) + '<div style="height:12px;"></div><div class="field"><label>调整原因</label><textarea id="mDemandConfirmReason" placeholder="如 PMC 确认数量不同于运营提报数量，必须填写原因。">' + (row.pmcAdjustReason || '') + '</textarea></div>',
+          ]) + '<div style="height:12px;"></div><div class="field"><label>调整原因</label><textarea id="mDemandConfirmReason" placeholder="如 PMC 确认数量不同于原始提报数量，必须填写原因。">' + (row.pmcAdjustReason || '') + '</textarea></div>',
           '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-confirm="' + ids + '">确认</button>',
           true
         );
@@ -3312,7 +3656,7 @@
       }
       openModal(
         '批量PMC确认',
-        '批量确认将默认以运营提报数量作为 PMC 确认数量；如需逐行调整，请使用单行确认。',
+        '批量确认将默认以原始提报数量作为 PMC 确认数量；如需逐行调整，请使用单行确认。',
         '<div class="inline-note">本次将审核 ' + target.length + ' 条需求，审核后状态变为“已审核”，可进入需求锁定。</div>',
         '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-confirm="' + ids + '">确认</button>',
         true
