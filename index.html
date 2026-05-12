@@ -655,6 +655,20 @@
       line-height: 1.5;
       font-size: 13px;
     }
+  
+    .prd-preview { max-width: 980px; margin: 0 auto; color: var(--text); }
+    .prd-preview h2 { margin: 26px 0 12px; font-size: 22px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .prd-preview h3 { margin: 22px 0 10px; font-size: 18px; }
+    .prd-preview h4, .prd-preview h5 { margin: 18px 0 8px; font-size: 15px; }
+    .prd-preview p { margin: 8px 0; line-height: 1.75; color: var(--text); }
+    .prd-preview blockquote { margin: 12px 0; padding: 10px 14px; background: #f8fafc; border-left: 4px solid #3b82f6; color: var(--muted); }
+    .prd-preview ul, .prd-preview ol { margin: 8px 0 12px 22px; line-height: 1.7; }
+    .prd-table-wrap { overflow:auto; margin: 12px 0 18px; border:1px solid var(--line); border-radius: 12px; }
+    .prd-table { width:100%; border-collapse: collapse; font-size: 13px; }
+    .prd-table th { background:#f8fafc; color:#334155; font-weight:700; }
+    .prd-table th, .prd-table td { border-bottom:1px solid var(--line); padding:10px 12px; vertical-align: top; }
+    .prd-code { background:#0f172a; color:#e2e8f0; border-radius:12px; padding:14px; overflow:auto; line-height:1.6; }
+
   </style>
 </head>
 <body>
@@ -674,11 +688,11 @@
         <button type="button" data-menu="库存分层可视化"><span>库存分层可视化</span><small>M2</small></button>
         <button type="button" data-menu="补货工作台" class="active"><span>补货工作台</span><small>M3</small></button>
         <button type="button" data-menu="执行协同"><span>执行协同</span><small>M4</small></button>
-        <button type="button" data-menu="异常中心"><span>异常中心</span><small>M5</small></button>
-        <button type="button" data-menu="数据看板"><span>数据看板</span><small>M6</small></button>
+        <button type="button" data-menu="异常预警"><span>异常预警</span><small>M5</small></button>
+        <button type="button" data-menu="需求规格说明书"><span>需求规格说明书</span><small>PRD</small></button>
       </nav>
       <div class="side-card">
-        当前页面覆盖按钮：创建批次、选择已锁定需求、选择快照、生成建议、重新计算、提交审批、审批/驳回、下发、导出、筛选、行级调整、查看明细、创建异常。
+        当前页面覆盖按钮：创建批次、选择已锁定需求、选择快照、生成建议、重新计算、提交审批、审批/驳回、下发、导出、筛选、行级调整、查看明细、预警提醒。
       </div>
     </aside>
 
@@ -840,6 +854,7 @@
                     <th class="num">调整</th>
                     <th class="num">最终</th>
                     <th>约束</th>
+                    <th>销售可用分配</th>
                     <th>执行建议</th>
                     <th>审批</th>
                     <th>下发</th>
@@ -912,20 +927,23 @@
           id: 1, sku: 'C00B5B02+2550', name: 'FALCAM F22&F38 快装免笼（FOR C50）套装', warehouse: '奥莱B2C仓', type: '平台仓',
           tier: 'Tier B', demand: 4200, available: 930, inbound: 1100, safety: 700, gap: 2870,
           suggested: 3000, adjust: 0, final: 3000, constraint: '警告', approval: '待确认', release: '未下发',
+          allocation: { source: '东莞配件仓', target: '奥莱B2C仓', qty: 1200, trigger: '覆盖不足', priority: '平台活动前置备货', afterCover: 22, remainingPhysical: 850 },
           risk: '平台仓单次入仓上限剩余 3,200，建议量接近上限。',
-          explain: ['需求 4,200', '安全库存 700', '可用 930', '有效在途 1,100', 'MOQ 500', '箱规 100', '建议量 3,000']
+          explain: ['需求 4,200', '安全库存 700', '可用 930', '有效在途 1,100', '仓容余量 3,200', '计划建议量 3,000']
         },
         {
           id: 2, sku: 'C00B5B01+F22B5601', name: 'FALCAM F22&F38 快装免笼（FOR ZR）套装', warehouse: '东莞塘厦仓', type: '国内仓',
           tier: 'Tier A', demand: 2600, available: 450, inbound: 300, safety: 500, gap: 2350,
           suggested: 2400, adjust: 0, final: 2400, constraint: '通过', approval: '待确认', release: '未下发',
+          allocation: { source: '东莞塘厦仓', target: 'B2B锁单虚拟仓', qty: 900, trigger: 'B2B锁单', priority: '客户承诺订单', afterCover: 19, remainingPhysical: 1400 },
           risk: 'B2B 锁单客户：德国经销商 PO-88021，需优先满足。',
-          explain: ['Tier A 锁单 2,600', '安全库存 500', '可用 450', '在途 300', '箱规 100', '建议量 2,400']
+          explain: ['Tier A 锁单 2,600', '安全库存 500', '可用 450', '在途 300', '目标覆盖 28天', '计划建议量 2,400']
         },
         {
           id: 3, sku: 'C00B3809+2549', name: 'FALCAM F22&F38&F50 快装折叠半笼套件套装', warehouse: '奥莱B2B仓', type: '海外3PL',
           tier: 'Tier C', demand: 1800, available: 1200, inbound: 0, safety: 400, gap: 1000,
           suggested: 1000, adjust: 0, final: 1000, constraint: '阻断', approval: '待确认', release: '未下发',
+          allocation: { source: '东莞翻新仓', target: '奥莱B2B仓', qty: 0, trigger: '库存上限阻断', priority: '超上限不可分货', afterCover: 15, remainingPhysical: 0 },
           risk: '海外 3PL 库存上限 2,000，当前可用 1,200，建议 1,000 后超上限 200。',
           explain: ['需求 1,800', '安全库存 400', '可用 1,200', '库存上限 2,000', '硬约束截断失败', '需调减至 800']
         },
@@ -933,15 +951,17 @@
           id: 4, sku: 'MJC26050800013', name: '上壳+下壳', warehouse: '京东自营待发仓LHH', type: '平台仓',
           tier: 'Tier B', demand: 3200, available: 600, inbound: 1300, safety: 600, gap: 1900,
           suggested: 2000, adjust: 0, final: 2000, constraint: '通过', approval: '待确认', release: '未下发',
+          allocation: { source: '东莞维修仓', target: '京东自营待发仓LHH', qty: 760, trigger: '平台活动', priority: '大促活动需求', afterCover: 28, remainingPhysical: 620 },
           risk: '平台大促活动 ACT-20260429，建议最晚发运日 2026-05-03。',
-          explain: ['活动需求 3,200', '安全库存 600', '可用 600', '在途 1,300', 'MOQ 500', '建议量 2,000']
+          explain: ['活动需求 3,200', '安全库存 600', '可用 600', '在途 1,300', '目标覆盖 35天', '计划建议量 2,000']
         },
         {
           id: 5, sku: 'MJC26050800014', name: '两侧按键+按键定位扣', warehouse: '东莞次品仓', type: '国内仓',
           tier: 'Tier D', demand: 900, available: 200, inbound: 0, safety: 200, gap: 900,
           suggested: 1000, adjust: 0, final: 1000, constraint: '警告', approval: '待确认', release: '未下发',
+          allocation: { source: '东莞次品仓', target: '维修备件虚拟仓', qty: 300, trigger: '周度滚动', priority: '覆盖天数最低', afterCover: 16, remainingPhysical: 150 },
           risk: '已审核需求发生变更，需补充变更审批说明。',
-          explain: ['临时需求 900', '安全库存 200', '可用 200', 'MOQ 1000', '建议量 1,000', '需审批']
+          explain: ['临时需求 900', '安全库存 200', '可用 200', '目标覆盖 25天', '计划建议量 1,000', '需审批']
         }
       ],
       timeline: [
@@ -953,9 +973,10 @@
       demandRows: [
         {
           id: 101, no: 'DP-20260429-001', channel: 'B2B海外商超', customer: '奥莱B2B',
+          platform: 'B2B客户', warZone: '欧洲战区', stockingWarehouse: '奥莱B2B仓',
           sku: 'C00B5B01+F22B5601', product: 'FALCAM F22&F38 快装免笼（FOR ZR）套装',
           week: '2026-05', startMonth: '2026-05', endMonth: '2026-07', qty: 7800, tier: 'Tier A', type: '订单锁定',
-          submittedQty: 7800, pmcSubmittedQty: null, pmcQty: null, source: '其他', initiatorRole: '运营',
+          submittedQty: 7800, pmcSubmittedQty: null, pmcQty: null, source: '订单锁定', initiatorRole: '运营',
           orderRef: 2200, activityRef: 0, forecastRef: 2350, manualRef: 250,
           eventId: '', expectedDate: '2026-05-18', owner: '销售张三', status: '审核中',
           createdBy: '销售张三', createdAt: '2026-04-29 09:10', confirmedBy: '', confirmedAt: '',
@@ -963,9 +984,10 @@
         },
         {
           id: 102, no: 'DP-20260429-002', channel: 'B2C线上国外', customer: '奥莱B2C',
+          platform: 'Amazon', warZone: '北美战区', stockingWarehouse: '奥莱B2C仓',
           sku: 'C00B5B02+2550', product: 'FALCAM F22&F38 快装免笼（FOR C50）套装',
           week: '2026-05', startMonth: '2026-05', endMonth: '2026-06', qty: 8400, tier: 'Tier B', type: '活动需求',
-          submittedQty: 8400, pmcSubmittedQty: null, pmcQty: null, source: '促销活动', initiatorRole: '运营',
+          submittedQty: 8400, pmcSubmittedQty: null, pmcQty: null, source: '活动需求', initiatorRole: '运营',
           orderRef: 0, activityRef: 1500, forecastRef: 3100, manualRef: -400,
           eventId: 'ACT-20260429', expectedDate: '2026-05-10', owner: '运营李四', status: '审核中',
           createdBy: '运营李四', createdAt: '2026-04-29 09:25', confirmedBy: '', confirmedAt: '',
@@ -973,6 +995,7 @@
         },
         {
           id: 103, no: 'DP-20260429-003', channel: 'B2C线上国内', customer: '天猫旗舰店',
+          platform: '天猫', warZone: '国内战区', stockingWarehouse: '东莞塘厦仓',
           sku: 'MJC26050800014', product: '两侧按键+按键定位扣',
           week: '2026-05', startMonth: '2026-05', endMonth: '2026-05', qty: 900, tier: 'Tier D', type: '临时加单',
           submittedQty: 900, pmcSubmittedQty: null, pmcQty: null, source: '临时加单', initiatorRole: '运营',
@@ -983,9 +1006,10 @@
         },
         {
           id: 104, no: 'DP-20260429-004', channel: 'B2C线上国外', customer: '京东自营',
+          platform: 'Amazon', warZone: '欧洲战区', stockingWarehouse: '京东自营待发仓LHH',
           sku: 'MJC26050800013', product: '上壳+下壳',
           week: '2026-06', startMonth: '2026-06', endMonth: '2026-07', qty: 6400, tier: 'Tier B', type: '活动需求',
-          submittedQty: null, pmcSubmittedQty: 6400, pmcQty: 6400, source: '促销活动', initiatorRole: 'PMC',
+          submittedQty: null, pmcSubmittedQty: 6400, pmcQty: 6400, source: '活动需求', initiatorRole: 'PMC',
           orderRef: 0, activityRef: 1200, forecastRef: 2100, manualRef: -100,
           eventId: 'ACT-UK-0501', expectedDate: '2026-05-12', owner: '运营赵六', status: '已审核',
           createdBy: '运营赵六', createdAt: '2026-04-29 08:40', confirmedBy: 'PMC主管', confirmedAt: '2026-04-29 11:30',
@@ -993,9 +1017,10 @@
         },
         {
           id: 105, no: 'DP-20260429-005', channel: 'B2B线下国外', customer: '速卖通LCM',
+          platform: 'B2B客户', warZone: '欧洲战区', stockingWarehouse: '奥莱B2B仓',
           sku: 'C00B3809+2549', product: 'FALCAM F22&F38&F50 快装折叠半笼套件套装',
           week: '2026-07', startMonth: '2026-07', endMonth: '2026-08', qty: 3600, tier: 'Tier C', type: '历史销量参考',
-          submittedQty: 3600, pmcSubmittedQty: null, pmcQty: null, source: '销售预测', initiatorRole: '运营',
+          submittedQty: 3600, pmcSubmittedQty: null, pmcQty: null, source: '历史销量参考', initiatorRole: '运营',
           orderRef: 900, activityRef: 0, forecastRef: 1600, manualRef: -100,
           eventId: '', expectedDate: '2026-05-20', owner: '销售陈七', status: '审核不通过',
           createdBy: '销售陈七', createdAt: '2026-04-29 09:55', confirmedBy: '', confirmedAt: '',
@@ -1004,18 +1029,18 @@
       ],
       strategyRows: [
         {
-          id: 'ST-001', name: '平台仓标准补货策略', warehouseType: 'platform', scope: 'B2C线上国外 / 平台仓',
-          targetCover: 30, safetyDays: 14, frequency: 'weekly', leadTime: 42, moq: 500, casePack: 100,
+          id: 'ST-001', name: '平台仓标准补货策略', warehouseType: 'platform',
+          targetCover: 30, safetyDays: 14, leadTime: 42,
           maxQty: 5200, overstockDays: 75, status: '启用', owner: 'PMC主管', updatedAt: '2026-04-29 09:20'
         },
         {
-          id: 'ST-002', name: '海外3PL长链路策略', warehouseType: 'oversea_3pl', scope: 'B2B海外商超 / 海外3PL',
-          targetCover: 45, safetyDays: 21, frequency: 'weekly', leadTime: 65, moq: 1000, casePack: 100,
+          id: 'ST-002', name: '海外3PL长链路策略', warehouseType: 'oversea_3pl',
+          targetCover: 45, safetyDays: 21, leadTime: 65,
           maxQty: 8800, overstockDays: 95, status: '启用', owner: '计划员A', updatedAt: '2026-04-28 16:05'
         },
         {
-          id: 'ST-003', name: '国内仓快速补货策略', warehouseType: 'domestic', scope: 'B2C线上国内 / 国内仓',
-          targetCover: 21, safetyDays: 7, frequency: 'weekly', leadTime: 15, moq: 300, casePack: 50,
+          id: 'ST-003', name: '国内仓快速补货策略', warehouseType: 'domestic',
+          targetCover: 21, safetyDays: 7, leadTime: 15,
           maxQty: 12000, overstockDays: 60, status: '停用', owner: 'PMC主管', updatedAt: '2026-04-26 11:40'
         }
       ],
@@ -1065,6 +1090,85 @@
     };
 
     const $ = (id) => document.getElementById(id);
+
+    const productPrdMarkdown = "# 智能补货系统产品需求文档（PRD）\n\n> 文档版本：V1.0  \n> 文档类型：产品组 PRD 模板版  \n> 适用阶段：一期 MVP  \n> 关联原型：`smart-replenishment-workbench.html`、`replenishment-prototype/index.html`  \n> 关联开发交付文档：`production-sales-collaboration-dev-prd.md`\n\n## 版本修改记录\n\n\n| 版本   | 日期         | 修改人 | 修改内容        | 备注  |\n| ---- | ---------- | --- | ----------- | --- |\n| V1.0 | 2026-05-12 | 张阳新 | 智能补货系统方案1.0 | 首版  |\n\n\n## 一、项目背景\n\n### 1.1 项目背景\n\n公司业务覆盖 B2C 国内、B2C 国外、B2B 国内、B2B 国外、B2B 海外商超等多种业务类型，履约网络包括国内实体仓、平台仓/平台合作仓、海外 3PL 仓、虚拟仓等多层库存结构。当前 PMC 主要依赖线下表格和人工经验完成备货预测、补货计划、调拨判断和发运跟踪，销售计划、库存口径、在途节点、平台入仓限制、异常处理分散在 ERP、旺店通、平台后台、海外仓系统和即时沟通中。\n\n随着 SKU 数量、平台渠道、战区范围和海外仓链路增加，现有方式存在以下问题：\n\n1. 需求入口不统一：运营关注重点 SKU 和活动需求，PMC 还需要补充运营未覆盖的备货预测，线下表格难以区分运营提报、PMC 提报和 PMC 最终确认量。\n2. 补货依赖人工经验：当前销量预测和补货预测都是线下表格计算，人工经验驱动，缺乏统一和可复制的预测模型，数据不准且计算耗时\n3. 补货建议不透明：数据来源、净缺口、在途是否准时、MOQ/箱规、仓容上限、调拨优先级等缺乏可解释过程。\n4. 风险提醒不统一：缺货、延期、库存差异、平台限仓等风险散落在不同系统和沟通渠道中，用户难以及时发现。\n\n因此，需要建设一套面向 运营、PMC 的智能补货系统，将销售计划与需求池、库存分层、补货工作台、执行协同和异常预警统一到线上流程中，先实现“人工提报 + 规则计算 + 可解释提醒”。异常模块一期只做风险提示和消息提醒，后续处理由用户在线下或原业务系统自行判断；后续接入预测模型并验证准确率后，再评估更完整的异常管理能力。\n\n### 1.3 方案目标\n\n本项目一期目标不是替代业务人员判断，而是把需求、库存、补货、执行、异常的关键过程线上化、结构化、可追溯化。\n\n核心目标：\n\n1. 建立统一需求池，支持运营提报、PMC 提报和 PMC 确认三个数量口径。\n2. 支持 PMC 按平台、战区、备货仓、SKU 的实际分工做备货预测。\n3. 建立实体仓/虚拟仓库存分层口径，为补货建议提供库存快照基础数据支持。\n4. 基于已审核需求、库存快照、补货策略和约束规则生成可解释补货建议。\n5. 将补货建议衔接到采购、调拨、入仓、发运等执行建议，并对缺货、延期、库存差异等风险进行异常预警提醒。\n\n### 1.3.1 一期目标\n\n\n| 目标编号 | 目标        | 说明                                    |\n| ---- | --------- | ------------------------------------- |\n| G1   | 统一需求入口    | 销售计划、运营提报、PMC 补充提报、活动需求、临时加单统一进入需求池   |\n| G2   | 支撑 PMC 分工 | 需求维度支持平台、渠道、战区、备货仓、客户/店铺、SKU、月份范围     |\n| G3   | 建立可信库存    | 展示实体仓可用、实体仓可分配、虚拟仓可用、虚拟仓冻结、计划占用、可调拨数量 |\n| G4   | 生成补货建议    | 基于需求、库存、在途、安全库存、MOQ、箱规、仓容限制生成建议       |\n| G5   | 解释计算过程    | 每条建议可查看需求来源、库存抵扣、在途、约束、调拨判断和截断原因      |\n| G6   | 跟踪执行节点    | 承接采购建议、调拨建议、平台入仓建议、发运建议，跟踪节点状态        |\n| G7   | 异常预警      | 缺货、延期、库存差异等异常系统预警                     |\n\n\n### 1.3.2 一期不做\n\n\n| 不做项            | 说明                                     |\n| -------------- | -------------------------------------- |\n| 全自动 AI 预测作为主流程 | 一期不建设自动预测模型，销售预测由运营/PMC 人工提报，历史销量仅作为参考 |\n| 自动生成正式采购订单     | 一期输出采购建议或采购申请草稿，正式 PO 仍由人工在 ERP 内处理    |\n| 自动生成正式发货/调拨单   | 一期输出调拨、入仓、发运建议，正式业务单据由人工确认或后续接口下发      |\n\n\n### 2.3 方案概述（痛点-解决方案）\n\n\n| 业务痛点                   | 解决方案                            | 系统落点            |\n| ---------------------- | ------------------------------- | --------------- |\n| 需求提报和确认依赖线下表格 | 新增需求池区分运营提报数量、PMC 提报数量、PMC 确认数量   | M1 销售计划与需求池     |\n| 调拨优先级规则复杂、不透明          | 按目的仓配置可调出仓列表，按优先级从上到下取可调拨数量     | M0 策略配置、M3 仓网分配 |\n| 补货建议难解释                | 计算抽屉展示需求、库存、在途、安全库存、MOQ、箱规、约束命中 | M3 补货工作台        |\n| 执行状态散落在多个系统单据          | 建立执行协同页面，跟踪 采购、发货、调拨、节点         | M4 执行协同         |\n| 异常人工发现处理               | 系统生成异常预警并发送消息提醒，仅供用户参考          | M5 异常预警         |\n\n\n### 2.4 产品验收标准\n\n\n| 验收维度  | 验收标准                                   |\n| ----- | -------------------------------------- |\n| 需求线上化 | 重点渠道销售计划线上化率 >= 90%                    |\n| 需求可追溯 | 任意需求可追溯发起角色、原始提报、PMC 确认、调整原因、审核人和时间    |\n| 分工匹配  | 可按平台、战区、备货仓、SKU 查询责任范围内的需求和补货建议        |\n| 库存可信  | 库存快照展示来源、同步时间、差异状态和实体/虚拟仓计算口径          |\n| 建议可解释 | 任意补货建议行可查看净缺口、有效供给、安全库存、在途、MOQ/箱规和约束原因 |\n| 执行可追踪 | 采购、调拨、入仓、发运建议可形成执行对象并跟踪状态              |\n| 异常预警  | 系统展示异常预警、参考原因和影响对象，通过页面和消息提醒用户参考       |\n| 性能    | 5000 行需求导入可返回成功/失败明细；常规查询 3 秒内返回       |\n\n\n## 二、流程部分\n\n### 2.1 全局名词说明\n\n\n| 名词      | 定义                                        |\n| ------- | ----------------------------------------- |\n| 平台      | 销售平台或业务平台，如 Amazon、TikTok、天猫、京东、B2B 客户类型等 |\n| 军区      | 销售/运营组织维度，如北美、欧洲、日本、国内，用于匹配 PMC 分工        |\n| 备货仓     | 计划归属仓/备货责任仓，用于预测归属、责任分工和虚拟仓映射，不代表最终发货仓    |\n| 客户/店铺   | B2C 为店铺/账号，B2B 为客户；PMC 汇总级备货预测可为空         |\n| 运营提报数量  | 运营发起需求时填写的原始需求数量                          |\n| PMC提报数量 | PMC 在运营提报范围外或补充判断下发起需求时填写的原始需求数量          |\n| PMC确认数量 | PMC 审核后确认的有效需求数量，补货工作台只读取该字段              |\n| 虚拟仓可用   | ERP/旺店通中虚拟仓可用库存，销售订单可占用                   |\n| 虚拟仓冻结   | 销售订单占用后从虚拟仓可用转入冻结                         |\n| 实体仓可分配  | 实体仓可用扣减绑定虚拟仓可用/冻结、计划占用和安全库存后的可分配库存        |\n| 计划占用账本  | 补货试算时占用实体仓可分配的账本，避免多虚拟仓重复使用同一实体库存         |\n| 可调拨数量   | M2 基于有效供给、未来需求、安全库存等计算出的可调出数量             |\n| 准时在途    | ETA <= 需求窗口结束日的在途数量，可计入有效供给               |\n\n\n### 2.2 业务流程图（区分改造前 + 改造后）\n\n改造前：\n\n```mermaid\nflowchart LR\n  A[运营/销售线下提报重点SKU] --> B[PMC线下补充预测]\n  B --> C[人工整理库存和在途]\n  C --> D[Excel计算补货量]\n  D --> E[人工判断采购/调拨/发运]\n  E --> F[群内沟通执行]\n  F --> G[异常靠人工跟进]\n```\n\n\n\n改造后：\n\n```mermaid\nflowchart LR\n  A[运营/PMC按平台+战区+备货仓提报需求] --> B[M1需求池审核确认]\n  B --> C[锁定PMC确认数量]\n  C --> D[M2读取库存快照和实体/虚拟仓库存]\n  D --> E[M3生成可解释补货建议]\n  E --> F{是否有可调拨数量}\n  F -->|有| G[生成调拨/分货建议]\n  F -->|无| H[生成采购/入仓/发运建议]\n  G --> I[M4执行协同]\n  H --> I\n  I --> J[M5异常预警提醒]\n```\n\n\n\n### 2.4 系统流程图【含单据名称 / 操作人 / 规则】\n\n```mermaid\nflowchart TD\n  A[需求提报单<br/>操作人: 运营/PMC<br/>规则: 平台+战区+备货仓+SKU+月份范围] --> B[需求审核<br/>操作人: PMC<br/>规则: 形成PMC确认数量]\n  B --> C[锁定需求<br/>操作人: PMC负责人<br/>规则: 已审核且无重叠]\n  C --> D[库存快照<br/>操作人: 系统/仓储<br/>规则: ERP/WMS/平台/3PL同步]\n  D --> E[补货试算批次<br/>操作人: PMC<br/>规则: 读取策略和库存快照]\n  E --> F[补货建议<br/>操作人: 系统<br/>规则: 净缺口+MOQ+约束]\n  F --> G[人工调整/审批<br/>操作人: PMC/负责人<br/>规则: 调整必填原因]\n  G --> H[执行建议<br/>单据: PR/TO/IB/SHIP<br/>操作人: 采购/仓储/物流]\n  H --> I[异常预警提醒<br/>操作人: 系统<br/>规则: 仅提示风险和参考原因]\n```\n\n\n\n### 2.5 状态机图/其他图\n\n需求状态机：\n\n```mermaid\nstateDiagram-v2\n  [*] --> 待提交\n  待提交 --> 审核中: 提交\n  审核中 --> 已审核: PMC确认\n  审核中 --> 审核不通过: 退回\n  审核不通过 --> 待提交: 修改后重提\n  已审核 --> 变更申请中: 发起变更\n  变更申请中 --> 审核中: 提交变更\n  审核中 --> 已审核: 变更审核通过\n```\n\n\n\n补货计划状态机：\n\n```mermaid\nstateDiagram-v2\n  [*] --> 草稿\n  草稿 --> 计算中: 生成建议\n  计算中 --> 待确认: 计算完成\n  待确认 --> 待审批: 提交审批\n  待审批 --> 已批准: 审批通过\n  待审批 --> 已驳回: 审批驳回\n  已批准 --> 已下发: 下发执行\n  已下发 --> 执行中: 执行承接\n  执行中 --> 已完成: 节点完成\n```\n\n\n\n## 三、方案详情\n\n### 3.1 功能清单\n\n\n| 模块            | 功能                                              | 优先级 | 一期范围 |\n| ------------- | ----------------------------------------------- | --- | ---- |\n| M0 主数据与策略配置   | SKU、仓库、渠道/客户、平台、战区、备货仓、供应商、补货策略、仓网调拨策略、实体/虚拟仓关系 | P0  | 必须   |\n| M1 销售计划与需求池   | 需求提报、导入、审核、退回、锁定、变更、重叠校验                        | P0  | 必须   |\n| M2 库存分层与库存可视化 | 库存快照、虚拟仓可用/冻结、实体仓可分配、可调拨数量、在途、覆盖天数              | P0  | 必须   |\n| M3 补货工作台      | 创建批次、选择需求/快照、生成建议、计算解释、人工调整、审批、下发               | P0  | 必须   |\n| M4 执行协同与发运计划  | PR、TO、IB、SHIP 执行对象跟踪，节点维护，ETA 更新                | P0  | 必须   |\n| M5 异常预警提醒     | 缺货、延期、库存差异、平台限仓、覆盖不足、不可售过高等风险提醒                 | P0  | 必须   |\n\n\n### 3.2 功能设计\n\n#### M0 主数据与策略配置\n\n功能目标：维护补货计算和流程控制所需的基础数据、策略模板、参数字典和审批规则。\n\n核心设计：\n\n\n| 功能          | 说明                                   |\n| ----------- | ------------------------------------ |\n| SKU 主数据     | SKU、品名、类目、状态、箱规、体积、重量                |\n| 仓库主数据       | 国内仓、平台仓、海外 3PL、实体仓、虚拟仓、仓库状态          |\n| 平台/战区/备货仓配置 | 支撑 PMC 按平台+战区+备货仓负责预测和备货             |\n| 补货策略模板      | 目标覆盖天数、安全库存天数、评审频率、综合提前期、MOQ、箱规、仓容上限 |\n| 仓网调拨策略      | 按目的仓配置可调出仓列表，按顺序计算可调拨数量              |\n| 实体/虚拟仓关系    | 维护实体仓和虚拟仓绑定关系、分货规则、冻结规则和实体仓可分配共享范围   |\n\n\n补货策略字段：\n\n\n| 字段                            | 说明                            |\n| ----------------------------- | ----------------------------- |\n| strategy_id                   | 策略 ID                         |\n| strategy_name                 | 策略名称                          |\n| warehouse_type                | domestic/platform/oversea_3pl |\n| cover_days_target             | 目标覆盖天数                        |\n| safety_stock_days             | 安全库存天数                        |\n| review_frequency              | daily/weekly/monthly          |\n| lead_time_days                | 综合提前期                         |\n| moq                           | 最小起订量                         |\n| case_pack                     | 箱规                            |\n| max_inbound_qty               | 单次入仓上限                        |\n| max_inventory_qty             | 目标仓库存上限                       |\n| transfer_priority_strategy_id | 关联仓网调拨策略                      |\n\n\n#### M1 销售计划与需求池\n\n功能目标：统一承接运营/PMC 需求提报，沉淀按平台、战区、备货仓、SKU 的备货预测需求，并由 PMC 确认有效需求。\n\n提报维度：\n\n\n| 场景         | 维度                                      |\n| ---------- | --------------------------------------- |\n| PMC 备货预测提报 | 平台 + 战区 + 备货仓 + SKU + 提报月份范围            |\n| 运营/销售明细提报  | 平台/渠道 + 战区 + 备货仓 + 客户/店铺 + SKU + 提报月份范围 |\n\n\n关键字段：\n\n\n| 字段        | 必填    | 说明                                   |\n| --------- | ----- | ------------------------------------ |\n| 平台        | 条件必填  | B2C 按平台填写，B2B 可填客户类型                 |\n| 渠道        | 必填    | B2C 国内、B2C 国外、B2B 国内、B2B 国外、B2B 海外商超 |\n| 战区        | 必填    | 用于 PMC 分工和权限                         |\n| 备货仓       | 必填    | 计划归属仓，不是最终发货仓                        |\n| 客户/店铺     | 条件必填  | 明细提报填写，PMC 汇总级预测可为空                  |\n| SKU       | 必填    | 需求商品                                 |\n| 开始月份/结束月份 | 必填    | 支持一次提报未来 2-3 个月或更长窗口                 |\n| 运营提报数量    | 条件必填  | 发起角色为运营时必填                           |\n| PMC提报数量   | 条件必填  | 发起角色为 PMC 时必填                        |\n| PMC确认数量   | 审核后必填 | 补货计算主口径                              |\n\n\n重叠校验：\n\n1. 同一平台、战区、备货仓、客户/店铺、SKU 的月份范围存在交集时，禁止新增/导入/编辑保存。\n2. 客户/店铺为空代表汇总级需求；汇总级需求与明细级需求若同平台、战区、备货仓、SKU、月份范围存在交集，锁定前必须提示重复风险。\n3. 重叠提示需展示重叠需求单号、重叠月份和处理建议。\n\n#### M2 库存分层与库存可视化\n\n功能目标：统一展示实体仓、虚拟仓、在途、上架中、预留、不可用、库龄、覆盖天数、实体仓可分配和可调拨数量。\n\n核心口径：\n\n```text\n实体仓可用库存 = 实物库存 - 已预留库存 - 不可用库存\n虚拟仓可用 = ERP/旺店通虚拟仓可用\n虚拟仓冻结 = ERP/旺店通虚拟仓冻结\n实体仓可分配 = 实体仓可用库存 - sum(绑定虚拟仓可用 + 绑定虚拟仓冻结) - 计划占用 - 实体仓安全库存\n有效供给 = 可用库存 + 上架中数量 + 准时在途\n准时在途 = ETA <= 需求窗口结束日的在途数量\n可调拨数量 = max(有效供给 - 未来需求 - 安全库存, 0)\n```\n\n页面需展示：\n\n\n| 区域   | 内容                               |\n| ---- | -------------------------------- |\n| 顶部指标 | 虚拟仓可用、虚拟仓冻结、实体仓可分配、可调拨数量         |\n| 主表   | SKU、仓库、仓库性质、绑定实体仓、库存状态、覆盖天数、库龄   |\n| 详情抽屉 | 库存口径、可调拨计算、实体/虚拟仓关系、计划占用、防重复占用说明 |\n\n\n#### M3 补货工作台\n\n功能目标：基于锁定需求、库存快照、补货策略和约束规则，生成可解释、可调整、可审批、可下发的补货计划。\n\n计算输入：\n\n1. 已锁定需求：读取 PMC确认数量。\n2. 库存快照：读取实体仓/虚拟仓库存、在途、上架中、库存差异。\n3. 实体/虚拟仓关系：根据平台、战区、备货仓、客户/店铺、SKU 映射销售归属虚拟仓或备货责任仓。\n4. 补货策略：目标覆盖天数、安全库存天数、MOQ、箱规、提前期、上限。\n5. 仓网调拨策略：目的仓对应的可调出仓列表和顺序。\n\n净缺口逻辑：\n\n```text\n需求量 = 当前策略窗口内已锁定 PMC确认数量\n安全库存目标 = 日均需求 * safety_stock_days\n虚拟仓净缺口 = max(0, 需求量 + 安全库存目标 - 虚拟仓可用 - 已锁定补货)\n净缺口 = max(0, 虚拟仓净缺口 - 本次可分配实体仓可分配数量)\n建议量_raw = ceil(净缺口 / case_pack) * case_pack\n若配置 MOQ 且建议量_raw < MOQ，则建议量_raw = MOQ\n```\n\n仓网分配：\n\n1. 按目的仓读取可调出仓列表。\n2. 按配置顺序读取每个调出仓在 M2 计算出的可调拨数量。\n3. 只能使用可调拨数量，不允许直接使用可用库存或实物库存。\n4. 若可调拨不足，剩余缺口转采购、入仓或发运建议。\n5. 每次使用实体仓可分配需写入计划占用账本，避免多个虚拟仓重复使用。\n\n#### M4 执行协同与发运计划\n\n功能目标：承接补货计划下发结果，跟踪采购、调拨、平台/海外仓入仓、发运等执行节点。\n\n执行对象：\n\n\n| 类型   | 编码   | 说明             |\n| ---- | ---- | -------------- |\n| 采购申请 | PR   | 采购或生产补货建议      |\n| 调拨单  | TO   | 仓间调拨或实体仓到虚拟仓分货 |\n| 入仓批次 | IB   | 平台仓/海外仓入仓计划    |\n| 发运计划 | SHIP | 国内发运、头程、海外派送   |\n\n\n#### M5 异常预警提醒\n\n定位：一期仅提供异常预警和消息提醒。系统展示触发规则、参考原因、影响对象、预计影响数量和生成时间，帮助用户及时发现风险；预警结果仅供参考，后续动作由用户结合业务实际自行判断。\n\n异常类型：\n\n\n| 异常    | 触发条件                  | 等级    |\n| ----- | --------------------- | ----- |\n| 缺货预警  | 可用库存 <= 0 且存在需求       | S1/S2 |\n| 覆盖不足  | 覆盖天数 < 安全库存天数         | S2    |\n| 在途延期  | ETA 晚于需求窗口或计划节点       | S1/S2 |\n| 库存差异  | ERP/WMS/平台/3PL 差异超过阈值 | S2    |\n| 平台限仓  | 建议入仓后超过平台仓上限或预约限制     | S1/S2 |\n| 上架中积压 | 上架中数量超过参考阈值未转可售       | S2/S3 |\n| 不可售过高 | 不可用库存占比超过阈值           | S3    |\n\n\n页面操作：查看详情、标记已读、忽略提醒、导出预警。\n\n\n### 3.2.1 权限类需求\n\n\n| 角色     | 权限                                |\n| ------ | --------------------------------- |\n| 销售/运营  | 维护本人/本平台/本战区授权范围内的需求，查看相关异常       |\n| PMC    | 查看和维护授权平台、战区、备货仓范围内需求；审核需求；生成补货建议 |\n| PMC负责人 | 锁定需求、审批高风险补货、维护策略、查看异常预警          |\n| 采购     | 查看采购建议、维护采购交期、反馈延期                |\n| 仓储     | 查看库存、调拨建议、库存差异任务，维护仓储节点           |\n| 物流     | 维护发运、头程、清关、预约、上架节点                |\n| 财务     | 查看金额相关计划，参与高金额或紧急补货审批             |\n| 系统管理员  | 主数据、策略、权限、字典、接口任务配置               |\n\n\n数据权限维度：\n\n1. 平台。\n2. 战区。\n3. 备货仓/仓库。\n4. 客户/店铺。\n5. SKU/类目。\n\n### 3.2.2 日志类需求\n\n必须记录操作日志的动作：\n\n1. 需求新增、导入、编辑、提交、退回、审核、锁定、变更、作废。\n2. 库存快照同步、差异处理、状态重算。\n3. 补货批次创建、生成建议、重新计算、人工调整、审批、驳回、下发。\n4. 执行对象承接、节点变更、ETA 更新。\n5. 异常预警生成、查看、忽略、导出。\n6. 主数据和策略新增、修改、启停。\n\n日志字段：\n\n\n| 字段           | 说明        |\n| ------------ | --------- |\n| operator     | 操作人       |\n| operate_time | 操作时间      |\n| object_type  | 对象类型      |\n| object_id    | 对象 ID     |\n| action       | 操作动作      |\n| before_value | 变更前值      |\n| after_value  | 变更后值      |\n| reason       | 操作原因      |\n| source       | 页面/API/导入 |\n\n\n### 3.2.3 极端异常场景的应对需求\n\n\n| 场景           | 系统处理                               |\n| ------------ | ---------------------------------- |\n| 库存快照同步失败     | 保留上一成功快照，当前快照标记失败；补货计算需提示库存不可信     |\n| 实体/虚拟仓映射缺失   | 需求进入待配置清单，不参与自动补货建议                |\n| 汇总需求和明细需求重叠  | 锁定前提示重复风险，必须选择保留汇总、保留明细或合并调整       |\n| 平台限仓/预约不可用   | 建议量截断或生成异常，提示拆批入仓或延期发运             |\n| 可调拨仓库存差异     | 该仓不参与自动调拨                          |\n| 调拨后调出仓低于安全库存 | 阻断调拨，剩余缺口转采购/发运建议                  |\n| 已审核需求变更      | 必须走变更审批，审批通过后更新有效需求                |\n| 补货策略被修改      | 不回写历史批次；未提交批次需手动重新计算               |\n| 重复导入         | 按平台+战区+备货仓+客户/店铺+SKU+月份范围校验，返回错误文件 |\n\n\n### 3.3 非功能设计\n\n#### 3.3.1 交互体验类需求\n\n1. 所有列表支持关键词、平台、战区、备货仓、SKU、状态筛选。\n2. 操作列遵循 ERP 设计规范，主操作使用文字链，“更多”承载次级操作。\n3. 关键计算字段必须提供字段说明或计算口径弹窗。\n4. 补货建议必须支持计算抽屉，不能只展示最终建议量。\n5. 重叠校验、库存差异、策略缺失等阻断必须明确展示原因和处理建议。\n\n#### 3.3.2 性能类需求\n\n性能要求：\n\n\n| 场景       | 要求                                 |\n| -------- | ---------------------------------- |\n| 需求池查询    | 常规筛选 3 秒内返回                        |\n| Excel 导入 | 支持 5000 行以上导入，返回成功数、失败数、错误文件       |\n| 库存快照列表   | 支持按 SKU、仓库、状态分页查询                  |\n| 补货计算     | 单批次 5000 SKU 行以内可在可接受时间内完成，并展示计算进度 |\n| 导出任务     | 大数据量导出采用异步任务                       |\n\n\n性能优化方向：\n\n1. 对需求池使用平台、战区、备货仓、SKU、月份范围建立组合索引。\n2. 库存快照按 snapshot_id、warehouse_id、sku_id 分区或索引。\n3. 补货计算使用批次快照，避免计算过程中读取实时变化数据导致口径漂移。\n4. 大导入、大导出采用异步任务和结果文件。\n5. 可调拨数量在 M2 快照层预计算，M3 只引用结果，避免重复计算。\n\n#### 3.3.3 安全性、保密性需求\n\n1. 不同角色按平台、战区、备货仓、客户/店铺、SKU 范围授权。\n2. 成本、金额、供应商等敏感字段需单独权限控制。\n3. 所有审批、变更、导入、导出必须记录审计日志。\n4. 导出数据需记录导出人、时间、筛选条件和文件名。\n5. 接口调用需具备鉴权、幂等、重试和失败告警。\n\n#### 3.3.4 稳定性、准确率需求\n\n1. 补货计算必须基于固定库存快照和锁定需求范围，保证可复算。\n2. 库存快照同步失败时不得静默使用异常数据。\n3. 计划占用账本必须可释放、可追溯，避免重复占用实体仓可分配。\n4. 浮动库存、在途、上架中等时间敏感数据需展示快照时间。\n5. 需求、库存、补货、执行关键状态流转不得允许直接改库。\n\n## 附录（可选）\n\n### 附录 A：核心数据实体\n\n\n| 实体                         | 说明       |\n| -------------------------- | -------- |\n| demand_plan                | 销售需求明细   |\n| demand_change_request      | 需求变更单    |\n| inventory_snapshot         | 库存快照     |\n| inventory_plan_reservation | 库存计划占用账本 |\n| warehouse_virtual_mapping  | 实体/虚拟仓关系 |\n| replenishment_strategy     | 补货策略     |\n| replenishment_plan         | 补货计划     |\n| transfer_priority_strategy | 仓网调拨策略   |\n| execution_task             | 执行协同任务   |\n| warning_record             | 异常预警记录   |\n| operation_log              | 操作日志     |\n\n\n### 附录 B：主要状态枚举\n\n需求状态：\n\n```text\n待提交、审核中、已审核、审核不通过、变更申请中、已锁定、已作废\n```\n\n补货计划状态：\n\n```text\n草稿、计算中、待确认、待审批、已批准、已驳回、已下发、执行中、已完成、已作废\n```\n\n执行任务状态：\n\n```text\n待承接、执行中、已完成、已取消、延期\n```\n\n异常状态：\n\n```text\n未读、已读、已忽略\n```\n\n### 附录 C：待确认问题\n\n\n| 编号  | 问题                                  | 建议责任方       |\n| --- | ----------------------------------- | ----------- |\n| Q1  | 平台、战区、备货仓主数据是否由 ERP 提供，还是本系统维护映射    | PMC、IT、销售运营 |\n| Q2  | 汇总级需求和明细级需求重叠时，业务默认保留哪一类            | PMC 负责人     |\n| Q3  | 平台仓库容和入仓预约数据是否可接口获取                 | IT、物流、平台运营  |\n| Q4  | 海外仓 API、物流商 API、销售平台 API 的库存和在途同步频率 | 仓储、物流、IT    |\n| Q5  | PR/TO/SHIP 是否一期接口写回，还是先导出           | IT、采购、仓储、物流 |\n| Q6  | 补货审批金额阈值和紧急补货审批链路                   | 财务、管理层      |\n\n\n";
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+
+    function markdownToPreviewHtml(markdown) {
+      const lines = markdown.split('\n');
+      let html = '';
+      let inList = false;
+      let inOrdered = false;
+      let inCode = false;
+      let codeLines = [];
+      const closeLists = () => {
+        if (inList) { html += '</ul>'; inList = false; }
+        if (inOrdered) { html += '</ol>'; inOrdered = false; }
+      };
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (line.startsWith('```')) {
+          if (inCode) {
+            html += '<pre class="prd-code">' + escapeHtml(codeLines.join('\n')) + '</pre>';
+            codeLines = [];
+            inCode = false;
+          } else {
+            closeLists();
+            inCode = true;
+          }
+          continue;
+        }
+        if (inCode) { codeLines.push(line); continue; }
+        if (!line.trim()) { closeLists(); continue; }
+        if (/^#{1,4}\s+/.test(line)) {
+          closeLists();
+          const level = Math.min((line.match(/^#+/) || [''])[0].length + 1, 5);
+          html += '<h' + level + '>' + escapeHtml(line.replace(/^#{1,4}\s+/, '')) + '</h' + level + '>';
+          continue;
+        }
+        if (line.startsWith('>')) {
+          closeLists();
+          html += '<blockquote>' + escapeHtml(line.replace(/^>\s?/, '')) + '</blockquote>';
+          continue;
+        }
+        if (line.includes('|') && i + 1 < lines.length && /^\s*\|?\s*-/.test(lines[i + 1])) {
+          closeLists();
+          const headers = line.split('|').map(x => x.trim()).filter(Boolean);
+          i += 2;
+          const rows = [];
+          while (i < lines.length && lines[i].includes('|') && lines[i].trim()) {
+            rows.push(lines[i].split('|').map(x => x.trim()).filter(Boolean));
+            i++;
+          }
+          i--;
+          html += '<div class="prd-table-wrap"><table class="prd-table"><thead><tr>' + headers.map(h => '<th>' + escapeHtml(h) + '</th>').join('') + '</tr></thead><tbody>' + rows.map(r => '<tr>' + r.map(c => '<td>' + escapeHtml(c) + '</td>').join('') + '</tr>').join('') + '</tbody></table></div>';
+          continue;
+        }
+        if (/^[-*]\s+/.test(line)) {
+          if (!inList) { closeLists(); html += '<ul>'; inList = true; }
+          html += '<li>' + escapeHtml(line.replace(/^[-*]\s+/, '')) + '</li>';
+          continue;
+        }
+        if (/^\d+\.\s+/.test(line)) {
+          if (!inOrdered) { closeLists(); html += '<ol>'; inOrdered = true; }
+          html += '<li>' + escapeHtml(line.replace(/^\d+\.\s+/, '')) + '</li>';
+          continue;
+        }
+        closeLists();
+        html += '<p>' + escapeHtml(line) + '</p>';
+      }
+      closeLists();
+      return html;
+    }
 
     function format(n) {
       return Number(n).toLocaleString('zh-CN');
@@ -1192,6 +1296,22 @@
       };
     }
 
+    function allocationAdvice(row) {
+      const allocation = row.allocation;
+      if (!allocation || allocation.qty <= 0) {
+        return {
+          summary: '暂不分配',
+          tone: row.constraint === '阻断' ? 'red' : 'gray',
+          detail: allocation ? allocation.priority : '无需调整销售可用额度'
+        };
+      }
+      return {
+        summary: format(allocation.qty) + ' 件',
+        tone: 'purple',
+        detail: allocation.source + ' -> ' + allocation.target
+      };
+    }
+
     function render() {
       const rows = visibleRows();
       $('batchNo').textContent = state.batchNo;
@@ -1203,6 +1323,7 @@
 
       $('suggestionBody').innerHTML = rows.map(row => {
         const exec = executionAdvice(row);
+        const allocation = allocationAdvice(row);
         return `
           <tr data-id="${row.id}">
             <td><input type="checkbox" class="row-check" data-id="${row.id}" /></td>
@@ -1216,6 +1337,7 @@
             <td class="num">${format(row.adjust)}</td>
             <td class="num"><strong>${format(row.final)}</strong></td>
             <td>${constraintChip(row.constraint)}</td>
+            <td>${chip(allocation.summary, allocation.tone)}<div class="muted">${allocation.detail}</div></td>
             <td>${chip(exec.summary, exec.tone)}<div class="muted">${exec.docs}</div></td>
             <td>${approvalChip(row.approval)}</td>
             <td>${releaseChip(row.release)}</td>
@@ -1223,7 +1345,7 @@
               <div class="btn-row">
                 <button class="btn small" data-action="detail" data-id="${row.id}">明细</button>
                 <button class="btn small" data-action="adjust" data-id="${row.id}">调整</button>
-                <button class="btn small" data-action="exception" data-id="${row.id}">异常</button>
+                <button class="btn small" data-action="exception" data-id="${row.id}">预警</button>
               </div>
             </td>
           </tr>
@@ -1231,7 +1353,7 @@
       }).join('');
 
       if (!rows.length) {
-        $('suggestionBody').innerHTML = '<tr><td colspan="15"><div class="empty">暂无符合条件的补货建议，请调整筛选条件。</div></td></tr>';
+        $('suggestionBody').innerHTML = '<tr><td colspan="16"><div class="empty">暂无符合条件的补货建议，请调整筛选条件。</div></td></tr>';
       }
 
       renderTimeline();
@@ -1357,7 +1479,7 @@
     function openGenerate() {
       openModal(
         '生成补货建议与执行建议',
-        '系统先按虚拟仓可用计算销售需求缺口，再读取绑定实体仓可分配和计划占用账本，生成不重复占用库存的补货建议。',
+        '系统先按店铺/客户归属识别虚拟仓，再汇总到绑定实体仓，按实体仓库存、在途和安全库存生成补货建议。',
         formGrid([
           { label: '已锁定需求', html: '<input value="' + state.demandVersion + '" readonly />' },
           { label: '库存快照', html: '<input value="' + state.snapshot + '" readonly />' },
@@ -1365,9 +1487,11 @@
           { label: '是否覆盖当前结果', html: '<select id="mOverwrite"><option>否，生成新试算批次</option><option>是，覆盖当前建议</option></select>' }
         ]) + `
           <div style="height:14px;"></div>
-          <div class="inline-note">计划层补货建议：先用虚拟仓可用抵扣需求；虚拟仓可用不足时，再从实体仓可分配分配，并写入计划占用账本，避免多个虚拟仓重复使用。</div>
+          <div class="inline-note">计划层补货建议：虚拟仓只做销售归属映射，系统将虚拟仓下的已审核需求汇总到实体仓，再按实体仓维度计算净缺口。</div>
           <div style="height:10px;"></div>
-          <div class="inline-note">执行层入仓/发运建议：根据目标仓类型进一步判断生成 PR、TO、IB、SHIP 或实体仓到虚拟仓分货建议，并校验平台入仓上限、海外仓库存上限、调拨优先级和最晚发运日。</div>
+          <div class="inline-note">销售可用分配建议：当实体仓补货到位、周度滚动计算、活动或锁单临近时，系统建议给哪个虚拟仓增加多少销售可用额度；该动作不扣减实体仓库存。</div>
+          <div style="height:10px;"></div>
+          <div class="inline-note">执行层入仓/发运建议：根据目标实体仓类型进一步判断生成 PR、TO、IB、SHIP，并校验平台入仓上限、海外仓库存上限、调拨优先级和最晚发运日。</div>
         `,
         '<button class="btn" data-close>取消</button><button class="btn primary" data-run-engine>开始生成</button>'
       );
@@ -1427,7 +1551,7 @@
     function openExport() {
       openModal(
         '导出补货建议',
-        '选择导出范围和格式，导出操作会写入审计日志。',
+        '选择导出范围和格式，导出操作会更新审计日志。',
         formGrid([
           { label: '导出范围', html: '<select id="mExportScope"><option>当前筛选结果</option><option>已勾选行</option><option>全部行</option></select>' },
           { label: '文件格式', html: '<select><option>Excel</option><option>CSV</option></select>' },
@@ -1469,7 +1593,7 @@
     function openAdjust(row) {
       openModal(
         '调整补货建议 · ' + row.sku,
-        '调整会写入审计日志，并影响最终建议量。',
+        '调整会更新审计日志，并影响最终建议量。',
         formGrid([
           { label: '系统建议量', html: '<input value="' + row.suggested + '" readonly />' },
           { label: '当前最终量', html: '<input value="' + row.final + '" readonly />' },
@@ -1486,7 +1610,7 @@
         '批量调整',
         rows.length ? '将对已勾选 ' + rows.length + ' 行执行批量调整。' : '请先勾选需要调整的补货建议行。',
         rows.length ? formGrid([
-          { label: '调整方式', html: '<select id="mBatchAdjustType"><option>按比例调整</option><option>统一设置最终量</option><option>按箱规向下取整</option></select>' },
+          { label: '调整方式', html: '<select id="mBatchAdjustType"><option>按比例调整</option><option>统一设置最终量</option><option>按仓容上限截断</option></select>' },
           { label: '调整值', html: '<input id="mBatchAdjustValue" type="number" value="-10" />' },
           { label: '调整原因', html: '<select><option>资金预算压缩</option><option>平台库容不足</option><option>供应能力不足</option></select>' },
           { label: '是否重新校验约束', html: '<select><option>是</option><option>否</option></select>' }
@@ -1554,9 +1678,25 @@
           </div>
           <div style="height:14px;"></div>
           <div class="card">
+            <div class="panel-head"><h2>虚拟仓销售可用分配建议</h2></div>
+            <div class="panel-body">
+              <table>
+                <tbody>
+                  <tr><td>来源实体仓</td><td>${row.allocation.source}</td><td>目标虚拟仓</td><td>${row.allocation.target}</td></tr>
+                  <tr><td>触发时机</td><td>${row.allocation.trigger}</td><td>优先原因</td><td>${row.allocation.priority}</td></tr>
+                  <tr><td>建议增加销售可用</td><td>${format(row.allocation.qty)}</td><td>分配后销售可用覆盖</td><td>${row.allocation.afterCover}天</td></tr>
+                  <tr><td>实体仓库存影响</td><td>不扣减实体仓库存</td><td>记录方式</td><td>仅更新虚拟仓销售可用建议</td></tr>
+                </tbody>
+              </table>
+              <div style="height:10px;"></div>
+              <div class="inline-note">销售可用分配建议用于实体仓库存到位后，决定给哪个虚拟仓增加多少可售额度。多个虚拟仓共享同一实体仓时，按锁单/活动/销售可用不足/配置优先级依次分配，但不改变实体仓实物库存。</div>
+            </div>
+          </div>
+          <div style="height:14px;"></div>
+          <div class="card">
             <div class="panel-head"><h2>仓网调拨判断</h2></div>
             <div class="panel-body">
-              <div class="inline-note">目的仓为虚拟仓时，系统先扣减虚拟仓缺口，再按绑定实体仓的实体仓可分配和目的仓可调出仓顺序取数；每次取数都会写入计划占用，防止同一实体仓库存被多个虚拟仓重复使用。</div>
+              <div class="inline-note">销售归属为虚拟仓时，系统先通过虚拟仓找到承接实体仓；仓网调拨发生在实体仓之间，虚拟仓销售可用分配不参与实体仓调拨库存扣减。</div>
               <div style="height:10px;"></div>
               <table>
                 <thead><tr><th>配置顺序</th><th>可调出仓</th><th class="num">有效供给</th><th class="num">保护库存</th><th class="num">可调拨量</th><th class="num">本次使用</th><th class="num">剩余缺口</th><th>结论</th></tr></thead>
@@ -1587,7 +1727,7 @@
               <table>
                 <thead><tr><th>约束项</th><th>类型</th><th>系统处理</th></tr></thead>
                 <tbody>
-                  <tr><td>MOQ/箱规</td><td>硬约束</td><td>按 100 向上取整</td></tr>
+                  <tr><td>仓容/入仓上限</td><td>硬约束</td><td>超过上限时截断或阻断下发</td></tr>
                   <tr><td>平台/海外仓上限</td><td>硬约束</td><td>${row.constraint === '阻断' ? '阻断下发' : '通过或警告'}</td></tr>
                   <tr><td>调出仓保护库存</td><td>硬约束</td><td>调出后低于安全覆盖或无法满足锁定需求时阻断调拨</td></tr>
                   <tr><td>覆盖天数</td><td>软约束</td><td>偏离时提示风险</td></tr>
@@ -1602,15 +1742,15 @@
 
     function openException(row) {
       openModal(
-        '创建异常工单 · ' + row.sku,
-        '用于将缺货、约束阻断、延期、平台限仓等问题派发给责任人。',
+        '异常预警提醒 · ' + row.sku,
+        '一期只做风险提示和消息提醒，预警结果仅供用户参考。',
         formGrid([
-          { label: '异常类型', html: '<select id="mExceptionType"><option>约束违反</option><option>缺货风险</option><option>平台限仓</option><option>交期延期</option></select>' },
-          { label: '异常等级', html: '<select id="mExceptionLevel"><option>S2</option><option>S1</option><option>S3</option></select>' },
-          { label: '责任部门', html: '<select><option>PMC</option><option>物流</option><option>采购</option><option>销售运营</option></select>' },
-          { label: '责任人', html: '<select><option>计划员A</option><option>物流专员B</option><option>采购C</option></select>' }
-        ]) + '<div style="height:12px;"></div><div class="field"><label>异常说明</label><textarea id="mExceptionDesc">' + row.risk + '</textarea></div>',
-        '<button class="btn" data-close>取消</button><button class="btn primary" data-create-exception="' + row.id + '">创建工单</button>'
+          { label: '预警类型', html: '<input value="' + (row.constraint === '阻断' ? '约束阻断预警' : '补货风险预警') + '" readonly />' },
+          { label: '预警等级', html: '<input value="' + (row.constraint === '阻断' ? 'S1' : 'S2') + '" readonly />' },
+          { label: '提醒状态', html: '<select id="mExceptionStatus"><option>未读</option><option>已读</option><option>已忽略</option></select>' },
+          { label: '影响对象', html: '<input value="' + row.sku + ' / ' + row.warehouse + '" readonly />' }
+        ]) + '<div style="height:12px;"></div><div class="field"><label>参考原因</label><textarea id="mExceptionDesc" readonly>' + row.risk + '</textarea></div><div style="height:12px;"></div><div class="inline-note">当前未接入预测模型，预警可能存在偏差；系统只提醒用户关注，后续动作由用户自行判断。</div>',
+        '<button class="btn" data-close>关闭</button><button class="btn primary" data-mark-warning="' + row.id + '">标记已读</button>'
       );
     }
 
@@ -1658,17 +1798,19 @@
       const approved = state.rows.filter(r => r.approval === '已批准');
       openModal(
         '下发执行',
-        approved.length ? '将已批准行下发为 PR、TO、IB 或发运计划。' : '当前没有已批准行，无法下发执行。',
+        approved.length ? '将已批准行下发为 PR、TO、IB 或发运计划；采购执行会根据 MOQ、箱规和供应商回货周期选择最优供应商与下单数量。' : '当前没有已批准行，无法下发执行。',
         approved.length ? `
           <table>
             <thead><tr><th>执行对象</th><th>生成规则</th><th>预计数量</th><th>责任角色</th></tr></thead>
             <tbody>
-              <tr><td>采购申请 PR</td><td>国内仓新增采购需求</td><td>2 行</td><td>采购</td></tr>
-              <tr><td>调拨单 TO</td><td>存在可调拨库存</td><td>1 行</td><td>仓储</td></tr>
+              <tr><td>采购申请 PR</td><td>按供应商 MOQ、箱规、回货周期匹配最优供应商</td><td>2 行</td><td>采购</td></tr>
+              <tr><td>实体仓调拨 TO</td><td>实体仓之间存在可调拨库存</td><td>1 行</td><td>仓储</td></tr>
               <tr><td>入仓批次 IB</td><td>平台仓/海外3PL入仓</td><td>2 行</td><td>物流</td></tr>
               <tr><td>发运计划 SHIP</td><td>跨境头程发运</td><td>3 行</td><td>物流</td></tr>
             </tbody>
           </table>
+          <div style="height:12px;"></div>
+          <div class="inline-note">采购数量示例：采购建议量 = max(供应商MOQ, ceil(计划缺口 / 箱规) * 箱规)。若最优供应商无法满足最晚到货日，系统提示替代供应商或拆单建议。销售可用分配建议仅调整虚拟仓可售额度，不改变实体仓库存。</div>
           <div style="height:12px;"></div>
           <div class="field"><label>下发备注</label><input id="mReleaseNote" placeholder="例如：优先下发平台仓大促 SKU" /></div>
         ` : '<div class="empty">请先完成审批通过。</div>',
@@ -1686,7 +1828,7 @@
             <thead><tr><th>类型</th><th>内容</th><th>时间</th><th>状态</th></tr></thead>
             <tbody>
               <tr><td>审批</td><td>RB-2026W18-001 待提交审批</td><td>09:06</td><td>${chip('待处理', 'orange')}</td></tr>
-              <tr><td>异常</td><td>C00B3809+2549 海外仓上限阻断</td><td>09:03</td><td>${chip('未关闭', 'red')}</td></tr>
+              <tr><td>预警</td><td>C00B3809+2549 海外仓上限阻断</td><td>09:03</td><td>${chip('未读', 'red')}</td></tr>
               <tr><td>库存</td><td>奥莱B2C仓 库容剩余不足</td><td>08:58</td><td>${chip('预警', 'orange')}</td></tr>
             </tbody>
           </table>
@@ -1708,7 +1850,7 @@
               <tr><td>选择已锁定需求/库存快照</td><td>打开选择弹窗，确认后更新批次元信息</td></tr>
               <tr><td>生成建议/重新计算</td><td>打开确认弹窗，并模拟异步进度</td></tr>
               <tr><td>查询/重置/更多筛选</td><td>真实过滤表格或打开高级筛选弹窗</td></tr>
-              <tr><td>明细/调整/异常</td><td>分别打开计算抽屉、调整弹窗、异常工单弹窗</td></tr>
+              <tr><td>明细/调整/预警</td><td>分别打开计算抽屉、调整弹窗、异常预警提醒</td></tr>
               <tr><td>提交审批/审批/驳回/下发</td><td>触发批次或行状态变化，并刷新表格</td></tr>
             </tbody>
           </table>
@@ -1747,8 +1889,7 @@
               <tr><td>销售计划与需求池</td><td>预见场景路由 + 悠桦林 DP</td><td>人工提报、PMC确认数量、重叠校验、操作留痕</td><td>协同预测、准确率评分</td></tr>
               <tr><td>补货工作台</td><td>杉数约束补货 + 多级仓网</td><td>硬/软约束、截断原因、解释因子、调拨优先</td><td>OR 求解、策略仿真</td></tr>
               <tr><td>执行协同</td><td>悠桦林计划执行跟踪</td><td>PR/TO/IB/SHIP 节点回写</td><td>供应商门户、物流轨迹自动回写</td></tr>
-              <tr><td>异常中心</td><td>悠桦林 SCCT 控制塔</td><td>异常工单、影响测算、根因标签</td><td>What-if、方案推荐、经验库</td></tr>
-              <tr><td>数据看板</td><td>杉数 Insight + 预见准确率复盘</td><td>采纳率、缺货率、执行达成、异常闭环</td><td>KPI 仿真、财务计划联动</td></tr>
+              <tr><td>异常预警</td><td>悠桦林 SCCT 控制塔</td><td>预警提醒、影响测算、参考原因</td><td>What-if、方案推荐、经验库</td></tr>
             </tbody>
           </table>
         `,
@@ -1873,11 +2014,11 @@
         closeModal(); render(); toast('批量调整已完成');
       };
 
-      const createException = document.querySelector('[data-create-exception]');
-      if (createException) createException.onclick = () => {
-        const row = state.rows.find(r => r.id === Number(createException.dataset.createException));
-        state.timeline.unshift(['刚刚', '为 ' + row.sku + ' 创建异常工单 EX-' + Date.now().toString().slice(-5) + '。']);
-        closeModal(); render(); toast('异常工单已创建');
+      const markWarning = document.querySelector('[data-mark-warning]');
+      if (markWarning) markWarning.onclick = () => {
+        const row = state.rows.find(r => r.id === Number(markWarning.dataset.markWarning));
+        state.timeline.unshift(['刚刚', '已将 ' + row.sku + ' 的异常预警标记为已读，仅作为风险参考。']);
+        closeModal(); render(); toast('预警已标记已读');
       };
 
       const submitApproval = document.querySelector('[data-submit-approval]');
@@ -1931,12 +2072,13 @@
           }
           state.demandRows.unshift({
             id: Date.now(), no: 'DP-20260429-' + String(Math.floor(Math.random() * 900) + 100),
-            channel: data.channel, customer: data.customer, sku: data.sku, product: data.product,
+            platform: data.platform, channel: data.channel, warZone: data.warZone, stockingWarehouse: data.stockingWarehouse,
+            customer: data.customer, sku: data.sku, product: data.product,
             week: data.week, startMonth: data.startMonth, endMonth: data.endMonth, qty: data.qty, tier: data.tier,
             type: data.type, orderRef: data.orderRef, activityRef: data.activityRef, forecastRef: data.forecastRef, manualRef: data.manualRef,
             submittedQty: data.submittedQty, pmcSubmittedQty: data.pmcSubmittedQty,
             pmcQty: data.initiatorRole === 'PMC' && btn === demandAddSubmit ? data.pmcSubmittedQty : null,
-            source: data.source, initiatorRole: data.initiatorRole, eventId: data.eventId, expectedDate: data.expectedDate,
+            source: data.type, initiatorRole: data.initiatorRole, eventId: data.eventId, expectedDate: data.expectedDate,
             owner: '当前用户', status: btn === demandAddSubmit ? (data.initiatorRole === 'PMC' ? '已审核' : '审核中') : '待提交',
             createdBy: '当前用户', createdAt: nowText(),
             confirmedBy: data.initiatorRole === 'PMC' && btn === demandAddSubmit ? '当前用户' : '',
@@ -1957,9 +2099,10 @@
         state.demandRows.unshift({
           id: Date.now(), no: 'DP-IMPORT-' + String(Math.floor(Math.random() * 900) + 100),
           channel: 'B2C线上国外', customer: '奥莱B2C', sku: 'MJC26050800012', product: '引磁片',
+          platform: 'Amazon', warZone: '北美战区', stockingWarehouse: '奥莱B2C仓',
           week: '2026-06', startMonth: '2026-06', endMonth: '2026-08', qty: 4500, tier: 'Final',
           type: '综合判断', orderRef: 0, activityRef: 600, forecastRef: 900, manualRef: 0,
-          submittedQty: 4500, pmcSubmittedQty: null, pmcQty: null, source: '促销活动', initiatorRole: '运营',
+          submittedQty: 4500, pmcSubmittedQty: null, pmcQty: null, source: '综合判断', initiatorRole: '运营',
           eventId: 'ACT-US-0505', expectedDate: '2026-05-22',
           owner: '导入用户', status: $('mDemandImportStatus').value === '审核中' ? '审核中' : '待提交',
           createdBy: '导入用户', createdAt: nowText(), confirmedBy: '', confirmedAt: '',
@@ -2142,8 +2285,8 @@
         const id = strategySave.dataset.strategySave;
         const existing = id ? state.strategyRows.find(row => row.id === id) : null;
         const data = readStrategyForm(existing);
-        if (!data.name || !data.scope) {
-          toast('策略名称和生效范围不能为空');
+        if (!data.name) {
+          toast('策略名称不能为空');
           return;
         }
         if (data.safetyDays > data.targetCover) {
@@ -2275,9 +2418,40 @@
         toast('已进入库存分层可视化');
         return;
       }
+      if (name === '需求规格说明书') {
+        content.innerHTML = prdPageHtml();
+        toast('已进入需求规格说明书');
+        return;
+      }
       content.innerHTML = menuPageHtml(name);
       bindGenericPageButtons(name);
       toast('已进入' + name);
+    }
+
+    function prdPageHtml() {
+      return `
+        <div class="crumbs">首页 / 文档 / 需求规格说明书</div>
+        <div class="page-head">
+          <div class="page-title">
+            <h1>需求规格说明书</h1>
+            <p>直接展示当前最新 PRD 文档内容，供评审和协同查看。</p>
+          </div>
+          <div class="btn-row">
+            <button class="btn" data-toast="已展示最新 PRD 内容">刷新说明</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="panel-head">
+            <div>
+              <h2>production-sales-collaboration-product-prd.md</h2>
+              <div class="muted" style="font-size:12px;margin-top:4px;">该页面内容来自产品版 PRD 文档快照。</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="prd-preview">${markdownToPreviewHtml(productPrdMarkdown)}</div>
+          </div>
+        </div>
+      `;
     }
 
     function demandPageHtml() {
@@ -2290,7 +2464,7 @@
         <div class="page-head">
           <div class="page-title">
             <h1>销售计划与需求池</h1>
-            <p>运营或 PMC 可发起需求提报；运营提报后由 PMC 确认数量，补货计算读取 PMC 确认数量。</p>
+            <p>运营或 PMC 可按平台、战区、备货仓和 SKU 发起需求提报；备货仓用于计划归属和分工，不代表最终发货仓，补货计算读取 PMC 确认数量。</p>
           </div>
           <div class="btn-row">
             <button class="btn primary" id="demandAdd">录入需求提报</button>
@@ -2311,7 +2485,7 @@
           <div class="panel-head">
             <div>
               <h2>筛选条件</h2>
-              <div class="muted" style="font-size:12px;margin-top:4px;">支持按渠道、需求来源、状态快速定位待处理需求。</div>
+              <div class="muted" style="font-size:12px;margin-top:4px;">支持按平台、战区、备货仓、需求来源和状态快速定位待处理需求。</div>
             </div>
             <div class="btn-row">
               <button class="btn small" id="demandSaveView">保存视图</button>
@@ -2322,8 +2496,11 @@
           <div class="panel-body">
             <div class="filter-grid">
               <div class="field"><label>关键词</label><input id="demandKeyword" placeholder="需求单号 / SKU / 客户 / 店铺" /></div>
+              <div class="field"><label>平台</label><select id="demandPlatform"><option value="">全部</option><option>Amazon</option><option>TikTok</option><option>天猫</option><option>京东</option><option>B2B客户</option></select></div>
               <div class="field"><label>渠道</label><select id="demandChannel"><option value="">全部</option><option>B2C线上国外</option><option>B2C线上国内</option><option>B2B海外商超</option><option>B2B线下国外</option></select></div>
-              <div class="field"><label>需求来源</label><select id="demandTier"><option value="">全部</option><option>销售预测</option><option>临时加单</option><option>促销活动</option><option>其他</option></select></div>
+              <div class="field"><label>战区</label><select id="demandWarZone"><option value="">全部</option><option>北美战区</option><option>欧洲战区</option><option>日本战区</option><option>国内战区</option></select></div>
+              <div class="field"><label>备货仓</label><select id="demandStockingWarehouse"><option value="">全部</option><option>奥莱B2C仓</option><option>奥莱B2B仓</option><option>京东自营待发仓LHH</option><option>东莞塘厦仓</option></select></div>
+              <div class="field"><label>需求来源</label><select id="demandTier"><option value="">全部</option><option>订单锁定</option><option>活动需求</option><option>历史销量参考</option><option>临时加单</option><option>综合判断</option></select></div>
               <div class="field"><label>状态</label><select id="demandStatusFilter"><option value="">全部</option><option>待提交</option><option>审核中</option><option>已审核</option><option>审核不通过</option></select></div>
               <div class="field"><label>提报月份范围</label><select id="demandWeek"><option value="">全部</option><option>2026-05</option><option>2026-06</option><option>2026-07</option><option>2026-08</option></select></div>
               <button class="btn" id="demandMoreFilters">更多筛选</button>
@@ -2349,6 +2526,7 @@
                 <tr>
                   <th><input type="checkbox" id="demandCheckAll" /></th>
                   <th>需求单号</th>
+                  <th>平台/战区/备货仓</th>
                   <th>渠道/客户</th>
                   <th>SKU</th>
                   <th>提报月份范围</th>
@@ -2371,17 +2549,27 @@
       `;
     }
 
+    function demandSource(row) {
+      return row.type || row.source || '综合判断';
+    }
+
     function demandVisibleRows() {
       const kw = $('demandKeyword') ? $('demandKeyword').value.trim().toLowerCase() : '';
+      const platform = $('demandPlatform') ? $('demandPlatform').value : '';
       const channel = $('demandChannel') ? $('demandChannel').value : '';
+      const warZone = $('demandWarZone') ? $('demandWarZone').value : '';
+      const stockingWarehouse = $('demandStockingWarehouse') ? $('demandStockingWarehouse').value : '';
       const source = $('demandTier') ? $('demandTier').value : '';
       const status = $('demandStatusFilter') ? $('demandStatusFilter').value : '';
       const week = $('demandWeek') ? $('demandWeek').value : '';
       return state.demandRows.filter(row => {
-        const text = (row.no + row.channel + row.customer + row.sku + row.product).toLowerCase();
+        const text = (row.no + row.platform + row.warZone + row.stockingWarehouse + row.channel + row.customer + row.sku + row.product).toLowerCase();
         return (!kw || text.includes(kw)) &&
+          (!platform || row.platform === platform) &&
           (!channel || row.channel === channel) &&
-          (!source || row.source === source) &&
+          (!warZone || row.warZone === warZone) &&
+          (!stockingWarehouse || row.stockingWarehouse === stockingWarehouse) &&
+          (!source || demandSource(row) === source) &&
           (!status || row.status === status) &&
           demandMonthIncludes(row, week);
       });
@@ -2398,13 +2586,14 @@
         <tr data-demand-id="${row.id}">
           <td><input type="checkbox" class="demand-check" data-id="${row.id}" /></td>
           <td><strong>${row.no}</strong><div class="muted">${row.createdBy || row.owner} · ${row.createdAt || '-'}</div></td>
-          <td>${row.channel}<div class="muted">${row.customer}</div></td>
+          <td>${row.platform || '-'}<div class="muted">${row.warZone || '-'} · ${row.stockingWarehouse || '-'}</div></td>
+          <td>${row.channel}<div class="muted">${row.customer || '汇总级预测'}</div></td>
           <td><strong>${row.sku}</strong><div class="muted">${row.product}</div></td>
           <td>${demandMonthRange(row)}<div class="muted">按月展示，执行按周滚动</div></td>
           <td class="num"><strong>${row.submittedQty != null ? format(row.submittedQty) : '-'}</strong>${demandQtyEditButton(row, 'submitted')}</td>
           <td class="num"><strong>${row.pmcSubmittedQty != null ? format(row.pmcSubmittedQty) : '-'}</strong>${demandQtyEditButton(row, 'pmcSubmitted')}</td>
           <td class="num"><strong>${row.pmcQty != null ? format(row.pmcQty) : '-'}</strong>${demandQtyEditButton(row, 'pmc')}</td>
-          <td>${chip(row.source || '其他', 'blue')}<div class="muted">${row.initiatorRole || '运营'}发起</div></td>
+          <td>${chip(demandSource(row), 'blue')}<div class="muted">${row.initiatorRole || '运营'}发起</div></td>
           <td>${row.confirmedBy || '-'}</td>
           <td>${row.confirmedAt || '-'}</td>
           <td>${row.createdBy || row.owner || '-'}</td>
@@ -2416,7 +2605,7 @@
         </tr>
       `).join('');
       if (!rows.length) {
-        $('demandBody').innerHTML = '<tr><td colspan="15"><div class="empty">暂无符合条件的需求，请调整筛选条件。</div></td></tr>';
+        $('demandBody').innerHTML = '<tr><td colspan="16"><div class="empty">暂无符合条件的需求，请调整筛选条件。</div></td></tr>';
       }
       bindDemandRowActions();
     }
@@ -2559,7 +2748,7 @@
       const warehouseType = $('strategyWarehouseType') ? $('strategyWarehouseType').value : '';
       const status = $('strategyStatus') ? $('strategyStatus').value : '';
       return state.strategyRows.filter(row => {
-        const text = (row.id + row.name + row.scope + row.owner).toLowerCase();
+        const text = (row.id + row.name + row.owner).toLowerCase();
         return (!kw || text.includes(kw)) &&
           (!warehouseType || row.warehouseType === warehouseType) &&
           (!status || row.status === status);
@@ -2570,15 +2759,13 @@
       return `
         <tr>
           <td><strong>${row.id}</strong></td>
-          <td><strong>${row.name}</strong><div class="muted">${row.scope}</div></td>
+          <td><strong>${row.name}</strong><div class="muted">按仓库类型生效，不配置具体 SKU</div></td>
           <td>${strategyWarehouseTypeText(row.warehouseType)}</td>
           <td class="num">${row.targetCover}</td>
-          <td class="num">${row.safetyDays}</td>
-          <td>${row.frequency}</td>
-          <td class="num">${row.leadTime}</td>
-          <td class="num">${row.moq} / ${row.casePack}</td>
-          <td class="num">${format(row.maxQty)}</td>
           <td class="num">${row.overstockDays}</td>
+          <td class="num">${row.safetyDays}</td>
+          <td class="num">${row.leadTime}</td>
+          <td class="num">${format(row.maxQty)}</td>
           <td>${chip(row.status, row.status === '启用' ? 'green' : 'gray')}</td>
           <td>${row.owner}<div class="muted">${row.updatedAt}</div></td>
           <td>
@@ -2595,7 +2782,7 @@
       const rows = strategyVisibleRows();
       $('strategyBody').innerHTML = rows.length
         ? rows.map(row => strategyRowHtml(row)).join('')
-        : '<tr><td colspan="13"><div class="empty">暂无符合条件的策略模板。</div></td></tr>';
+        : '<tr><td colspan="11"><div class="empty">暂无符合条件的策略模板。</div></td></tr>';
       bindStrategyRowActions();
     }
 
@@ -2607,7 +2794,7 @@
         <div class="page-head">
           <div class="page-title">
             <h1>主数据与策略配置</h1>
-            <p>维护补货计算读取的策略模板，包含覆盖天数、安全库存、评审频率、提前期、MOQ、箱规、仓容上限和高库存阈值。</p>
+            <p>维护补货计算读取的策略模板，只配置仓型、覆盖天数、安全库存、综合提前期、仓容/入仓上限和状态；MOQ、箱规和供应商回货周期在采购执行阶段使用。</p>
           </div>
           <div class="btn-row">
             <button class="btn primary" id="strategyAdd">新增补货策略</button>
@@ -2617,10 +2804,10 @@
           </div>
         </div>
         <div class="grid cols-4" style="margin-bottom:14px;">
-          <div class="card pad stat"><label>策略模板数</label><strong>${state.strategyRows.length}</strong><div class="sub">按渠道/仓型/SKU范围生效</div></div>
+          <div class="card pad stat"><label>策略模板数</label><strong>${state.strategyRows.length}</strong><div class="sub">按仓库类型生效</div></div>
           <div class="card pad stat"><label>启用中</label><strong>${enabled}</strong><div class="sub">补货引擎可读取</div></div>
           <div class="card pad stat"><label>平均提前期</label><strong>${avgLeadTime}天</strong><div class="sub">生产 + 采购 + 头程 + 上架</div></div>
-          <div class="card pad stat"><label>周度评审</label><strong>${state.strategyRows.filter(row => row.frequency === 'weekly').length}</strong><div class="sub">采购/调拨/发货按周执行</div></div>
+          <div class="card pad stat"><label>平均高库存阈值</label><strong>${Math.round(state.strategyRows.reduce((sum, row) => sum + row.overstockDays, 0) / Math.max(state.strategyRows.length, 1))}天</strong><div class="sub">超过后提示高库存</div></div>
         </div>
         <div class="card" style="margin-bottom:14px;">
           <div class="panel-head">
@@ -2636,11 +2823,11 @@
           </div>
           <div class="panel-body">
             <div class="filter-grid">
-              <div class="field"><label>关键词</label><input id="strategyKeyword" placeholder="策略编号 / 策略名称 / 生效范围" /></div>
+              <div class="field"><label>关键词</label><input id="strategyKeyword" placeholder="策略编号 / 策略名称" /></div>
               <div class="field"><label>仓型</label><select id="strategyWarehouseType"><option value="">全部</option><option value="domestic">国内仓</option><option value="platform">平台仓</option><option value="oversea_3pl">海外3PL</option></select></div>
               <div class="field"><label>状态</label><select id="strategyStatus"><option value="">全部</option><option>启用</option><option>停用</option></select></div>
-              <div class="field"><label>评审频率</label><select><option>全部</option><option>daily</option><option>weekly</option><option>monthly</option></select></div>
-              <div class="field"><label>渠道/范围</label><input placeholder="例如 B2C线上国外 / 奥莱B2C" /></div>
+              <div class="field"><label>目标覆盖天数</label><input placeholder="例如 30" /></div>
+              <div class="field"><label>高库存阈值</label><input placeholder="例如 75" /></div>
               <button class="btn" id="strategyMoreFilters">更多筛选</button>
             </div>
           </div>
@@ -2661,15 +2848,13 @@
               <thead>
                 <tr>
                   <th>策略编号</th>
-                  <th>策略名称/生效范围</th>
+                  <th>策略名称</th>
                   <th>仓型</th>
                   <th class="num">目标覆盖天数</th>
-                  <th class="num">安全库存天数</th>
-                  <th>评审频率</th>
-                  <th class="num">综合提前期</th>
-                  <th class="num">MOQ/箱规</th>
-                  <th class="num">仓容上限</th>
                   <th class="num">高库存阈值</th>
+                  <th class="num">安全库存天数</th>
+                  <th class="num">综合提前期</th>
+                  <th class="num">仓容上限</th>
                   <th>状态</th>
                   <th>更新人/时间</th>
                   <th>操作</th>
@@ -2700,7 +2885,7 @@
         <div class="page-head">
           <div class="page-title">
             <h1>库存分层可视化</h1>
-            <p>基于库存快照统一展示实体仓、虚拟仓、虚拟仓可用、虚拟仓冻结、实体仓可分配、计划占用、保护库存和可调拨数量。</p>
+            <p>基于库存快照统一展示实体仓库存、虚拟仓销售可用/冻结、保护库存和可调拨数量。</p>
           </div>
           <div class="btn-row">
             <button class="btn primary" id="inventoryRefresh">刷新快照</button>
@@ -2715,7 +2900,7 @@
           <div class="card pad stat"><label>库存快照</label><strong id="inventorySnapshot">${state.inventorySnapshot}</strong><div class="sub">WMS/平台/3PL 当前同步</div></div>
           <div class="card pad stat"><label>虚拟仓可用</label><strong id="inventoryAvailable">${format(totalAvailable)}</strong><div class="sub">销售订单可占用</div></div>
           <div class="card pad stat"><label>虚拟仓冻结</label><strong id="inventoryFrozen">${format(totalFrozen)}</strong><div class="sub">订单占用后冻结</div></div>
-          <div class="card pad stat"><label>实体仓可分配</label><strong id="inventoryCommonPool">${format(totalCommonPool)}</strong><div class="sub">未分配且未计划占用</div></div>
+          <div class="card pad stat"><label>实体仓可用</label><strong id="inventoryCommonPool">${format(totalCommonPool)}</strong><div class="sub">真实库存可用口径</div></div>
           <div class="card pad stat"><label>可调拨数量</label><strong id="inventoryTransferable">${format(totalTransferable)}</strong><div class="sub">有效供给 - 保护库存</div></div>
         </div>
         <div class="card" style="margin-bottom:14px;">
@@ -2729,11 +2914,11 @@
             <table>
               <tbody>
                 <tr><td>快照来源</td><td>国内仓 WMS、平台仓 API、海外 3PL API</td><td>快照维度</td><td>SKU + 实体仓 + 虚拟仓 + 快照时间</td></tr>
-                <tr><td>虚拟仓可用</td><td>ERP 虚拟仓可用，分货后增加</td><td>虚拟仓冻结</td><td>ERP 虚拟仓冻结，订单占用后从可用转冻结</td></tr>
-                <tr><td>实体仓可分配</td><td colspan="3">实体仓可用 - 绑定虚拟仓可用合计 - 绑定虚拟仓冻结合计 - 计划占用 - 安全库存</td></tr>
+                <tr><td>虚拟仓可用</td><td>ERP 虚拟仓可用，表示销售可用额度</td><td>虚拟仓冻结</td><td>ERP 虚拟仓冻结，订单占用后从可用转冻结</td></tr>
+                <tr><td>实体仓可用口径</td><td colspan="3">实体仓可用不扣减虚拟仓可用/冻结；虚拟仓仅表示销售可用额度</td></tr>
                 <tr><td>覆盖天数</td><td>有效供给 / 日均需求</td><td>日均需求</td><td>优先取已锁定需求，缺失时取近4/8月销量</td></tr>
-                <tr><td>保护库存</td><td>已锁定需求 + 已承诺订单 + 已批准调拨出库 + 计划占用 + 安全库存</td><td>可调拨数量</td><td>max(有效供给 - 保护库存, 0)</td></tr>
-                <tr><td>防重复占用</td><td colspan="3">同一实体仓被多个虚拟仓共用时，补货试算先写入计划占用账本，后续虚拟仓只能使用扣减后的实体仓可分配。</td></tr>
+                <tr><td>保护库存</td><td>已锁定需求 + 已承诺订单 + 已批准调拨出库 + 未完补货 + 安全库存</td><td>可调拨数量</td><td>max(有效供给 - 保护库存, 0)</td></tr>
+                <tr><td>口径说明</td><td colspan="3">同一实体仓被多个虚拟仓共用时，先汇总各虚拟仓归属需求，再按实体仓维度统一计算补货建议。</td></tr>
               </tbody>
             </table>
           </div>
@@ -2768,7 +2953,7 @@
             <table>
               <thead>
                 <tr>
-                  <th>SKU</th><th>仓库</th><th>性质</th><th>绑定实体仓</th><th class="num">实体实物</th><th class="num">虚拟仓可用</th><th class="num">虚拟仓冻结</th><th class="num">实体仓可分配</th><th class="num">计划占用</th><th class="num">可调拨</th><th class="num">覆盖天数</th><th>库存状态</th><th>操作</th>
+                  <th>SKU</th><th>仓库</th><th>性质</th><th>绑定实体仓</th><th class="num">实体实物</th><th class="num">虚拟仓可用</th><th class="num">虚拟仓冻结</th><th class="num">实体仓可用口径</th><th class="num">未完补货</th><th class="num">可调拨</th><th class="num">覆盖天数</th><th>库存状态</th><th>操作</th>
                 </tr>
               </thead>
               <tbody id="inventoryBody"></tbody>
@@ -2866,7 +3051,7 @@
         `
           <div class="grid cols-3">
             <div class="card pad stat"><label>${row.warehouseNature === '虚拟仓' ? '虚拟仓可用' : '实体仓可用'}</label><strong>${format(available)}</strong><div class="sub">${row.warehouseNature === '虚拟仓' ? 'ERP 虚拟仓可用' : '实物 - 预留 - 不可用'}</div></div>
-            <div class="card pad stat"><label>实体仓可分配</label><strong>${format(physicalAllocatable)}</strong><div class="sub">扣除虚拟仓可用/冻结和计划占用</div></div>
+            <div class="card pad stat"><label>实体仓可用</label><strong>${format(physicalAllocatable)}</strong><div class="sub">不扣减虚拟仓可用/冻结</div></div>
             <div class="card pad stat"><label>库存状态</label><strong>${info.status}</strong><div class="sub">${info.reason}</div></div>
           </div>
           <div style="height:14px;"></div>
@@ -2876,8 +3061,8 @@
               <tr><td>实体仓实物</td><td>${row.warehouseNature === '实体仓' ? format(row.physical) : '-'}</td><td>实体仓可用</td><td>${row.warehouseNature === '实体仓' ? format(available) : '-'}</td></tr>
               <tr><td>虚拟仓可用</td><td>${row.warehouseNature === '虚拟仓' ? format(available) : '-'}</td><td>虚拟仓冻结</td><td>${row.warehouseNature === '虚拟仓' ? format(row.virtualFrozen || 0) : '-'}</td></tr>
               <tr><td>在途数量</td><td>${format(row.inbound)}</td><td>上架中</td><td>${format(row.receiving)}</td></tr>
-              <tr><td>虚拟仓可用+冻结</td><td>${format(row.boundVirtualQty || 0)}</td><td>计划占用</td><td>${format(row.planReserved || 0)}</td></tr>
-              <tr><td>实体仓可分配</td><td>${format(physicalAllocatable)}</td><td>可调拨数量</td><td>${format(transferable)}</td></tr>
+              <tr><td>虚拟仓可用+冻结</td><td>${format(row.boundVirtualQty || 0)}</td><td>未完补货</td><td>${format(row.planReserved || 0)}</td></tr>
+              <tr><td>实体仓可用口径</td><td>${format(physicalAllocatable)}</td><td>可调拨数量</td><td>${format(transferable)}</td></tr>
               <tr><td>库龄</td><td>${row.ageDays}天</td><td>同步状态</td><td>${row.syncStatus}</td></tr>
               <tr><td>快照时间</td><td>${row.snapshotTime}</td><td>来源系统</td><td>${row.source}</td></tr>
             </tbody></table>
@@ -2887,9 +3072,9 @@
             <table><tbody>
               <tr><td>命中状态</td><td>${info.status}</td><td>状态优先级</td><td>差异/缺货/延期 > 覆盖不足 > 上限/不可售/预留/积压 > 高库存 > 健康</td></tr>
               <tr><td>命中公式</td><td colspan="3">${info.formula}</td></tr>
-              <tr><td>计算过程</td><td colspan="3">可用 ${format(available)}，有效供给 ${format(effectiveSupply)}，实体仓可分配 ${format(physicalAllocatable)}，保护库存 ${format(protection)}，可调拨 ${format(transferable)}，日均需求 ${format(row.dailyDemand)}，覆盖天数 ${coverage}。</td></tr>
-              <tr><td>保护库存拆分</td><td colspan="3">已锁定需求 ${format(row.lockedDemand || 0)} + 已承诺订单 ${format(row.committedOrder || 0)} + 已批准调拨出库 ${format(row.approvedTransferOut || 0)} + 计划占用 ${format(row.planReserved || 0)} + 安全库存 ${format(Math.round((row.dailyDemand || 0) * (row.safetyDays || 0)))}。</td></tr>
-              <tr><td>防重复占用</td><td colspan="3">补货试算会写入计划占用账本；同一实体仓可分配被一个虚拟仓占用后，其他虚拟仓只能使用扣减后的余额。</td></tr>
+              <tr><td>计算过程</td><td colspan="3">可用 ${format(available)}，有效供给 ${format(effectiveSupply)}，实体仓可用口径 ${format(physicalAllocatable)}，保护库存 ${format(protection)}，可调拨 ${format(transferable)}，日均需求 ${format(row.dailyDemand)}，覆盖天数 ${coverage}。</td></tr>
+              <tr><td>保护库存拆分</td><td colspan="3">已锁定需求 ${format(row.lockedDemand || 0)} + 已承诺订单 ${format(row.committedOrder || 0)} + 已批准调拨出库 ${format(row.approvedTransferOut || 0)} + 未完补货 ${format(row.planReserved || 0)} + 安全库存 ${format(Math.round((row.dailyDemand || 0) * (row.safetyDays || 0)))}。</td></tr>
+              <tr><td>口径说明</td><td colspan="3">补货计算按实体仓汇总需求统一计算；虚拟仓销售可用分配不扣减实体仓库存。</td></tr>
             </tbody></table>
           </div></div>
         `,
@@ -2906,14 +3091,14 @@
             <thead><tr><th>状态</th><th>计算逻辑</th><th>业务含义</th></tr></thead>
             <tbody>
               <tr><td>库存差异</td><td>|源系统差异| > 阈值，或 sync_status != success</td><td>先核对数据可信度，再进入补货计算</td></tr>
-              <tr><td>虚拟仓可用</td><td>ERP 虚拟仓可用，分货后增加</td><td>销售订单只能占用虚拟仓可用</td></tr>
+              <tr><td>虚拟仓可用</td><td>ERP 虚拟仓可用，表示销售可用额度</td><td>销售订单只能占用虚拟仓可用</td></tr>
               <tr><td>虚拟仓冻结</td><td>ERP 虚拟仓冻结，订单占用后从可用转冻结</td><td>出库后扣减实体仓实物和虚拟仓冻结</td></tr>
-              <tr><td>实体仓可分配</td><td>实体仓可用 - 虚拟仓可用+冻结未消耗 - 计划占用 - 安全库存</td><td>供多个虚拟仓共享，但必须通过计划占用防重复</td></tr>
+              <tr><td>实体仓可用口径</td><td>实体仓可用库存 - 安全库存 - 已下发未完成补货</td><td>供实体仓补货计算使用；虚拟仓可用不扣减该库存</td></tr>
               <tr><td>缺货</td><td>可用库存 <= 0 且 日均需求 > 0</td><td>当前不可售或不可履约，需优先补货/调拨</td></tr>
               <tr><td>在途延期</td><td>延期在途 > 0 且 覆盖天数 < 安全覆盖天数</td><td>账面有在途，但赶不上需求窗口</td></tr>
               <tr><td>覆盖不足</td><td>覆盖天数 < 安全覆盖天数</td><td>有效供给低于策略安全水位</td></tr>
               <tr><td>库容/上限风险</td><td>实物 + 在途 + 上架中 > 仓库/平台上限</td><td>继续补货可能入不了仓或产生超仓费</td></tr>
-              <tr><td>上架中积压</td><td>上架中数量 > 0 且 上架时长 > SLA</td><td>货已到但未转可售，需仓储跟进</td></tr>
+              <tr><td>上架中积压</td><td>上架中数量 > 0 且 上架时长 > 参考阈值</td><td>货已到但未转可售，提醒仓储关注</td></tr>
               <tr><td>不可售过高</td><td>不可用库存 / 实物库存 > 阈值</td><td>破损、待检、平台不可售占比过高</td></tr>
               <tr><td>预留过高</td><td>预留库存 / 实物库存 > 阈值</td><td>库存被订单、活动、调拨占用，实际可调度少</td></tr>
               <tr><td>长库龄/高库存</td><td>库龄 >= 90天 或 覆盖天数 > 高库存阈值</td><td>周转慢，需控制补货或促销清理</td></tr>
@@ -2942,10 +3127,10 @@
         },
         '库存分层可视化': {
           code: 'M2',
-          desc: '统一展示实体仓、虚拟仓、虚拟仓可用、虚拟仓冻结、实体仓可分配、计划占用和可调拨数量。',
-          stats: [['库存快照', 'IS-0429-1200'], ['虚拟仓可用', '4,550'], ['虚拟仓冻结', '620'], ['实体仓可分配', '150']],
+          desc: '统一展示实体仓、虚拟仓、虚拟仓可用、虚拟仓冻结、实体仓可用口径、未完补货和可调拨数量。',
+          stats: [['库存快照', 'IS-0429-1200'], ['虚拟仓可用', '4,550'], ['虚拟仓冻结', '620'], ['实体仓可用口径', '150']],
           buttons: ['刷新快照', '导入库存差异', '查看预留', '查看在途', '创建核对任务', '导出库存'],
-          headers: ['SKU', '仓库', '性质', '绑定实体仓', '虚拟仓可用/冻结', '实体仓可分配', '状态'],
+          headers: ['SKU', '仓库', '性质', '绑定实体仓', '虚拟仓可用/冻结', '实体仓可用口径', '状态'],
           rows: [
             ['C00B5B02+2550', '奥莱B2C仓', '虚拟仓', '东莞配件仓', '可用 930 / 冻结 500', '-', '覆盖不足'],
             ['C00B3809+2549', '奥莱B2B仓', '虚拟仓', '东莞翻新仓', '可用 1,120 / 冻结 0', '-', '库存上限风险'],
@@ -2956,7 +3141,7 @@
           code: 'M4',
           desc: '承接补货计划下发结果，跟踪采购申请、调拨单、平台入仓批次和发运计划的关键节点。',
           stats: [['待承接', '14'], ['执行中', '39'], ['延期', '6'], ['今日需更新', '11']],
-          buttons: ['承接任务', '批量分派', '回写节点', '更新ETA', '创建延期异常', '导出执行单'],
+          buttons: ['承接任务', '批量更新', '回写节点', '更新ETA', '查看延期预警', '导出执行单'],
           headers: ['执行单号', '类型', 'SKU数', '责任部门', '计划到仓', '当前阶段', '操作'],
           rows: [
             ['PR-20260429-018', '采购申请', '12', '采购部', '2026-05-12', '待承接'],
@@ -2964,28 +3149,16 @@
             ['SHIP-20260429-011', '发运计划', '16', '物流部', '2026-05-15', '头程在途']
           ]
         },
-        '异常中心': {
+        '异常预警': {
           code: 'M5',
-          desc: '统一承接缺货、延期、限仓、预测偏差、库存差异和约束违反，支持分派、升级、关闭和复盘。',
-          stats: [['S1异常', '3'], ['S2异常', '18'], ['超时工单', '5'], ['关闭率', '82%']],
-          buttons: ['新建异常', '批量分派', '升级', '更新进展', '关闭复盘', '导出工单'],
-          headers: ['异常编号', '类型', '等级', '影响对象', '责任人', '状态', '操作'],
+          desc: '统一展示缺货、延期、限仓、历史销量偏离、库存差异和约束违反等预警；一期仅做页面和消息提醒。',
+          stats: [['S1预警', '3'], ['S2预警', '18'], ['未读预警', '5'], ['今日新增', '12']],
+          buttons: ['标记已读', '忽略提醒', '刷新预警', '查看口径', '导出预警'],
+          headers: ['预警编号', '类型', '等级', '影响对象', '触发来源', '提醒状态', '操作'],
           rows: [
-            ['EX-20260429-021', '平台限仓', 'S1', 'C00B3809+2549 / 奥莱B2B仓', '物流专员B', '处理中'],
-            ['EX-20260429-022', '采购延期', 'S2', 'PR-20260429-018', '采购C', '已分派'],
-            ['EX-20260429-023', '库存差异', 'S2', '东莞次品仓', '仓储A', '待验证']
-          ]
-        },
-        '数据看板': {
-          code: 'M6',
-          desc: '展示需求质量、库存健康、补货计划、执行达成和异常闭环指标，辅助管理层和PMC复盘。',
-          stats: [['需求准确率', '76%'], ['补货采纳率', '68%'], ['计划达成率', '81%'], ['异常关闭率', '82%']],
-          buttons: ['切换周期', '选择渠道', '刷新数据', '查看口径', '导出报表', '订阅报告'],
-          headers: ['指标', '本期', '上期', '变化', '责任模块', '状态', '操作'],
-          rows: [
-            ['销售计划提报及时率', '91%', '86%', '+5%', 'M1', '正常'],
-            ['库存覆盖不足SKU', '27', '35', '-8', 'M2', '改善'],
-            ['S1平均处理时长', '18h', '26h', '-8h', 'M5', '改善']
+            ['WARN-20260429-021', '平台限仓', 'S1', 'C00B3809+2549 / 奥莱B2B仓', '入仓建议校验', '未读'],
+            ['WARN-20260429-022', '采购延期', 'S2', 'PR-20260429-018', 'ETA 晚于需求窗口', '已读'],
+            ['WARN-20260429-023', '库存差异', 'S2', '东莞次品仓', '库存快照同步', '已忽略']
           ]
         }
       }[name];
@@ -3027,9 +3200,9 @@
               <div class="field"><label>关键词</label><input placeholder="输入单号 / SKU / 客户 / 仓库" /></div>
               <div class="field"><label>渠道</label><select><option>全部</option><option>B2C国外</option><option>B2B海外商超</option></select></div>
               <div class="field"><label>仓库</label><select><option>全部</option><option>国内仓</option><option>平台仓</option><option>海外3PL</option></select></div>
-              <div class="field"><label>状态</label><select><option>全部</option><option>待处理</option><option>处理中</option><option>已完成</option></select></div>
+              <div class="field"><label>状态</label><select>${name === '异常预警' ? '<option>全部</option><option>未读</option><option>已读</option><option>已忽略</option>' : '<option>全部</option><option>待处理</option><option>处理中</option><option>已完成</option>'}</select></div>
               <div class="field"><label>周度执行周期</label><select><option>2026-W18</option><option>2026-W19</option></select></div>
-              <div class="field"><label>负责人</label><select><option>全部</option><option>PMC</option><option>采购</option><option>物流</option></select></div>
+              <div class="field"><label>${name === '异常预警' ? '触发来源' : '负责人'}</label><select>${name === '异常预警' ? '<option>全部</option><option>补货计算</option><option>执行节点</option><option>库存快照</option>' : '<option>全部</option><option>PMC</option><option>采购</option><option>物流</option>'}</select></div>
               <button class="btn" data-page-action="更多筛选">更多筛选</button>
             </div>
           </div>
@@ -3063,20 +3236,21 @@
       document.querySelectorAll('[data-page-action]').forEach(btn => {
         btn.onclick = () => {
           const action = btn.dataset.pageAction;
+          const isWarningPage = name === '异常预警';
           openModal(
             name + ' · ' + action,
-            '当前已进入具体菜单页面。该按钮已绑定真实弹窗，下一步可继续细化为完整业务交互。',
+            isWarningPage ? '异常预警一期只做提醒和查看，预警结果仅供参考。' : '当前已进入具体菜单页面。该按钮已绑定真实弹窗，下一步可继续细化为完整业务交互。',
             `
-              <div class="inline-note">你点击了「${action}」。后续细化时会补充字段、校验、状态流转、确认弹窗和数据变化。</div>
+              <div class="inline-note">${isWarningPage ? '你点击了「' + action + '」。系统只记录查看或忽略动作，预警结果仅供参考。' : '你点击了「' + action + '」。后续细化时会补充字段、校验、状态流转、确认弹窗和数据变化。'}</div>
               <div style="height:14px;"></div>
               ${formGrid([
                 { label: '操作对象', html: '<input value="' + name + '" readonly />' },
                 { label: '操作类型', html: '<input value="' + action + '" readonly />' },
-                { label: '处理意见', html: '<input placeholder="请输入备注或处理意见" />' },
-                { label: '责任人', html: '<select><option>当前用户</option><option>PMC负责人</option><option>采购</option><option>物流</option></select>' }
+                { label: isWarningPage ? '查看备注' : '处理意见', html: '<input placeholder="' + (isWarningPage ? '选填，仅记录查看说明' : '请输入备注或处理意见') + '" />' },
+                { label: isWarningPage ? '提醒状态' : '责任人', html: isWarningPage ? '<select><option>已读</option><option>已忽略</option></select>' : '<select><option>当前用户</option><option>PMC负责人</option><option>采购</option><option>物流</option></select>' }
               ])}
             `,
-            '<button class="btn" data-close>取消</button><button class="btn primary" data-toast="' + action + '已执行">确认</button>'
+            '<button class="btn" data-close>取消</button><button class="btn primary" data-toast="' + (isWarningPage ? '预警状态已更新' : action + '已执行') + '">确认</button>'
           );
         };
       });
@@ -3095,7 +3269,7 @@
       $('demandFieldHelp').onclick = openDemandFieldHelp;
       $('demandSearch').onclick = () => { renderDemandRows(); toast('需求池查询完成'); };
       $('demandReset').onclick = () => {
-        ['demandKeyword', 'demandChannel', 'demandTier', 'demandStatusFilter', 'demandWeek'].forEach(id => { if ($(id)) $(id).value = ''; });
+        ['demandKeyword', 'demandPlatform', 'demandChannel', 'demandWarZone', 'demandStockingWarehouse', 'demandTier', 'demandStatusFilter', 'demandWeek'].forEach(id => { if ($(id)) $(id).value = ''; });
         renderDemandRows();
         toast('需求池筛选已重置');
       };
@@ -3118,16 +3292,12 @@
       const data = row || {};
       return formGrid([
         { label: '策略名称', html: '<input id="mStrategyName" value="' + (data.name || '') + '" placeholder="例如 平台仓标准补货策略" />' },
-        { label: '仓型', html: '<select id="mStrategyWarehouseType"><option value="domestic" ' + (data.warehouseType === 'domestic' ? 'selected' : '') + '>国内仓</option><option value="platform" ' + (data.warehouseType === 'platform' ? 'selected' : '') + '>平台仓</option><option value="oversea_3pl" ' + (data.warehouseType === 'oversea_3pl' ? 'selected' : '') + '>海外3PL</option></select>' },
-        { label: '生效范围', html: '<input id="mStrategyScope" value="' + (data.scope || '') + '" placeholder="渠道 / 客户 / 仓型 / SKU范围" />' },
+        { label: '仓库类型', html: '<select id="mStrategyWarehouseType"><option value="domestic" ' + (data.warehouseType === 'domestic' ? 'selected' : '') + '>国内仓</option><option value="platform" ' + (data.warehouseType === 'platform' ? 'selected' : '') + '>平台仓</option><option value="oversea_3pl" ' + (data.warehouseType === 'oversea_3pl' ? 'selected' : '') + '>海外3PL</option></select>' },
         { label: '目标覆盖天数', html: '<input id="mStrategyTargetCover" type="number" min="1" value="' + (data.targetCover || 30) + '" />' },
-        { label: '安全库存天数', html: '<input id="mStrategySafetyDays" type="number" min="0" value="' + (data.safetyDays || 14) + '" />' },
-        { label: '评审频率', html: '<select id="mStrategyFrequency"><option ' + (data.frequency === 'daily' ? 'selected' : '') + '>daily</option><option ' + (data.frequency === 'weekly' || !data.frequency ? 'selected' : '') + '>weekly</option><option ' + (data.frequency === 'monthly' ? 'selected' : '') + '>monthly</option></select>' },
-        { label: '综合提前期', html: '<input id="mStrategyLeadTime" type="number" min="0" value="' + (data.leadTime || 30) + '" />' },
-        { label: 'MOQ', html: '<input id="mStrategyMoq" type="number" min="0" value="' + (data.moq || 500) + '" />' },
-        { label: '箱规', html: '<input id="mStrategyCasePack" type="number" min="1" value="' + (data.casePack || 100) + '" />' },
-        { label: '仓容/入仓上限', html: '<input id="mStrategyMaxQty" type="number" min="0" value="' + (data.maxQty || 5000) + '" />' },
         { label: '高库存覆盖天数阈值', html: '<input id="mStrategyOverstockDays" type="number" min="1" value="' + (data.overstockDays || 75) + '" />' },
+        { label: '安全库存天数', html: '<input id="mStrategySafetyDays" type="number" min="0" value="' + (data.safetyDays || 14) + '" />' },
+        { label: '综合提前期', html: '<input id="mStrategyLeadTime" type="number" min="0" value="' + (data.leadTime || 30) + '" />' },
+        { label: '仓容/入仓上限', html: '<input id="mStrategyMaxQty" type="number" min="0" value="' + (data.maxQty || 5000) + '" />' },
         { label: '状态', html: '<select id="mStrategyStatus"><option ' + (data.status === '启用' || !data.status ? 'selected' : '') + '>启用</option><option ' + (data.status === '停用' ? 'selected' : '') + '>停用</option></select>' }
       ]);
     }
@@ -3137,15 +3307,11 @@
         id: existing ? existing.id : 'ST-' + String(state.strategyRows.length + 1).padStart(3, '0'),
         name: $('mStrategyName').value.trim(),
         warehouseType: $('mStrategyWarehouseType').value,
-        scope: $('mStrategyScope').value.trim(),
         targetCover: Number($('mStrategyTargetCover').value),
-        safetyDays: Number($('mStrategySafetyDays').value),
-        frequency: $('mStrategyFrequency').value,
-        leadTime: Number($('mStrategyLeadTime').value),
-        moq: Number($('mStrategyMoq').value),
-        casePack: Number($('mStrategyCasePack').value),
-        maxQty: Number($('mStrategyMaxQty').value),
         overstockDays: Number($('mStrategyOverstockDays').value),
+        safetyDays: Number($('mStrategySafetyDays').value),
+        leadTime: Number($('mStrategyLeadTime').value),
+        maxQty: Number($('mStrategyMaxQty').value),
         status: $('mStrategyStatus').value,
         owner: '当前用户',
         updatedAt: nowText()
@@ -3176,16 +3342,16 @@
           <div class="card"><div class="panel-head"><h2>策略字段</h2></div><div class="panel-body">
             <table>
               <tbody>
-                <tr><td>策略名称</td><td>${row.name}</td><td>仓型</td><td>${strategyWarehouseTypeText(row.warehouseType)}</td></tr>
-                <tr><td>生效范围</td><td>${row.scope}</td><td>评审频率</td><td>${row.frequency}</td></tr>
-                <tr><td>MOQ</td><td>${row.moq}</td><td>箱规</td><td>${row.casePack}</td></tr>
-                <tr><td>仓容/入仓上限</td><td>${format(row.maxQty)}</td><td>高库存阈值</td><td>${row.overstockDays}天</td></tr>
-                <tr><td>状态</td><td>${row.status}</td><td>更新人/时间</td><td>${row.owner} · ${row.updatedAt}</td></tr>
+                <tr><td>策略名称</td><td>${row.name}</td><td>仓库类型</td><td>${strategyWarehouseTypeText(row.warehouseType)}</td></tr>
+                <tr><td>目标覆盖天数</td><td>${row.targetCover}天</td><td>高库存阈值</td><td>${row.overstockDays}天</td></tr>
+                <tr><td>安全库存天数</td><td>${row.safetyDays}天</td><td>综合提前期</td><td>${row.leadTime}天</td></tr>
+                <tr><td>仓容/入仓上限</td><td>${format(row.maxQty)}</td><td>更新人/时间</td><td>${row.owner} · ${row.updatedAt}</td></tr>
+                <tr><td>状态</td><td colspan="3">${row.status}</td></tr>
               </tbody>
             </table>
           </div></div>
           <div style="height:14px;"></div>
-          <div class="inline-note">补货建议计算会读取目标覆盖天数、安全库存天数、提前期、MOQ、箱规和仓容上限；仓网调拨策略通过同一策略模板关联。</div>
+          <div class="inline-note">补货策略只影响计划层建议量和风险判断；MOQ、箱规、供应商回货周期在下推采购执行时从 SKU/供应商主数据读取。</div>
         `,
         '<button class="btn" id="drawerOk">关闭</button>'
       );
@@ -3212,7 +3378,7 @@
 
     function bindStrategyPageButtons() {
       $('strategyAdd').onclick = () => openStrategyEdit();
-      $('strategyImport').onclick = () => openModal('导入补货策略', '支持按模板导入策略字段。', '<div class="inline-note">模板字段：策略名称、仓型、生效范围、目标覆盖天数、安全库存天数、评审频率、综合提前期、MOQ、箱规、仓容上限、高库存阈值、状态。</div><div style="height:14px;"></div><input type="file" accept=".xlsx,.xls,.csv" />', '<button class="btn" data-close>取消</button><button class="btn primary" data-toast="策略导入完成：成功 3 条">开始导入</button>', true);
+      $('strategyImport').onclick = () => openModal('导入补货策略', '支持按模板导入策略字段。', '<div class="inline-note">模板字段：策略名称、仓库类型、目标覆盖天数、高库存覆盖天数阈值、安全库存天数、综合提前期、仓容/入仓上限、状态。</div><div style="height:14px;"></div><input type="file" accept=".xlsx,.xls,.csv" />', '<button class="btn" data-close>取消</button><button class="btn primary" data-toast="策略导入完成：成功 3 条">开始导入</button>', true);
       $('strategyTransfer').onclick = openTransferPriorityConfig;
       $('strategyAudit').onclick = () => openModal('策略变更日志', '记录策略新增、编辑、启停和重新计算引用情况。', `
         <table>
@@ -3276,29 +3442,34 @@
       const endMonth = demandEndMonth(data) || '2026-07';
       return formGrid([
         { label: '发起角色', html: '<select id="mDemandInitiator"><option ' + (data.initiatorRole === '运营' ? 'selected' : '') + '>运营</option><option ' + (data.initiatorRole === 'PMC' ? 'selected' : '') + '>PMC</option></select>' },
+        { label: '平台', html: '<select id="mDemandPlatform"><option ' + (data.platform === 'Amazon' ? 'selected' : '') + '>Amazon</option><option ' + (data.platform === 'TikTok' ? 'selected' : '') + '>TikTok</option><option ' + (data.platform === '天猫' ? 'selected' : '') + '>天猫</option><option ' + (data.platform === '京东' ? 'selected' : '') + '>京东</option><option ' + (data.platform === 'B2B客户' ? 'selected' : '') + '>B2B客户</option></select>' },
         { label: '渠道', html: '<select id="mDemandChannel"><option ' + (data.channel === 'B2C线上国外' ? 'selected' : '') + '>B2C线上国外</option><option ' + (data.channel === 'B2C线上国内' ? 'selected' : '') + '>B2C线上国内</option><option ' + (data.channel === 'B2B海外商超' ? 'selected' : '') + '>B2B海外商超</option><option ' + (data.channel === 'B2B线下国外' ? 'selected' : '') + '>B2B线下国外</option></select>' },
-        { label: '客户/店铺', html: '<input id="mDemandCustomer" value="' + (data.customer || '') + '" placeholder="例如 奥莱B2C / 奥莱B2B" />' },
+        { label: '战区', html: '<select id="mDemandWarZone"><option ' + (data.warZone === '北美战区' ? 'selected' : '') + '>北美战区</option><option ' + (data.warZone === '欧洲战区' ? 'selected' : '') + '>欧洲战区</option><option ' + (data.warZone === '日本战区' ? 'selected' : '') + '>日本战区</option><option ' + (data.warZone === '国内战区' ? 'selected' : '') + '>国内战区</option></select>' },
+        { label: '备货仓', html: '<select id="mDemandStockingWarehouse"><option ' + (data.stockingWarehouse === '奥莱B2C仓' ? 'selected' : '') + '>奥莱B2C仓</option><option ' + (data.stockingWarehouse === '奥莱B2B仓' ? 'selected' : '') + '>奥莱B2B仓</option><option ' + (data.stockingWarehouse === '京东自营待发仓LHH' ? 'selected' : '') + '>京东自营待发仓LHH</option><option ' + (data.stockingWarehouse === '东莞塘厦仓' ? 'selected' : '') + '>东莞塘厦仓</option></select>' },
+        { label: '客户/店铺', html: '<input id="mDemandCustomer" value="' + (data.customer || '') + '" placeholder="明细提报填写；PMC汇总备货预测可为空" />' },
         { label: 'SKU', html: '<input id="mDemandSku" value="' + (data.sku || '') + '" placeholder="例如 C00B5B02+2550" />' },
         { label: '商品名称', html: '<input id="mDemandProduct" value="' + (data.product || '') + '" placeholder="系统可按 SKU 带出" />' },
         { label: '开始月份', html: '<select id="mDemandStartMonth"><option ' + (startMonth === '2026-05' ? 'selected' : '') + '>2026-05</option><option ' + (startMonth === '2026-06' ? 'selected' : '') + '>2026-06</option><option ' + (startMonth === '2026-07' ? 'selected' : '') + '>2026-07</option></select>' },
         { label: '结束月份', html: '<select id="mDemandEndMonth"><option ' + (endMonth === '2026-05' ? 'selected' : '') + '>2026-05</option><option ' + (endMonth === '2026-06' ? 'selected' : '') + '>2026-06</option><option ' + (endMonth === '2026-07' ? 'selected' : '') + '>2026-07</option><option ' + (endMonth === '2026-08' ? 'selected' : '') + '>2026-08</option></select>' },
         { label: '运营提报数量', html: '<input id="mDemandOperatorQty" type="number" min="1" step="1" value="' + (data.submittedQty || '') + '" placeholder="发起角色为运营时必填" />' },
         { label: 'PMC提报数量', html: '<input id="mDemandPmcSubmittedQty" type="number" min="1" step="1" value="' + (data.pmcSubmittedQty || '') + '" placeholder="发起角色为 PMC 时必填" />' },
-        { label: '需求来源', html: '<select id="mDemandSource"><option ' + (data.source === '销售预测' ? 'selected' : '') + '>销售预测</option><option ' + (data.source === '临时加单' ? 'selected' : '') + '>临时加单</option><option ' + (data.source === '促销活动' ? 'selected' : '') + '>促销活动</option><option ' + (data.source === '其他' ? 'selected' : '') + '>其他</option></select>' },
-        { label: '需求明细类型', html: '<select id="mDemandType"><option ' + (data.type === '订单锁定' ? 'selected' : '') + '>订单锁定</option><option ' + (data.type === '活动需求' ? 'selected' : '') + '>活动需求</option><option ' + (data.type === '历史销量参考' ? 'selected' : '') + '>历史销量参考</option><option ' + (data.type === '临时加单' ? 'selected' : '') + '>临时加单</option><option>综合判断</option></select>' },
+        { label: '需求来源', html: '<select id="mDemandType"><option ' + (data.type === '订单锁定' ? 'selected' : '') + '>订单锁定</option><option ' + (data.type === '活动需求' ? 'selected' : '') + '>活动需求</option><option ' + (data.type === '历史销量参考' ? 'selected' : '') + '>历史销量参考</option><option ' + (data.type === '临时加单' ? 'selected' : '') + '>临时加单</option><option ' + (data.type === '综合判断' || !data.type ? 'selected' : '') + '>综合判断</option></select>' },
         { label: '订单/锁单参考量', html: '<input id="mDemandOrderRef" type="number" min="0" value="' + (data.orderRef || '') + '" placeholder="选填" />' },
         { label: '活动增量参考量', html: '<input id="mDemandActivityRef" type="number" min="0" value="' + (data.activityRef || '') + '" placeholder="选填" />' },
         { label: '历史销量参考量', html: '<input id="mDemandForecastRef" type="number" min="0" value="' + (data.forecastRef || '') + '" placeholder="选填" />' },
         { label: '临时调整量', html: '<input id="mDemandManualRef" type="number" value="' + (data.manualRef || '') + '" placeholder="选填，可正可负" />' },
         { label: '活动ID', html: '<input id="mDemandEvent" value="' + (data.eventId || '') + '" placeholder="选填，用于活动复盘" />' },
         { label: '期望交付日', html: '<input id="mDemandDate" type="date" value="' + (data.expectedDate || '2026-05-10') + '" />' }
-      ]) + '<div style="height:12px;"></div><div class="inline-note">同一个弹窗兼容运营提报和 PMC 提报：发起角色为运营时填写运营提报数量；发起角色为 PMC 时填写 PMC提报数量。PMC确认数量在审核环节形成，作为补货计算主口径。</div><div style="height:12px;"></div><div class="field"><label>提报说明</label><textarea id="mDemandRemark" placeholder="说明需求如何形成，例如：历史销量 + 平台大促 + 客户锁单；非强制拆分。">' + (data.remark || '') + '</textarea></div>';
+      ]) + '<div style="height:12px;"></div><div class="inline-note">备货仓是计划归属仓/备货责任仓，用于 PMC 分工和虚拟仓映射，不代表最终发货仓。客户/店铺为空时表示 PMC 汇总级备货预测；明细提报时填写客户/店铺。</div><div style="height:12px;"></div><div class="inline-note">同一个弹窗兼容运营提报和 PMC 提报：发起角色为运营时填写运营提报数量；发起角色为 PMC 时填写 PMC提报数量。PMC确认数量在审核环节形成，作为补货计算主口径。</div><div style="height:12px;"></div><div class="field"><label>提报说明</label><textarea id="mDemandRemark" placeholder="说明需求如何形成，例如：历史销量 + 平台大促 + 客户锁单；非强制拆分。">' + (data.remark || '') + '</textarea></div>';
     }
 
     function readDemandForm() {
       return {
         initiatorRole: $('mDemandInitiator').value,
+        platform: $('mDemandPlatform').value,
         channel: $('mDemandChannel').value,
+        warZone: $('mDemandWarZone').value,
+        stockingWarehouse: $('mDemandStockingWarehouse').value,
         customer: $('mDemandCustomer').value.trim(),
         sku: $('mDemandSku').value.trim(),
         product: $('mDemandProduct').value.trim(),
@@ -3309,7 +3480,7 @@
         submittedQty: $('mDemandOperatorQty').value ? Number($('mDemandOperatorQty').value) : null,
         pmcSubmittedQty: $('mDemandPmcSubmittedQty').value ? Number($('mDemandPmcSubmittedQty').value) : null,
         tier: 'Final',
-        source: $('mDemandSource').value,
+        source: $('mDemandType').value,
         type: $('mDemandType').value,
         orderRef: Number($('mDemandOrderRef').value || 0),
         activityRef: Number($('mDemandActivityRef').value || 0),
@@ -3322,7 +3493,9 @@
     }
 
     function validateDemandForm(data) {
-      if (!data.customer) return '客户/店铺不能为空';
+      if (!data.platform) return '平台不能为空';
+      if (!data.warZone) return '战区不能为空';
+      if (!data.stockingWarehouse) return '备货仓不能为空';
       if (!data.sku) return 'SKU不能为空';
       if (!data.product) return '商品名称不能为空';
       if (data.endMonth < data.startMonth) return '结束月份不能早于开始月份';
@@ -3332,16 +3505,21 @@
     }
 
     function demandOverlapMessage(data, editingId) {
-      const hit = state.demandRows.find(row =>
-        row.id !== editingId &&
-        row.sku === data.sku &&
-        row.channel === data.channel &&
-        row.customer === data.customer &&
-        demandMonthOverlap(data, row) &&
-        !['审核不通过', '已作废'].includes(row.status)
-      );
+      const hit = state.demandRows.find(row => {
+        const existingCustomer = row.customer || '';
+        const newCustomer = data.customer || '';
+        const customerConflict = existingCustomer === newCustomer || !existingCustomer || !newCustomer;
+        return row.id !== editingId &&
+          row.sku === data.sku &&
+          row.platform === data.platform &&
+          row.warZone === data.warZone &&
+          row.stockingWarehouse === data.stockingWarehouse &&
+          customerConflict &&
+          demandMonthOverlap(data, row) &&
+          !['审核不通过', '已作废'].includes(row.status);
+      });
       if (!hit) return '';
-      return '存在相同产品、相同渠道、相同客户/店铺且提报月份范围重叠的需求：' + hit.no + '，重叠月份为 ' + demandMonthRange(hit) + '。请修改提报月份范围或合并原需求后再提报。';
+      return '存在相同平台、战区、备货仓、客户/店铺、SKU 且提报月份范围重叠的需求：' + hit.no + '，重叠月份为 ' + demandMonthRange(hit) + '。请修改平台/战区/备货仓/提报月份范围或合并原需求后再提报。';
     }
 
     function openDemandAdd() {
@@ -3359,7 +3537,7 @@
         '导入需求提报',
         '支持 Excel 模板导入运营提报数量或 PMC提报数量；导入后仍需 PMC 确认数量。',
         `
-          <div class="inline-note">模板字段：渠道、客户/店铺、SKU、开始月份、结束月份、发起角色、运营提报数量、PMC提报数量、需求来源、订单参考量、活动增量参考量、历史销量参考量、临时调整量、期望交付日、提报说明。</div>
+          <div class="inline-note">模板字段：平台、渠道、战区、备货仓、客户/店铺、SKU、开始月份、结束月份、发起角色、运营提报数量、PMC提报数量、需求来源（订单锁定/活动需求/历史销量参考/临时加单/综合判断）、订单参考量、活动增量参考量、历史销量参考量、临时调整量、期望交付日、提报说明。</div>
           <div style="height:14px;"></div>
           ${formGrid([
             { label: '选择文件', html: '<input id="mDemandImportFile" type="file" accept=".xlsx,.xls,.csv" />' },
@@ -3405,7 +3583,7 @@
       const blockers = rows.filter(r => r.status !== '已审核' || r.pmcQty == null);
       openModal(
         '锁定已审核需求',
-        '锁定后该需求可进入补货计算；相同渠道、客户/店铺、SKU 的提报月份范围不可重叠，不再生成版本号。',
+        '锁定后该需求可进入补货计算；相同平台、战区、备货仓、客户/店铺、SKU 的提报月份范围不可重叠，不再生成版本号。',
         `
           <div class="inline-note">${rows.length ? '本次拟锁定 ' + rows.length + ' 行；阻断 ' + blockers.length + ' 行。' : '当前没有可锁定需求。'}</div>
           <div style="height:14px;"></div>
@@ -3440,7 +3618,7 @@
         '更多筛选',
         '高级筛选用于定位需求来源、活动信息和操作留痕。',
         formGrid([
-          { label: '需求来源', html: '<select><option>全部</option><option>销售预测</option><option>临时加单</option><option>促销活动</option><option>其他</option></select>' },
+          { label: '需求来源', html: '<select><option>全部</option><option>订单锁定</option><option>活动需求</option><option>历史销量参考</option><option>临时加单</option><option>综合判断</option></select>' },
           { label: '活动ID', html: '<input placeholder="例如 ACT-20260429" />' },
           { label: '期望交付日早于', html: '<input type="date" />' },
           { label: '责任销售', html: '<input placeholder="销售/运营姓名" />' },
@@ -3482,7 +3660,7 @@
             </tbody>
           </table>
           <div style="height:14px;"></div>
-          <div class="inline-note">月份范围重叠校验：新增或编辑时，若相同产品、相同渠道、相同客户/店铺的提报月份范围有交集，页面提示重叠月份并限制保存。</div>
+          <div class="inline-note">月份范围重叠校验：新增或编辑时，若相同平台、战区、备货仓、客户/店铺、SKU 的提报月份范围有交集，页面提示重叠月份并限制保存。客户/店铺为空代表汇总级预测，锁定时需避免与明细需求重复进入补货。</div>
         `,
         '<button class="btn primary" data-close>知道了</button>',
         true
@@ -3512,12 +3690,14 @@
           <div class="card"><div class="panel-head"><h2>1. 需求数量与基础信息</h2></div><div class="panel-body">
             <table>
               <tbody>
-                <tr><td>渠道</td><td>${row.channel}</td><td>客户/店铺</td><td>${row.customer}</td></tr>
+                <tr><td>平台</td><td>${row.platform || '-'}</td><td>战区</td><td>${row.warZone || '-'}</td></tr>
+                <tr><td>备货仓</td><td>${row.stockingWarehouse || '-'}</td><td>计划仓说明</td><td>用于备货责任，不是最终发货仓</td></tr>
+                <tr><td>渠道</td><td>${row.channel}</td><td>客户/店铺</td><td>${row.customer || '汇总级预测'}</td></tr>
                 <tr><td>SKU</td><td>${row.sku}</td><td>商品</td><td>${row.product}</td></tr>
                 <tr><td>提报月份范围</td><td>${demandMonthRange(row)}</td><td>期望交付日</td><td>${row.expectedDate}</td></tr>
                 <tr><td>运营提报数量</td><td>${row.submittedQty != null ? format(row.submittedQty) : '-'}</td><td>PMC提报数量</td><td>${row.pmcSubmittedQty != null ? format(row.pmcSubmittedQty) : '-'}</td></tr>
                 <tr><td>PMC确认数量</td><td>${row.pmcQty != null ? format(row.pmcQty) : '-'}</td><td>原始提报数量</td><td>${format(demandOriginalQty(row))}</td></tr>
-                <tr><td>需求来源</td><td>${row.source || '其他'}</td><td>责任人</td><td>${row.owner}</td></tr>
+                <tr><td>需求来源</td><td>${demandSource(row)}</td><td>责任人</td><td>${row.owner}</td></tr>
                 <tr><td>创建人</td><td>${row.createdBy || row.owner || '-'}</td><td>创建时间</td><td>${row.createdAt || '-'}</td></tr>
                 <tr><td>确认人</td><td>${row.confirmedBy || '-'}</td><td>确认时间</td><td>${row.confirmedAt || '-'}</td></tr>
               </tbody>
@@ -3565,7 +3745,7 @@
           <div class="card"><div class="panel-head"><h2>4. 人工提报对照</h2></div><div class="panel-body">
             <table>
               <tbody>
-                <tr><td>一期口径</td><td>人工提报</td><td>参考维度</td><td>渠道 + 客户/店铺 + SKU + 周</td></tr>
+                <tr><td>一期口径</td><td>人工提报</td><td>参考维度</td><td>平台 + 战区 + 备货仓 + 客户/店铺 + SKU + 月份范围</td></tr>
                 <tr><td>历史销量参考</td><td>${format(historyRef)}</td><td>人工提报值</td><td>${format(row.qty)}</td></tr>
                 <tr><td>参考因素</td><td colspan="3">${row.type === '活动需求' ? '历史销量、平台大促、活动档期、运营人工判断' : '历史销量、近周实销、库存可售状态、运营人工判断'}</td></tr>
                 <tr><td>与 PMC 确认量差异</td><td colspan="3">PMC 确认数量高于/低于历史销量参考时不阻断提交，仅用于 PMC 评审和需求复盘。</td></tr>
@@ -3617,7 +3797,7 @@
         formGrid([
           { label: '当前状态', html: '<input value="' + row.status + '" readonly />' },
           { label: isSubmitted ? '运营提报数量' : isPmcSubmitted ? 'PMC提报数量' : 'PMC确认数量', html: '<input id="mDemandQuickQty" type="number" min="1" step="1" value="' + currentQty + '" />' },
-          { label: '需求来源', html: '<input value="' + (row.source || '其他') + '" readonly />' },
+          { label: '需求来源', html: '<input value="' + demandSource(row) + '" readonly />' },
           { label: '对照数量', html: '<input value="' + (isSubmitted || isPmcSubmitted ? (row.pmcQty != null ? 'PMC确认 ' + format(row.pmcQty) : 'PMC未确认') : '原始提报 ' + format(demandOriginalQty(row))) + '" readonly />' }
         ]) + '<div style="height:12px;"></div><div class="field"><label>编辑原因</label><textarea id="mDemandQuickQtyReason" placeholder="建议填写数量调整原因，便于追溯。"></textarea></div>',
         '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-qty-save data-id="' + row.id + '" data-field="' + field + '">保存数量</button>',
@@ -3646,7 +3826,7 @@
             { label: '运营提报数量', html: '<input value="' + (row.submittedQty != null ? format(row.submittedQty) : '-') + '" readonly />' },
             { label: 'PMC提报数量', html: '<input value="' + (row.pmcSubmittedQty != null ? format(row.pmcSubmittedQty) : '-') + '" readonly />' },
             { label: 'PMC确认数量', html: '<input id="mDemandConfirmQty" type="number" min="1" value="' + (row.pmcQty || demandOriginalQty(row)) + '" />' },
-            { label: '需求来源', html: '<input value="' + (row.source || '其他') + '" readonly />' },
+            { label: '需求来源', html: '<input value="' + demandSource(row) + '" readonly />' },
             { label: '发起角色', html: '<input value="' + (row.initiatorRole || '运营') + '" readonly />' }
           ]) + '<div style="height:12px;"></div><div class="field"><label>调整原因</label><textarea id="mDemandConfirmReason" placeholder="如 PMC 确认数量不同于原始提报数量，必须填写原因。">' + (row.pmcAdjustReason || '') + '</textarea></div>',
           '<button class="btn" data-close>取消</button><button class="btn primary" data-demand-confirm="' + ids + '">确认</button>',
