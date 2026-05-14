@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860">
+  <defs>
+    <style>
+      .bg { fill:#f4f7fb; }
+      .title { font:700 34px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif; fill:#142033; }
+      .sub { font:400 16px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif; fill:#5f6b7a; }
+      .box { fill:#fff; stroke:#d8e0ea; stroke-width:1.4; rx:16; }
+      .box-blue { fill:#eef5ff; stroke:#79a8f5; stroke-width:1.6; rx:16; }
+      .box-green { fill:#edf9f2; stroke:#6cc28c; stroke-width:1.6; rx:16; }
+      .box-orange { fill:#fff6e8; stroke:#f0ac4e; stroke-width:1.6; rx:16; }
+      .box-purple { fill:#f4efff; stroke:#a78bfa; stroke-width:1.6; rx:16; }
+      .box-red { fill:#fff1f2; stroke:#fb7185; stroke-width:1.6; rx:16; }
+      .h { font:700 18px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif; fill:#172033; }
+      .t { font:400 14px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif; fill:#344054; }
+      .small { font:400 12px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif; fill:#667085; }
+      .tag { font:700 13px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif; fill:#2f6fec; }
+      .arrow { stroke:#6b7a90; stroke-width:2; fill:none; marker-end:url(#arrow); }
+      .arrow-blue { stroke:#2f6fec; stroke-width:2.4; fill:none; marker-end:url(#arrowBlue); }
+      .dash { stroke:#9aa6b5; stroke-width:1.7; fill:none; stroke-dasharray:6 6; marker-end:url(#arrow); }
+      .note { fill:#fff; stroke:#d8e0ea; stroke-width:1; rx:12; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#6b7a90"/></marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#2f6fec"/></marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="1400" height="860"/>
+  <text class="title" x="60" y="62">智能补货系统产品架构图</text>
+  <text class="sub" x="60" y="92">最新版口径：以实体仓为补货计算中心，虚拟仓只承担需求归属与销售可用分配，不扣减实体仓库存。</text>
+  <rect class="box" x="46" y="126" width="1308" height="664" rx="24"/>
+
+  <rect class="box-blue" x="80" y="170" width="250" height="150"/>
+  <text class="tag" x="104" y="202">业务入口</text>
+  <text class="h" x="104" y="232">运营 / PMC 提报需求</text>
+  <text class="t" x="104" y="262">B2C 国内 / B2C 国外</text>
+  <text class="t" x="104" y="286">B2B 国内 / B2B 国外</text>
+  <text class="t" x="104" y="310">B2B 海外商超 / 临时加单</text>
+
+  <rect class="box-blue" x="410" y="150" width="310" height="190"/>
+  <text class="tag" x="434" y="184">M1 销售计划与需求池</text>
+  <text class="h" x="434" y="214">统一需求入口</text>
+  <text class="t" x="434" y="246">选择平台、渠道、客户/店铺、SKU</text>
+  <text class="t" x="434" y="270">按角色显示可填字段</text>
+  <text class="t" x="434" y="294">保留运营提报量 / PMC提报量</text>
+  <text class="t" x="434" y="318">PMC确认量进入补货计算</text>
+
+  <rect class="box-purple" x="790" y="150" width="250" height="190"/>
+  <text class="tag" x="814" y="184">M0 主数据与策略</text>
+  <text class="h" x="814" y="214">映射与参数配置</text>
+  <text class="t" x="814" y="246">虚拟仓-平台-店铺-军区关系</text>
+  <text class="t" x="814" y="270">虚拟仓绑定实体仓</text>
+  <text class="t" x="814" y="294">补货策略按具体仓库配置</text>
+  <text class="t" x="814" y="318">时间参数 / 调拨优先级</text>
+
+  <rect class="box-green" x="1110" y="150" width="210" height="190"/>
+  <text class="tag" x="1134" y="184">源系统数据</text>
+  <text class="h" x="1134" y="214">库存与执行数据</text>
+  <text class="t" x="1134" y="246">ERP / WMS / 旺店通</text>
+  <text class="t" x="1134" y="270">采购在途 / 调拨在途</text>
+  <text class="t" x="1134" y="294">平台预约 / 上架节点</text>
+  <text class="t" x="1134" y="318">审批与执行状态</text>
+
+  <rect class="box-green" x="180" y="410" width="310" height="190"/>
+  <text class="tag" x="204" y="444">M2 库存分层可视化</text>
+  <text class="h" x="204" y="474">库存快照分开展示</text>
+  <text class="t" x="204" y="506">实体仓：实物、可用、预留、不可用</text>
+  <text class="t" x="204" y="530">在途、上架中、覆盖天数、可调拨</text>
+  <text class="t" x="204" y="554">虚拟仓：仅销售可用、冻结</text>
+  <text class="t" x="204" y="578">风险不在 M2 展示，进入 M5</text>
+
+  <rect class="box-orange" x="560" y="390" width="330" height="230"/>
+  <text class="tag" x="584" y="424">M3 补货工作台</text>
+  <text class="h" x="584" y="454">实体仓维度补货计算</text>
+  <text class="t" x="584" y="486">需求：按客户/店铺归属虚拟仓后汇总到实体仓</text>
+  <text class="t" x="584" y="510">供给：实体仓可用 + 准时在途 + 上架中</text>
+  <text class="t" x="584" y="534">净缺口：需求 + 安全库存 - 有效供给</text>
+  <text class="t" x="584" y="558">输出：补不补、补多少、补到哪个目标仓</text>
+  <text class="t" x="584" y="582">时间：建议下单、最晚确认、到仓/上架</text>
+  <text class="small" x="584" y="604">采购执行阶段再读取 MOQ、箱规、供应商回货周期</text>
+
+  <rect class="box-orange" x="960" y="410" width="260" height="190"/>
+  <text class="tag" x="984" y="444">虚拟仓销售可用分配</text>
+  <text class="h" x="984" y="474">只做额度建议</text>
+  <text class="t" x="984" y="506">实体仓库存到位后</text>
+  <text class="t" x="984" y="530">建议给哪个虚拟仓增加销售可用</text>
+  <text class="t" x="984" y="554">不扣减实体仓实物库存</text>
+  <text class="t" x="984" y="578">不参与实体仓调拨库存扣减</text>
+
+  <rect class="box-purple" x="265" y="680" width="260" height="80"/>
+  <text class="tag" x="289" y="712">M4 执行协同</text>
+  <text class="t" x="289" y="740">采购、调拨、入仓、发运计划承接与节点跟踪</text>
+  <rect class="box-red" x="615" y="680" width="260" height="80"/>
+  <text class="tag" x="639" y="712">M5 异常预警</text>
+  <text class="t" x="639" y="740">缺货、延期、库存差异、限仓等只提醒不闭环</text>
+  <rect class="note" x="960" y="680" width="260" height="80"/>
+  <text class="tag" x="984" y="712">审计与可解释</text>
+  <text class="t" x="984" y="740">保留计算因子、参数来源、人工调整和审批记录</text>
+
+  <path class="arrow-blue" d="M330 245 C360 245 378 245 408 245"/>
+  <path class="arrow-blue" d="M720 245 C750 245 760 245 790 245"/>
+  <path class="arrow" d="M1040 245 C1070 245 1080 245 1110 245"/>
+  <path class="arrow" d="M1180 340 C1130 382 1050 390 890 470"/>
+  <path class="arrow" d="M565 340 C510 380 455 400 400 410"/>
+  <path class="arrow-blue" d="M720 340 C724 360 724 370 724 390"/>
+  <path class="arrow-blue" d="M490 505 C520 505 530 505 560 505"/>
+  <path class="arrow-blue" d="M890 505 C920 505 930 505 960 505"/>
+  <path class="arrow" d="M705 620 C645 650 560 660 480 680"/>
+  <path class="arrow" d="M750 620 C760 648 760 654 760 680"/>
+  <path class="dash" d="M1090 600 C1090 638 1090 650 1090 680"/>
+  <path class="dash" d="M1090 680 C1050 650 960 640 840 620"/>
+  <text class="small" x="80" y="824">说明：M2 是库存快照展示层；M3 才是补货计算层。虚拟仓不参与实体仓库存扣减，执行状态回写 M4/补货计划，库存变化由源系统同步后进入下一次 M2 快照。</text>
+</svg>
